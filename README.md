@@ -1,16 +1,22 @@
-## Hi there 👋
+## Hi there! 👋
 
-<!--
-**agootson/agootson** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+# Agootson.net
 
-Here are some ideas to get you started:
+Personal portfolio website of David Deng Agoot.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## About
+
+I am a Computer Science and Engineering student at (GTU) and an ICCR scholar from South Sudan.I've been building websites since 2016 with platforms such as Wapego, Wapka, Xtgem among others. This is my portfolio since I joined the university. Please enjoy it and provide me with some feedback!
+
+## Features
+
+- Personal profile
+- Projects showcase
+- Skills section
+- Contact information
+
+## Technologies Used
+
+- HTML
+- CSS
+- JavaScript
