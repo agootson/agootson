@@ -279,6 +279,39 @@
       margin-bottom: 16px;
     }
 
+    .hero-slogan {
+      margin: 14px 0 0;
+      max-width: 760px;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      font-weight: 600;
+      font-style: italic;
+      letter-spacing: .01em;
+      opacity: .9;
+    }
+
+    .socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      transition: transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .socials a svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+      display: block;
+    }
+
+    .socials a:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 10px 24px rgba(0,0,0,.22);
+    }
+
     .hero-description {
       color: var(--muted);
       line-height: 1.8;
@@ -831,6 +864,145 @@
         transition-duration: .01ms !important;
       }
     }
+
+    /* Final navigation: one vertical, right-side, auto-hiding menu */
+    nav.glass {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      left: auto;
+      z-index: 1000;
+      width: 235px;
+      min-height: 62px;
+      height: auto;
+      margin: 0;
+      padding: 11px;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      background: rgba(8, 14, 30, .78);
+      backdrop-filter: blur(20px) saturate(140%);
+      -webkit-backdrop-filter: blur(20px) saturate(140%);
+      transform: translateX(calc(100% + 28px));
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: transform .35s ease, opacity .25s ease, visibility .35s ease;
+    }
+
+    nav.glass.menu-open {
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    nav.glass .brand {
+      padding: 7px 6px;
+    }
+
+    nav.glass .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 12px;
+    }
+
+    nav.glass .nav-links a {
+      min-height: 43px;
+      padding: 10px 13px;
+      border-radius: 12px;
+    }
+
+    nav.glass .menu-btn {
+      display: grid;
+      place-items: center;
+      position: fixed;
+      top: 0;
+      right: calc(100% + 12px);
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: rgba(9, 15, 32, .9);
+      color: white;
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: 0 12px 35px rgba(0,0,0,.3);
+    }
+
+    nav.glass.menu-open .menu-btn {
+      background: linear-gradient(135deg, #38bfff, #765fff 55%, #f04fff);
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+      padding-left: 0;
+    }
+
+    .hero {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    /* The old CSS placed the orb/cards independently. Keep the orb centered. */
+    .hero-art {
+      min-height: 500px;
+    }
+
+    @media (max-width: 950px) {
+      .container {
+        width: min(100% - 32px, 1180px);
+        padding-left: 0;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-art {
+        min-height: 430px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      nav.glass {
+        top: 14px;
+        right: 14px;
+        width: min(250px, calc(100vw - 28px));
+      }
+
+      nav.glass .menu-btn {
+        top: 0;
+        right: calc(100% + 9px);
+      }
+
+      .container {
+        width: min(100% - 26px, 1180px);
+      }
+
+      .hero {
+        min-height: auto;
+        padding-top: 55px;
+      }
+
+      .hero-art {
+        min-height: 360px;
+      }
+
+      .orb {
+        width: 270px;
+        height: 270px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      nav.glass {
+        transition: none;
+      }
+    }
+
   </style>
 </head>
 
@@ -841,24 +1013,26 @@
   <div class="particles" id="particles"></div>
 
   <div class="container">
-    <nav class="glass">
-      <a class="brand" href="#home" aria-label="AGootSON home">
+    <nav class="glass" aria-label="Main navigation">
+      <a class="brand" href="https://agootson.is-a.dev/" aria-label="David Agootson home">
         <div class="brand-mark">&lt;/&gt;</div>
-        <div><span>AGootSON</span></div>
+        <div><span>Agootson</span></div>
       </a>
 
-      <div class="nav-links">
-        <a class="active" href="#home">Home</a>
-        <a href="https://agootson.github.io/agootson/about.html">About</a>
-        <a href="https://agootson.github.io/agootson/project.html">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="https://agootson.github.io/agootson/gallery.html">Gallery</a>
-        <a href="https://agootson.github.io/agootson/blog.html">Blog</a>
-        <a href="https://agootson.github.io/agootson/contact.html">Contact</a>
-      </div>
+      <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false">
+        ☰
+      </button>
 
-      <a class="nav-cta" href="#contact-preview">✈ Let's Talk</a>
-      <button class="menu-btn" aria-label="Open menu" onclick="toggleMenu()">☰</button>
+      <div class="nav-links">
+        <a class="active" href="https://agootson.is-a.dev/">Home</a>
+        <a href="https://agootson.is-a.dev/services.html">Services</a>
+        <a href="https://agootson.is-a.dev/blog.html">Blog</a>
+        <a href="https://agootson.is-a.dev/gallery.html">Gallery</a>
+        <a href="https://agootson.is-a.dev/about.html">About Me</a>
+        <a href="https://agootson.is-a.dev/contact.html">Contact Me</a>
+        <a href="https://agootson.is-a.dev/project.html">Projects</a>
+        <a href="https://agootson.is-a.dev/skills.html">Skills</a>
+      </div>
     </nav>
 
     <main id="home">
@@ -868,41 +1042,59 @@
           <div class="eyebrow">Hi, I'm</div>
           <h1>David <span class="gradient-text">Agootson</span></h1>
           <p class="hero-subtitle">Computer Science Student · Builder · Learner · Dreamer</p>
+          <p class="hero-slogan">Stand for your principles even if they are unpopular or out of fashion.</p>
           <p class="hero-description">
             I'm a Computer Science and Engineering student at GTU and an ICCR scholar from South Sudan.
             I love building meaningful projects, exploring new technologies, and using tech to create a positive impact.
           </p>
 
           <div class="actions">
-            <a class="btn-primary" href="https://agootson.github.io/agootson/project.html">View My Work →</a>
-            <a class="btn-secondary" href="https://agootson.github.io/agootson/about.html">◎ About Me</a>
+            <a class="btn-primary" href="https://agootson.is-a.dev/project.html">View My Work →</a>
+            <a class="btn-secondary" href="https://agootson.is-a.dev/about.html">◎ About Me</a>
           </div>
 
           <div class="socials" aria-label="Social links">
-            <a href="https://github.com/agootson" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
-            <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>
-            <a href="mailto:davidagootson@gmail.com" aria-label="Email">✉</a>
-            <a href="https://x.com/agootson" target="_blank" rel="noopener" aria-label="X">𝕏</a>
-            <a href="https://facebook.com/agootson" target="_blank" rel="noopener" aria-label="X">F</a>
-          </div>
+              <!-- LinkedIn -->
+              <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6.5 8.2H3.3V20.5H6.5V8.2ZM4.9 3.5C3.85 3.5 3 4.36 3 5.42C3 6.48 3.85 7.34 4.9 7.34C5.96 7.34 6.81 6.48 6.81 5.42C6.81 4.36 5.96 3.5 4.9 3.5ZM20.7 13.45C20.7 9.75 18.73 7.9 15.82 7.9C13.48 7.9 12.42 9.18 11.83 10.08V8.2H8.76V20.5H11.89V14.41C11.89 12.81 12.19 11.26 14.21 11.26C16.2 11.26 16.23 13.1 16.23 14.51V20.5H19.36L20.7 13.45Z"/>
+                </svg>
+              </a>
+
+              <!-- WhatsApp -->
+              <a href="https://wa.me/211928882221" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2.5A9.5 9.5 0 0 0 3.77 16.77L2.5 21.5l4.86-1.24A9.5 9.5 0 1 0 12 2.5Zm0 17.1a7.58 7.58 0 0 1-3.86-1.06l-.28-.17-2.88.74.77-2.8-.18-.29A7.58 7.58 0 1 1 12 19.6Zm4.16-5.69c-.23-.12-1.35-.67-1.56-.75-.21-.08-.36-.12-.52.12-.15.23-.59.75-.72.9-.13.15-.27.17-.5.06-.23-.12-.97-.36-1.85-1.15-.68-.61-1.14-1.36-1.27-1.59-.13-.23-.01-.35.1-.47.1-.1.23-.27.35-.4.12-.13.15-.23.23-.38.08-.15.04-.29-.02-.4-.06-.12-.52-1.25-.71-1.71-.19-.46-.38-.4-.52-.41h-.44c-.15 0-.4.06-.61.29-.21.23-.8.78-.8 1.9s.82 2.2.94 2.35c.12.15 1.62 2.47 3.92 3.46.55.24.98.38 1.32.49.55.17 1.05.15 1.44.09.44-.07 1.35-.55 1.54-1.08.19-.53.19-.98.13-1.08-.05-.1-.21-.16-.44-.28Z"/>
+                </svg>
+              </a>
+
+              <!-- Email -->
+              <a href="mailto:davidagootson@gmail.com" aria-label="Email" title="Email">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3.5 5.5h17A1.5 1.5 0 0 1 22 7v10a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 17V7a1.5 1.5 0 0 1 1.5-1.5Zm0 2.1v.05l8.5 5.9 8.5-5.9V7.6l-8.5 5.9-8.5-5.9Zm17 8.9V10l-8.1 5.63a.7.7 0 0 1-.8 0L3.5 10v6.5h17Z"/>
+                </svg>
+              </a>
+
+              <!-- X -->
+              <a href="https://x.com/agootson" target="_blank" rel="noopener" aria-label="X" title="X">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18.9 2.5h3.3l-7.2 8.23L23.5 21.5h-6.6l-5.17-6.77-5.92 6.77H2.5l7.7-8.8L2.84 2.5h6.77l4.67 6.17L18.9 2.5Zm-1.16 17.02h1.83L8.67 4.38H6.71l11.03 15.14Z"/>
+                </svg>
+              </a>
+
+              <!-- Facebook -->
+              <a href="https://facebook.com/agootson" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M13.6 21v-8h2.7l.4-3h-3.1V8.08c0-.87.24-1.46 1.5-1.46h1.7V3.94c-.29-.04-1.28-.13-2.43-.13-2.4 0-4.04 1.46-4.04 4.13V10H7.6v3h2.73v8h3.27Z"/>
+                </svg>
+              </a>
+            </div>
         </div>
 
         <div class="hero-art reveal" aria-hidden="true">
           <div class="orb"></div>
-
-          <div class="glass-card card-main">
-            <div class="code-symbol">&lt;/&gt;</div>
-            <h3>Ideas Build<br>Better Tomorrows</h3>
-            <p>Learn. Build. Share. Keep moving forward.</p>
-          </div>
-
-          <div class="glass-card card-back">
-            <div class="code-symbol">✦</div>
-            <h3>A brighter<br>tomorrow</h3>
-            <p>is a project worth building.</p>
-          </div>
-
-         
+          <div class="floating-tag tag-one">Build · Learn · Share</div>
+          <div class="floating-tag tag-two">Creating a brighter tomorrow</div>
         </div>
       </section>
 
@@ -912,7 +1104,7 @@
           <h2>Everything about <span class="gradient-text">Agootson</span></h2>
           <p>
             The homepage gives you a quick overview. Each section below connects to its own
-            independent page on <strong>agootson.is-a.dev</strong>.
+            independent page on this website.
           </p>
         </div>
 
@@ -927,9 +1119,8 @@
                 Learn more about my journey as a Computer Science and Engineering student,
                 my interests, goals, experiences, and the ideas that motivate me.
               </p>
-              <span class="page-url">https://agootson.github.io/agootson/about.html</span>
             </div>
-            <a class="btn-primary page-action" href="https://agootson.github.io/agootson/about.html">
+            <a class="btn-primary page-action" href="https://agootson.is-a.dev/about.html">
               Open About Me →
             </a>
           </article>
@@ -943,9 +1134,8 @@
                 Explore my web development projects, experiments, learning work, and
                 ideas including Raandu and other projects I'm building along the way.
               </p>
-              <span class="page-url">https://agootson.github.io/agootson/project.html</span>
             </div>
-            <a class="btn-primary page-action" href="https://agootson.github.io/agootson/project.html">
+            <a class="btn-primary page-action" href="https://agootson.is-a.dev/project.html">
               View Projects →
             </a>
           </article>
@@ -959,9 +1149,8 @@
                 Browse photos, memories, places, moments, and visual highlights from
                 my journey, studies, travels, and life beyond code.
               </p>
-              <span class="page-url">https://agootson.github.io/agootson/gallery.html</span>
             </div>
-            <a class="btn-primary page-action" href="https://agootson.github.io/agootson/gallery.html">
+            <a class="btn-primary page-action" href="https://agootson.is-a.dev/gallery.html">
               Open Gallery →
             </a>
           </article>
@@ -975,9 +1164,8 @@
                 Read my posts about technology, programming, learning, experiences,
                 projects, and the lessons I discover along the way.
               </p>
-              <span class="page-url">https://agootson.github.io/agootson/blog.html</span>
             </div>
-            <a class="btn-primary page-action" href="https://agootson.github.io/agootson/blog.html">
+            <a class="btn-primary page-action" href="https://agootson.is-a.dev/blog.html">
               Read Blog →
             </a>
           </article>
@@ -991,9 +1179,8 @@
                 Have an idea, collaboration, opportunity, or simply want to connect?
                 Visit the contact page and get in touch.
               </p>
-              <span class="page-url">https://agootson.github.io/agootson/contact.html</span>
             </div>
-            <a class="btn-primary page-action" href="https://agootson.github.io/agootson/contact.html">
+            <a class="btn-primary page-action" href="https://agootson.is-a.dev/contact.html">
               Contact Me →
             </a>
           </article>
@@ -1015,7 +1202,7 @@
                 <h3>Raandu</h3>
                 <p>A platform to test and showcase my skills in web development.</p>
               </div>
-              <a class="project-link" href="https://agootson.github.io/agootson/project.html" aria-label="Open projects page">↗</a>
+              <a class="project-link" href="https://agootson.is-a.dev/project.html" aria-label="Open projects page">↗</a>
             </div>
             <span class="tech"><i></i> HTML</span>
           </article>
@@ -1025,7 +1212,7 @@
               <div>
               
               </div>
-              <a class="project-link" href="https://agootson.github.io/agootson/project.html" aria-label="Open projects page">↗</a>
+              <a class="project-link" href="https://agootson.is-a.dev/project.html" aria-label="Open projects page">↗</a>
             </div>
             <span class="tech"><i style="background:#e9e45a;box-shadow:0 0 10px rgba(233,228,90,.45)"></i> JavaScript</span>
           </article>
@@ -1036,7 +1223,7 @@
                 <h3>More Projects</h3>
                 <p>Explore my other work, experiments, learning projects and ideas.</p>
               </div>
-              <a class="project-link" href="https://agootson.github.io/agootson/project.html" aria-label="View all projects">•••</a>
+              <a class="project-link" href="https://agootson.is-a.dev/project.html" aria-label="View all projects">•••</a>
             </div>
             <span class="tech"><i style="background:#8d63ff;box-shadow:0 0 10px rgba(141,99,255,.45)"></i> Various</span>
           </article>
@@ -1093,7 +1280,7 @@
             <h2>Feel free to connect</h2>
             <p>I'm open to new ideas, collaborations, opportunities and meaningful conversations.</p>
           </div>
-          <a class="btn-primary" href="https://agootson.github.io/agootson/contact.html">Get In Touch →</a>
+          <a class="btn-primary" href="https://agootson.is-a.dev/contact.html">Get In Touch →</a>
         </div>
       </section>
     </main>
@@ -1101,85 +1288,96 @@
     <footer>
       <div class="footer-inner">
         <div class="footer-brand">
-          <div class="brand"><div class="brand-mark">&lt;/&gt;</div><div><span>Aaootson</span></div></div>
+          <div class="brand"><div class="brand-mark">&lt;/&gt;</div><div><span>Agootson</span></div></div>
           <p>Build · Learn · Share · Impact</p>
-        </div>
-        <div class="footer-links">
-          <a href="#home">Home</a>
-          <a href="https://agootson.github.io/agootson/about.html">About Me</a>
-          <a href="https://agootson.github.io/agootson/project.html">My Projects</a>
-          <a href="https://agootson.github.io/agootson/gallery.html">Gallery</a>
-          <a href="https://agootson.github.io/agootson/blog.html">Blog</a>
-          <a href="https://agootson.github.io/agootson/skills.html">Skills</a>
-          <a href="https://agootson.github.io/agootson/contact.html">Contact Me</a>
         </div>
       </div>
       <div class="copyright">© 2026 Agootson. All rights reserved. </div>
     </footer>
   </div>
-
   <script>
     // Floating particles
     const particleBox = document.getElementById("particles");
-    for (let i = 0; i < 42; i++) {
-      const p = document.createElement("span");
-      p.className = "particle";
-      p.style.left = Math.random() * 100 + "%";
-      p.style.animationDuration = (9 + Math.random() * 16) + "s";
-      p.style.animationDelay = (-Math.random() * 20) + "s";
-      p.style.opacity = (.25 + Math.random() * .65).toFixed(2);
-      p.style.transform = `scale(${(.5 + Math.random() * 1.5).toFixed(2)})`;
-      particleBox.appendChild(p);
-    }
-
-    // Reveal animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
-
-    // Subtle mouse-driven glass/hero movement
-    const heroArt = document.querySelector(".hero-art");
-    if (heroArt && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      heroArt.addEventListener("mousemove", (e) => {
-        const rect = heroArt.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - .5;
-        const y = (e.clientY - rect.top) / rect.height - .5;
-        const main = document.querySelector(".card-main");
-        const back = document.querySelector(".card-back");
-        main.style.transform = `rotate(-8deg) translate(${x * 12}px, ${y * 12}px)`;
-        back.style.transform = `rotate(8deg) translate(${x * -9}px, ${y * -9}px)`;
-      });
-
-      heroArt.addEventListener("mouseleave", () => {
-        document.querySelector(".card-main").style.transform = "";
-        document.querySelector(".card-back").style.transform = "";
-      });
-    }
-
-    function toggleMenu() {
-      const links = document.querySelector(".nav-links");
-      const visible = links.style.display === "flex";
-      links.style.display = visible ? "" : "flex";
-      if (!visible) {
-        links.style.position = "absolute";
-        links.style.top = "70px";
-        links.style.left = "10px";
-        links.style.right = "10px";
-        links.style.flexDirection = "column";
-        links.style.padding = "12px";
-        links.style.background = "rgba(9,15,32,.94)";
-        links.style.border = "1px solid rgba(255,255,255,.12)";
-        links.style.borderRadius = "18px";
-        links.style.backdropFilter = "blur(20px)";
+    if (particleBox) {
+      for (let i = 0; i < 42; i++) {
+        const particle = document.createElement("span");
+        particle.className = "particle";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDuration = (9 + Math.random() * 16) + "s";
+        particle.style.animationDelay = (-Math.random() * 20) + "s";
+        particle.style.opacity = (.25 + Math.random() * .65).toFixed(2);
+        particle.style.transform = `scale(${(.5 + Math.random() * 1.5).toFixed(2)})`;
+        particleBox.appendChild(particle);
       }
     }
+
+    // Reveal animations with a safe fallback for older browsers.
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      revealItems.forEach(el => observer.observe(el));
+    } else {
+      revealItems.forEach(el => el.classList.add("visible"));
+    }
+
+    // One right-side vertical menu.
+    const menu = document.querySelector("nav.glass");
+    const menuButton = document.querySelector(".menu-btn");
+
+    function closeMenu() {
+      if (!menu || !menuButton) return;
+      menu.classList.remove("menu-open");
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Open menu");
+    }
+
+    function openMenu() {
+      if (!menu || !menuButton) return;
+      menu.classList.add("menu-open");
+      menuButton.setAttribute("aria-expanded", "true");
+      menuButton.setAttribute("aria-label", "Close menu");
+    }
+
+    if (menu && menuButton) {
+      menuButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        menu.classList.contains("menu-open") ? closeMenu() : openMenu();
+      });
+
+      menu.querySelectorAll(".nav-links a").forEach(link => {
+        link.addEventListener("click", closeMenu);
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!menu.contains(event.target)) closeMenu();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeMenu();
+      });
+
+      // Automatically hide after a short idle period.
+      let idleTimer;
+      const resetIdle = () => {
+        clearTimeout(idleTimer);
+        if (menu.classList.contains("menu-open")) {
+          idleTimer = setTimeout(closeMenu, 7000);
+        }
+      };
+
+      menu.addEventListener("mousemove", resetIdle);
+      menu.addEventListener("touchstart", resetIdle, { passive: true });
+      menuButton.addEventListener("click", resetIdle);
+    }
   </script>
+
 </body>
 </html>
