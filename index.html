@@ -1504,6 +1504,308 @@
       }
     }
 
+
+    /* =========================================================
+       FINAL RESPONSIVE PHONE OVERRIDES
+       Treat tablet-sized CSS viewports and mobile browsers alike.
+       ========================================================= */
+    @media (max-width: 900px) {
+      html, body {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        overflow-x: clip !important;
+      }
+
+      .container,
+      main .container,
+      section .container,
+      footer .container {
+        width: 100% !important;
+        max-width: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+      }
+
+      /* Never let the old desktop sidebar reserve space on phones/tablets. */
+      nav.glass {
+        position: fixed !important;
+        left: auto !important;
+        right: 10px !important;
+        top: 10px !important;
+        width: min(280px, calc(100vw - 20px)) !important;
+        height: auto !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 10px !important;
+      }
+
+      .hero {
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: 0 !important;
+        width: 100% !important;
+        padding: 92px 0 30px !important;
+        gap: 6px !important;
+      }
+
+      .hero > * {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .hero-art {
+        order: 2;
+        min-height: clamp(230px, 70vw, 330px) !important;
+        height: clamp(230px, 70vw, 330px) !important;
+        margin: 12px 0 0 !important;
+        transform: none !important;
+        overflow: hidden !important;
+      }
+
+      .orb {
+        width: min(58vw, 245px) !important;
+        height: min(58vw, 245px) !important;
+        max-width: 245px !important;
+        max-height: 245px !important;
+      }
+
+      .glass-card {
+        width: min(43vw, 175px) !important;
+        min-width: 0 !important;
+        min-height: 185px !important;
+        padding: 15px !important;
+        border-radius: 18px !important;
+      }
+
+      .card-main { left: 0 !important; top: 15% !important; }
+      .card-back { right: 0 !important; top: 18% !important; }
+
+      .floating-tag {
+        max-width: 45% !important;
+        white-space: normal !important;
+        text-align: center;
+      }
+
+      section {
+        width: 100% !important;
+        padding: 42px 0 !important;
+      }
+
+      .section-heading,
+      .section-heading p,
+      .section-heading h2 {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(1.75rem, 7.5vw, 2.6rem) !important;
+      }
+
+      .cards,
+      .projects,
+      .page-stack {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 14px !important;
+      }
+
+      .service-card,
+      .project,
+      .page-preview,
+      .quote,
+      .cta,
+      .stats {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      .service-card,
+      .project,
+      .page-preview {
+        min-height: 0 !important;
+      }
+
+      .service-card { padding: 20px !important; }
+      .project { padding: 19px !important; }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+
+      .stat {
+        min-width: 0 !important;
+        padding: 18px 10px !important;
+        overflow-wrap: anywhere;
+      }
+
+      .stat:last-child { grid-column: 1 / -1 !important; }
+
+      .page-preview {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+        padding: 20px !important;
+      }
+
+      .page-content,
+      .page-content p {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .page-action,
+      .page-action a,
+      .cta .btn-primary,
+      .cta .btn-secondary {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+
+      .cta {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 22px 19px !important;
+        gap: 16px !important;
+      }
+
+      .cta > * { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+
+      .quote {
+        padding: 25px 18px !important;
+        margin: 22px 0 !important;
+      }
+
+      .quote blockquote {
+        font-size: clamp(.98rem, 4.2vw, 1.3rem) !important;
+      }
+
+      h1 {
+        font-size: clamp(2.55rem, 14vw, 4.5rem) !important;
+        line-height: .94 !important;
+        overflow-wrap: break-word !important;
+      }
+
+      .hero-subtitle,
+      .hero-slogan,
+      .hero-description {
+        max-width: 100% !important;
+      }
+
+      .actions {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+      }
+
+      .actions > a,
+      .actions > button {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .socials {
+        width: 100% !important;
+        flex-wrap: wrap !important;
+      }
+
+      footer,
+      .signature-footer {
+        width: 100% !important;
+        margin-top: 35px !important;
+      }
+
+      .footer-inner,
+      .footer-row {
+        width: 100% !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+      }
+
+      .footer-links,
+      .footer-nav {
+        width: 100% !important;
+        flex-wrap: wrap !important;
+      }
+
+      /* Avoid fixed decorative elements widening the layout. */
+      .aurora { max-width: 70vw !important; max-height: 70vw !important; }
+      .particles { width: 100% !important; max-width: 100% !important; }
+    }
+
+    @media (max-width: 480px) {
+      .container,
+      main .container,
+      section .container,
+      footer .container {
+        padding-left: 14px !important;
+        padding-right: 14px !important;
+      }
+
+      .hero { padding-top: 82px !important; }
+      section { padding: 34px 0 !important; }
+
+      .availability { margin-bottom: 14px !important; }
+      .hero-subtitle { font-size: .94rem !important; }
+      .hero-slogan { font-size: .88rem !important; }
+      .hero-description { font-size: .84rem !important; line-height: 1.65 !important; }
+
+      .hero-art {
+        min-height: 245px !important;
+        height: 245px !important;
+      }
+
+      .orb {
+        width: 190px !important;
+        height: 190px !important;
+      }
+
+      .glass-card {
+        width: min(41vw, 150px) !important;
+        min-height: 165px !important;
+        padding: 12px !important;
+      }
+
+      .code-symbol { font-size: 1.65rem !important; margin-bottom: 18px !important; }
+      .glass-card h3 { font-size: .88rem !important; }
+      .glass-card p { font-size: .68rem !important; line-height: 1.45 !important; }
+
+      .tag-one { left: 1% !important; bottom: 3% !important; }
+      .tag-two { right: 1% !important; bottom: 5% !important; }
+
+      .stats { grid-template-columns: 1fr 1fr !important; }
+      .stat { padding: 16px 7px !important; }
+      .stat strong { font-size: .76rem !important; }
+      .stat span { font-size: .63rem !important; }
+    }
+
+    @media (max-width: 350px) {
+      .container,
+      main .container,
+      section .container,
+      footer .container {
+        padding-left: 11px !important;
+        padding-right: 11px !important;
+      }
+
+      h1 { font-size: clamp(2.35rem, 14.5vw, 3.1rem) !important; }
+      .hero-art { min-height: 220px !important; height: 220px !important; }
+      .orb { width: 165px !important; height: 165px !important; }
+      .glass-card { width: 132px !important; min-height: 145px !important; }
+    }
+
   </style>
 </head>
 
