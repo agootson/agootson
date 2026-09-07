@@ -1840,6 +1840,86 @@
       }
     }
 
+  
+    /* Personal college photo showcase */
+    .about-photo-showcase {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
+      gap: 18px;
+      margin: 34px 0 24px;
+      align-items: stretch;
+    }
+    .about-photo {
+      position: relative;
+      margin: 0;
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 24px;
+      background: rgba(12,18,48,.45);
+      box-shadow: 0 18px 50px rgba(0,0,0,.22);
+    }
+    .about-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      object-fit: cover;
+      object-position: center;
+      transition: transform .5s ease;
+    }
+    .about-photo-main img {
+      min-height: 390px;
+    }
+    .about-photo:hover img {
+      transform: scale(1.025);
+    }
+    .about-photo figcaption {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 14px;
+      padding: 10px 13px;
+      border-radius: 13px;
+      color: #fff;
+      font-size: .78rem;
+      letter-spacing: .04em;
+      background: rgba(8,12,30,.68);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(12px);
+    }
+    @media (max-width: 767px) {
+      .about-photo-showcase {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin: 24px 0 18px;
+      }
+      .about-photo img,
+      .about-photo-main img {
+        min-height: 0;
+        height: auto;
+        aspect-ratio: 4 / 3;
+      }
+      .about-photo-main img {
+        aspect-ratio: 4 / 3;
+      }
+      .about-photo figcaption {
+        font-size: .72rem;
+        padding: 8px 10px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+      }
+    }
+    @media (max-width: 380px) {
+      .about-photo-showcase {
+        gap: 11px;
+      }
+      .about-photo {
+        border-radius: 18px;
+      }
+    }
+
   </style>
 </head>
 
@@ -1936,6 +2016,17 @@
       </section>
 
       <section id="about">
+        <div class="about-photo-showcase reveal" aria-label="David Agootson at college">
+          <figure class="about-photo about-photo-main">
+            <img src="https://agootson.is-a.dev/WhatsApp%20Image%202026-09-03%20at%207.25.30%20PM.jpeg" alt="David Agootson at college" loading="lazy" decoding="async">
+            <figcaption>Campus moments · College life</figcaption>
+          </figure>
+          <figure class="about-photo about-photo-secondary">
+            <img src="https://agootson.is-a.dev/WhatsApp%20Image%202026-09-03%20at%207.25.29%20PM.jpeg" alt="David Agootson on campus" loading="lazy" decoding="async">
+            <figcaption>Learning · Exploring · Growing</figcaption>
+          </figure>
+        </div>
+
         <div class="section-heading reveal">
           <div class="eyebrow">Explore My Portfolio</div>
           <h2>Everything about <span class="gradient-text">Agootson</span></h2>
