@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#070b18">
   <meta name="description" content="Agootson — personal portfolio of David Agootson, a Computer Science and Engineering student at GTU.">
   <title>Welcome to the Official website of David Agootson</title>
@@ -1000,6 +1000,507 @@
     @media (prefers-reduced-motion: reduce) {
       nav.glass {
         transition: none;
+      }
+    }
+
+
+    /* =========================================================
+       MOBILE / PHONE OPTIMIZATION
+       Designed for 320px–767px screens and touch interaction.
+       ========================================================= */
+
+    html {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    img, svg, video, canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    button, a {
+      touch-action: manipulation;
+    }
+
+    @media (max-width: 767px) {
+      .container {
+        width: calc(100% - 28px) !important;
+        max-width: 100%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* Compact, thumb-friendly menu */
+      nav.glass {
+        top: 10px !important;
+        right: 10px !important;
+        width: min(260px, calc(100vw - 20px)) !important;
+        max-height: calc(100dvh - 20px);
+        overflow-y: auto;
+        border-radius: 18px;
+        padding: 10px !important;
+      }
+
+      nav.glass .brand {
+        min-height: 42px;
+      }
+
+      nav.glass .nav-links a {
+        min-height: 48px;
+        padding: 12px 13px;
+        font-size: .88rem;
+      }
+
+      nav.glass .menu-btn {
+        width: 44px;
+        height: 44px;
+        right: calc(100% + 8px);
+        border-radius: 12px;
+      }
+
+      /* Prevent the hero from becoming oversized */
+      .hero {
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px !important;
+        padding: 88px 0 30px !important;
+      }
+
+      .hero > .reveal:first-child {
+        width: 100%;
+      }
+
+      .availability {
+        max-width: 100%;
+        margin-bottom: 18px;
+        padding: 7px 11px;
+        font-size: .7rem;
+      }
+
+      .eyebrow {
+        font-size: .68rem;
+        letter-spacing: .23em;
+      }
+
+      h1 {
+        max-width: 100%;
+        font-size: clamp(2.65rem, 15vw, 4.4rem) !important;
+        line-height: .92;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+
+      .hero-subtitle {
+        font-size: .95rem;
+        line-height: 1.55;
+        max-width: 100%;
+      }
+
+      .hero-slogan {
+        font-size: .91rem;
+        line-height: 1.6;
+        max-width: 100%;
+      }
+
+      .hero-description {
+        font-size: .88rem;
+        line-height: 1.7;
+        max-width: 100%;
+      }
+
+      .actions {
+        width: 100%;
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin: 24px 0 18px;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 16px;
+        font-size: .86rem;
+      }
+
+      .socials {
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .socials a {
+        width: 42px;
+        height: 42px;
+      }
+
+      /* Keep hero artwork contained and centered */
+      .hero-art {
+        width: 100%;
+        min-height: 315px !important;
+        margin: 4px 0 0;
+        transform: none !important;
+        overflow: visible;
+      }
+
+      .orb {
+        width: min(245px, 68vw) !important;
+        height: min(245px, 68vw) !important;
+      }
+
+      .glass-card {
+        width: min(180px, 52vw) !important;
+        min-height: 220px !important;
+        padding: 18px !important;
+        border-radius: 20px;
+      }
+
+      .card-main {
+        left: 0 !important;
+        top: 16% !important;
+      }
+
+      .card-back {
+        right: -1% !important;
+        top: 20% !important;
+      }
+
+      .code-symbol {
+        font-size: 2rem;
+        margin-bottom: 28px;
+      }
+
+      .glass-card h3 {
+        font-size: 1.05rem;
+      }
+
+      .glass-card p {
+        font-size: .78rem;
+      }
+
+      .floating-tag {
+        padding: 8px 10px;
+        font-size: .65rem;
+        border-radius: 11px;
+        white-space: nowrap;
+      }
+
+      .tag-one {
+        left: 0;
+        bottom: 7%;
+      }
+
+      .tag-two {
+        right: 0;
+        bottom: 13%;
+      }
+
+      section {
+        padding: 48px 0;
+      }
+
+      .section-heading {
+        margin-bottom: 26px;
+      }
+
+      .section-heading h2 {
+        font-size: clamp(1.8rem, 9vw, 2.55rem);
+        line-height: 1.05;
+      }
+
+      .section-heading p {
+        font-size: .86rem;
+        line-height: 1.65;
+      }
+
+      /* Single-column cards on phones */
+      .cards,
+      .projects {
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+      }
+
+      .service-card {
+        min-height: 0;
+        padding: 22px;
+        border-radius: 19px;
+      }
+
+      .project {
+        min-height: 0;
+        padding: 20px;
+        border-radius: 19px;
+      }
+
+      .project-top {
+        margin-bottom: 20px;
+      }
+
+      /* Stats: two columns, with the final item centered */
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        border-radius: 19px;
+      }
+
+      .stat {
+        min-width: 0;
+        padding: 18px 9px;
+      }
+
+      .stat strong {
+        font-size: .82rem;
+        line-height: 1.35;
+      }
+
+      .stat span {
+        font-size: .67rem;
+        line-height: 1.35;
+      }
+
+      .stat:nth-child(3) {
+        border-right: 1px solid var(--line);
+      }
+
+      .stat:last-child {
+        grid-column: 1 / -1;
+        border-right: 0;
+      }
+
+      .quote {
+        margin: 25px 0;
+        padding: 27px 19px;
+        border-radius: 19px;
+      }
+
+      .quote blockquote {
+        font-size: 1.05rem;
+        line-height: 1.5;
+      }
+
+      /* Portfolio preview cards */
+      .page-stack {
+        gap: 13px;
+      }
+
+      .page-preview {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+        min-height: 0;
+        padding: 21px !important;
+        border-radius: 19px;
+      }
+
+      .page-icon {
+        width: 56px !important;
+        height: 56px !important;
+        border-radius: 17px;
+        font-size: 1.5rem;
+      }
+
+      .page-content h3 {
+        font-size: 1.25rem;
+        line-height: 1.2;
+      }
+
+      .page-content p {
+        font-size: .82rem;
+        line-height: 1.65;
+      }
+
+      .page-url {
+        font-size: .66rem;
+        overflow-wrap: anywhere;
+      }
+
+      .page-action {
+        justify-self: stretch !important;
+        width: 100%;
+      }
+
+      .cta {
+        margin-top: 35px;
+        padding: 25px 20px;
+        border-radius: 19px;
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 18px;
+      }
+
+      .cta h2 {
+        font-size: 1.3rem;
+      }
+
+      .cta p {
+        font-size: .82rem;
+        line-height: 1.6;
+      }
+
+      /* Prevent decorative effects from creating a huge phone canvas */
+      .aurora {
+        width: 300px;
+        height: 300px;
+        filter: blur(65px);
+        opacity: .11;
+      }
+
+      body::before {
+        background-size: 48px 48px;
+      }
+
+      /* Footer */
+      .signature-footer {
+        margin-top: 55px !important;
+        padding: 42px 0 18px !important;
+      }
+
+      .footer-name {
+        font-size: clamp(2.35rem, 14vw, 4rem) !important;
+        overflow-wrap: anywhere;
+      }
+
+      .footer-slogan {
+        font-size: .78rem;
+        line-height: 1.65;
+        margin-bottom: 25px;
+      }
+
+      .footer-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .footer-nav {
+        width: 100%;
+        gap: 8px 15px;
+      }
+
+      .footer-nav a {
+        font-size: .68rem;
+        padding: 4px 0;
+      }
+
+      .footer-socials {
+        gap: 7px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 7px;
+        font-size: .6rem;
+        line-height: 1.5;
+      }
+    }
+
+    /* Very small phones: 320–380px */
+    @media (max-width: 380px) {
+      .container {
+        width: calc(100% - 22px) !important;
+      }
+
+      nav.glass {
+        right: 8px !important;
+        top: 8px !important;
+        width: min(245px, calc(100vw - 16px)) !important;
+      }
+
+      nav.glass .menu-btn {
+        right: calc(100% + 6px);
+      }
+
+      .hero {
+        padding-top: 82px !important;
+      }
+
+      h1 {
+        font-size: clamp(2.45rem, 15vw, 3.4rem) !important;
+      }
+
+      .hero-art {
+        min-height: 285px !important;
+      }
+
+      .orb {
+        width: 210px !important;
+        height: 210px !important;
+      }
+
+      .glass-card {
+        width: 155px !important;
+        min-height: 190px !important;
+        padding: 14px !important;
+      }
+
+      .card-main {
+        left: -3% !important;
+      }
+
+      .card-back {
+        right: -5% !important;
+      }
+
+      .floating-tag {
+        font-size: .58rem;
+        padding: 7px 8px;
+      }
+
+      .stat {
+        padding: 16px 6px;
+      }
+    }
+
+    /* Landscape phones: don't waste vertical space */
+    @media (max-height: 520px) and (max-width: 900px) {
+      .hero {
+        padding-top: 75px !important;
+      }
+
+      .hero-art {
+        min-height: 250px !important;
+      }
+
+      .orb {
+        width: 190px !important;
+        height: 190px !important;
+      }
+    }
+
+    /* Touch devices: remove hover lifting that can feel jumpy */
+    @media (hover: none) and (pointer: coarse) {
+      .service-card:hover,
+      .project:hover,
+      .page-preview:hover,
+      .btn-primary:hover,
+      .btn-secondary:hover,
+      .socials a:hover,
+      .footer-nav a:hover,
+      .footer-socials a:hover {
+        transform: none;
+      }
+
+      .btn-primary,
+      .btn-secondary,
+      .socials a,
+      .footer-nav a,
+      .footer-socials a {
+        -webkit-tap-highlight-color: transparent;
       }
     }
 
