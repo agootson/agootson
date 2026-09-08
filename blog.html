@@ -383,18 +383,121 @@
         </div>
       </section>
 
-      <section class="subscribe">
-        <div>
-          <div class="eyebrow">STAY IN THE LOOP</div>
-          <h2>Get new articles in your inbox.</h2>
-          <p>Subscribe for future posts, practical lessons and updates from my Computer Science journey.</p>
-        </div>
-        <form class="subscribe-form" action="YOUR_NEWSLETTER_FORM_ENDPOINT" method="POST">
-          <input type="email" name="email" placeholder="Your email address" aria-label="Your email address" required>
-          <button type="submit">Subscribe</button>
-        </form>
-       
-      </section>
+      <<!-- ================= NEWSLETTER ================= -->
+<section class="newsletter">
+  <div class="newsletter-content">
+    <div>
+      <div class="eyebrow">STAY UPDATED</div>
+      <h2>Join my newsletter.</h2>
+      <p>
+        Get occasional updates about my projects, learning journey,
+        new articles and things I'm building.
+      </p>
+    </div>
+
+    <form
+      id="newsletterForm"
+      action="https://formsubmit.co/ajax/davidagootson@gmail.com"
+      method="POST"
+      class="newsletter-form"
+    >
+      <!-- FormSubmit settings -->
+      <input
+        type="hidden"
+        name="_subject"
+        value="New Newsletter Subscriber"
+      >
+
+      <input
+        type="hidden"
+        name="_template"
+        value="table"
+      >
+
+      <input
+        type="hidden"
+        name="_captcha"
+        value="true"
+      >
+
+      <input
+        type="hidden"
+        name="_url"
+        value="https://agootson.is-a.dev/blog.html"
+      >
+
+      <!-- Email -->
+      <div class="newsletter-input">
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter your email address"
+          aria-label="Email address"
+          required
+        >
+
+        <button type="submit" id="newsletterButton">
+          Subscribe
+        </button>
+      </div>
+
+      <p id="newsletterStatus" class="newsletter-status"></p>
+    </form>
+  </div>
+</section>
+
+
+<!-- ================= NEWSLETTER SCRIPT ================= -->
+<script>
+  const newsletterForm = document.getElementById("newsletterForm");
+  const newsletterButton = document.getElementById("newsletterButton");
+  const newsletterStatus = document.getElementById("newsletterStatus");
+
+  newsletterForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    newsletterButton.disabled = true;
+    newsletterButton.textContent = "Subscribing...";
+    newsletterStatus.textContent = "";
+    newsletterStatus.className = "newsletter-status";
+
+    try {
+      const response = await fetch(newsletterForm.action, {
+        method: "POST",
+        body: new FormData(newsletterForm),
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        newsletterStatus.textContent =
+          "✓ Successfully subscribed!";
+
+        newsletterStatus.classList.add("success");
+
+        newsletterForm.reset();
+      } else {
+        newsletterStatus.textContent =
+          result.message || "Something went wrong. Please try again.";
+
+        newsletterStatus.classList.add("error");
+      }
+
+    } catch (error) {
+      newsletterStatus.textContent =
+        "Unable to subscribe right now. Please try again.";
+
+      newsletterStatus.classList.add("error");
+
+    } finally {
+      newsletterButton.disabled = false;
+      newsletterButton.textContent = "Subscribe";
+    }
+  });
+</script>
     </section>
     <footer>
       <div>
