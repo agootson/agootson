@@ -2,3116 +2,722 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#070b18">
-  <meta name="description" content="Agootson — personal portfolio of David Agootson, a Computer Science and Engineering student at GTU.">
-  <title>Welcome to the Official website of David Agootson</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#e31b23">
+  <meta name="description" content="David Agootson — Computer Science and Engineering student">
+  <title>David Agootson — Portfolio</title>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
 
     :root {
-      --bg: #070b18;
-      --bg-2: #0c1022;
-      --text: #f5f7ff;
-      --muted: #aab4ce;
-      --line: rgba(255,255,255,.12);
-      --glass: rgba(16, 24, 49, .48);
-      --glass-strong: rgba(18, 27, 57, .68);
-      --blue: #55b8ff;
-      --purple: #9b6cff;
-      --pink: #f05cff;
-      --cyan: #5de5ff;
-      --shadow: 0 24px 80px rgba(0,0,0,.38);
-      --radius: 24px;
+      --bg: #f7f8fa;
+      --white: #ffffff;
+      --text: #171a1f;
+      --muted: #747981;
+      --line: #e7e9ed;
+      --red: #e31b23;
+      --red-soft: #fff1f2;
+      --red-dark: #b9151c;
+      --sidebar: 250px;
+      --sidebar-small: 78px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 12% 12%, rgba(91, 105, 255, .16), transparent 28%),
-        radial-gradient(circle at 88% 22%, rgba(197, 70, 255, .14), transparent 30%),
-        radial-gradient(circle at 50% 90%, rgba(44, 174, 255, .09), transparent 35%),
-        var(--bg);
       min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
       overflow-x: hidden;
     }
 
-    body::before {
-      content: "";
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* ================= SIDEBAR ================= */
+
+    .sidebar {
       position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .22;
-      background-image:
-        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-      background-size: 70px 70px;
-      mask-image: linear-gradient(to bottom, black, transparent 90%);
-      z-index: -2;
+      inset: 0 auto 0 0;
+      z-index: 1000;
+      width: var(--sidebar);
+      display: flex;
+      flex-direction: column;
+      padding: 30px 16px 22px;
+      background: var(--white);
+      border-right: 1px solid var(--line);
+      transition: width .25s ease, transform .25s ease;
     }
 
-    a { color: inherit; text-decoration: none; }
-
-    .aurora {
-      position: fixed;
-      width: 520px;
-      height: 520px;
-      border-radius: 50%;
-      filter: blur(90px);
-      opacity: .16;
-      pointer-events: none;
-      z-index: -1;
-      animation: drift 16s ease-in-out infinite alternate;
-    }
-
-    .aurora.one { background: #526cff; top: -220px; left: -180px; }
-    .aurora.two { background: #d452ff; top: 28%; right: -240px; animation-delay: -5s; }
-    .aurora.three { background: #32d8ff; bottom: -280px; left: 35%; animation-delay: -9s; }
-
-    @keyframes drift {
-      from { transform: translate3d(-20px, -10px, 0) scale(1); }
-      to { transform: translate3d(30px, 35px, 0) scale(1.18); }
-    }
-
-    .particles {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .particle {
+    .collapse {
       position: absolute;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.8);
-      box-shadow: 0 0 12px rgba(104, 186, 255, .8);
-      animation: floatUp linear infinite;
-    }
-
-    @keyframes floatUp {
-      from { transform: translateY(110vh); opacity: 0; }
-      15% { opacity: .8; }
-      85% { opacity: .5; }
-      to { transform: translateY(-15vh); opacity: 0; }
-    }
-
-    .container {
-      width: min(1180px, calc(100% - 40px));
-      margin: auto;
-    }
-
-    .glass {
-      background: linear-gradient(135deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.06);
-      backdrop-filter: blur(22px) saturate(140%);
-      -webkit-backdrop-filter: blur(22px) saturate(140%);
-    }
-
-    /* Desktop navigation: vertical liquid-glass sidebar */
-    nav {
-      position: fixed;
       top: 18px;
-      left: 18px;
-      z-index: 20;
-      width: 220px;
-      height: calc(100vh - 36px);
-      margin: 0;
-      border-radius: 24px;
-      padding: 20px 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: flex-start;
-      background: rgba(9, 15, 32, .64);
-    }
-
-    /* Leave the original content layout intact, but make room for the sidebar. */
-    .container {
-      width: min(1180px, calc(100% - 40px));
-      margin: 0 auto 0;
-      padding-left: 238px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      letter-spacing: -.04em;
-      font-size: 1.2rem;
-    }
-
-    .brand-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 13px;
+      right: -19px;
+      width: 38px;
+      height: 38px;
       display: grid;
       place-items: center;
-      font-size: 1.15rem;
-      color: white;
-      background: linear-gradient(135deg, #258cff, #a94dff);
-      box-shadow: 0 0 30px rgba(110, 92, 255, .38);
-    }
-
-    .brand span {
-      background: linear-gradient(90deg, #fff, #83bfff 48%, #c47cff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .nav-links {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 7px;
-      margin-top: 28px;
-    }
-
-    .nav-links a {
-      display: flex;
-      align-items: center;
-      min-height: 46px;
-      padding: 11px 14px;
-      border-radius: 13px;
-      color: #dce4fa;
-      font-size: .9rem;
-      transition: .25s ease;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      background: rgba(91, 143, 255, .16);
-      color: white;
-      box-shadow: inset 0 0 20px rgba(91, 143, 255, .08);
-    }
-
-    .nav-cta, .btn-primary {
       border: 0;
+      border-radius: 50%;
       color: white;
-      font-weight: 700;
+      background: var(--red);
       cursor: pointer;
-      background: linear-gradient(100deg, #38bfff, #765fff 52%, #f04fff);
-      box-shadow: 0 10px 35px rgba(92, 95, 255, .3);
-      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 8px 20px rgba(227,27,35,.18);
+      transition: .2s ease;
     }
 
-    .nav-cta {
+    .collapse:hover {
+      background: var(--red-dark);
+      transform: scale(1.05);
+    }
+
+    .collapse span {
+      font-size: 1.5rem;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav a {
+      position: relative;
+      min-height: 48px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 12px 18px;
-      border-radius: 999px;
-      margin: auto 0 4px;
-      text-align: center;
-    }
-
-    .nav-cta:hover, .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 45px rgba(92, 95, 255, .45); }
-
-    .menu-btn { display: none; }
-
-    .hero {
-      min-height: 690px;
-      display: grid;
-      grid-template-columns: .94fr 1.06fr;
-      gap: 20px;
-      align-items: center;
-      padding: 75px 0 50px;
-    }
-
-    .availability {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 13px;
-      border: 1px solid rgba(93,229,255,.25);
-      background: rgba(23, 69, 90, .18);
-      border-radius: 999px;
-      color: #d8faff;
-      font-size: .78rem;
-      margin-bottom: 24px;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #27e9ae;
-      box-shadow: 0 0 14px #27e9ae;
-    }
-
-    .eyebrow {
-      color: #9bb5e8;
-      font-size: .78rem;
-      letter-spacing: .35em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      font-size: clamp(3.5rem, 7vw, 6.7rem);
-      line-height: .9;
-      letter-spacing: -.075em;
-      margin-bottom: 22px;
-    }
-
-    .gradient-text {
-      background: linear-gradient(90deg, #fff 10%, #82b8ff 42%, #aa68ff 75%, #f274e9);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-subtitle {
-      font-size: 1.12rem;
-      color: #d2d9ec;
-      line-height: 1.7;
-      max-width: 600px;
-      margin-bottom: 16px;
-    }
-
-    .hero-slogan {
-      margin: 14px 0 0;
-      max-width: 760px;
-      font-size: 1.05rem;
-      line-height: 1.7;
+      gap: 17px;
+      padding: 10px 14px;
+      border-radius: 7px;
+      color: #72767d;
+      font-size: .79rem;
       font-weight: 600;
-      font-style: italic;
-      letter-spacing: .01em;
-      opacity: .9;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
     }
 
-    .socials a {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      transition: transform .25s ease, background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    .nav a:hover {
+      color: var(--red);
+      background: #fff5f5;
+      transform: translateX(2px);
     }
 
-    .socials a svg {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-      display: block;
+    .nav a.active {
+      color: var(--red);
+      background: var(--red-soft);
     }
 
-    .socials a:hover {
-      transform: translateY(-4px) scale(1.04);
-      box-shadow: 0 10px 24px rgba(0,0,0,.22);
-    }
-
-    .hero-description {
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 610px;
-      font-size: .98rem;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 30px 0 24px;
-    }
-
-    .btn-primary, .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      padding: 14px 20px;
-      border-radius: 999px;
-      font-size: .92rem;
-    }
-
-    .btn-secondary {
-      border: 1px solid rgba(130, 162, 255, .3);
-      background: rgba(16, 25, 53, .48);
-      color: #eaf0ff;
-      transition: .25s ease;
-    }
-
-    .btn-secondary:hover { transform: translateY(-3px); background: rgba(65, 83, 145, .22); }
-
-    .socials {
-      display: flex;
-      gap: 10px;
-    }
-
-    .socials a {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      color: #dbe5ff;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.035);
-      transition: .25s ease;
-    }
-
-    .socials a:hover {
-      transform: translateY(-4px);
-      border-color: rgba(106, 181, 255, .55);
-      box-shadow: 0 10px 30px rgba(71, 120, 255, .18);
-    }
-
-    .hero-art {
-      min-height: 570px;
-      position: relative;
-      display: grid;
-      place-items: center;
-      perspective: 1000px;
-    }
-
-    .orb {
-      position: absolute;
-      width: 390px;
-      height: 390px;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 32% 28%, rgba(255,255,255,.4), transparent 5%),
-        radial-gradient(circle at 60% 45%, #1e4787, #101b45 45%, #080d24 72%);
-      box-shadow:
-        inset -40px -35px 70px rgba(0,0,0,.65),
-        inset 25px 20px 55px rgba(73,159,255,.3),
-        0 0 100px rgba(68,113,255,.22);
-      opacity: .82;
-      animation: planet 12s ease-in-out infinite;
-    }
-
-    .orb::after {
+    .nav a.active::before {
       content: "";
       position: absolute;
-      inset: -32px;
-      border: 1px solid rgba(118, 174, 255, .24);
-      border-radius: 50%;
-      transform: rotate(-18deg) scaleY(.35);
-      box-shadow: 0 0 30px rgba(105, 102, 255, .18);
-    }
-
-    @keyframes planet {
-      50% { transform: translateY(-12px) scale(1.03); }
-    }
-
-    .glass-card {
-      position: absolute;
-      width: 260px;
-      min-height: 330px;
-      padding: 27px;
-      border-radius: 25px;
-      background: linear-gradient(145deg, rgba(105,145,255,.18), rgba(20,27,61,.46));
-      border: 1px solid rgba(155, 188, 255, .35);
-      box-shadow: 0 35px 90px rgba(0,0,0,.38), inset 0 1px 1px rgba(255,255,255,.17);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transform-style: preserve-3d;
-    }
-
-    .card-main {
-      left: 13%;
-      top: 21%;
-      transform: rotate(-8deg) translateZ(30px);
-      animation: cardFloat 6s ease-in-out infinite;
-    }
-
-    .card-back {
-      right: 5%;
-      top: 25%;
-      transform: rotate(8deg) translateZ(0);
-      opacity: .72;
-      animation: cardFloat 7s ease-in-out infinite reverse;
-    }
-
-    @keyframes cardFloat {
-      50% { margin-top: -14px; }
-    }
-
-    .code-symbol {
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: #8fc6ff;
-      text-shadow: 0 0 30px rgba(70, 172, 255, .55);
-      margin-bottom: 55px;
-    }
-
-    .glass-card h3 { font-size: 1.45rem; margin-bottom: 12px; }
-
-    .glass-card p {
-      color: #bac8e8;
-      line-height: 1.65;
-      font-size: .9rem;
-    }
-
-    .floating-tag {
-      position: absolute;
-      padding: 11px 15px;
-      border-radius: 15px;
-      background: rgba(10, 18, 42, .62);
-      border: 1px solid rgba(132, 174, 255, .25);
-      backdrop-filter: blur(16px);
-      color: #dce8ff;
-      font-size: .78rem;
-      box-shadow: 0 20px 50px rgba(0,0,0,.25);
-      animation: tagFloat 5s ease-in-out infinite;
-    }
-
-    .tag-one { left: 2%; bottom: 15%; }
-    .tag-two { right: 1%; bottom: 25%; animation-delay: -2s; }
-
-    @keyframes tagFloat { 50% { transform: translateY(-9px); } }
-
-    section { padding: 75px 0; }
-
-    .section-heading {
-      text-align: center;
-      max-width: 720px;
-      margin: 0 auto 40px;
-    }
-
-    .section-heading .eyebrow { margin-bottom: 12px; }
-
-    .section-heading h2 {
-      font-size: clamp(2.1rem, 4vw, 3.2rem);
-      letter-spacing: -.055em;
-      margin-bottom: 12px;
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-    }
-
-    .service-card {
-      position: relative;
-      padding: 27px;
-      min-height: 235px;
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: transform .3s ease, border-color .3s ease;
-    }
-
-    .service-card::before {
-      content: "";
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      right: -50px;
-      top: -50px;
-      border-radius: 50%;
-      background: rgba(80, 160, 255, .13);
-      filter: blur(20px);
-    }
-
-    .service-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(111, 175, 255, .4);
+      left: -16px;
+      top: 8px;
+      bottom: 8px;
+      width: 4px;
+      border-radius: 0 4px 4px 0;
+      background: var(--red);
     }
 
     .icon {
-      width: 54px;
-      height: 54px;
+      width: 22px;
+      flex: 0 0 22px;
       display: grid;
       place-items: center;
-      border-radius: 17px;
-      font-size: 1.4rem;
-      background: linear-gradient(145deg, rgba(75, 145, 255, .22), rgba(166, 74, 255, .14));
-      border: 1px solid rgba(125, 174, 255, .23);
-      margin-bottom: 22px;
+      color: #737982;
+      font-size: 0.95rem;
+      line-height: 1;
+      transition: color .18s ease, transform .18s ease;
     }
 
-    .service-card h3 { font-size: 1rem; margin-bottom: 10px; }
-    .service-card p { color: var(--muted); font-size: .86rem; line-height: 1.7; }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      overflow: hidden;
-      border-radius: var(--radius);
-      margin-top: 20px;
+    .nav a:hover .icon {
+      transform: scale(1.06);
     }
 
-    .stat {
-      padding: 24px 12px;
-      text-align: center;
-      border-right: 1px solid var(--line);
+    .nav a:hover .icon,
+    .nav a.active .icon {
+      color: var(--red);
     }
 
-    .stat:last-child { border-right: 0; }
-    .stat strong { display: block; font-size: 1rem; margin-bottom: 6px; }
-    .stat span { color: var(--muted); font-size: .76rem; }
+    /* collapsed desktop */
 
-    .quote {
-      margin: 35px 0;
-      padding: 34px 30px;
-      text-align: center;
-      border-radius: var(--radius);
-      position: relative;
-      overflow: hidden;
+    body.collapsed .sidebar {
+      width: var(--sidebar-small);
     }
 
-    .quote::before {
-      content: "“";
-      position: absolute;
-      font-size: 10rem;
-      line-height: .7;
-      color: rgba(108, 144, 255, .08);
-      left: 4%;
-      top: 4px;
+    body.collapsed .nav-label {
+      display: none;
     }
 
-    .quote blockquote {
-      font-size: clamp(1.2rem, 2.6vw, 1.75rem);
-      font-style: italic;
-      color: #e8edff;
-      position: relative;
-      z-index: 1;
+    body.collapsed .nav a {
+      justify-content: center;
+      padding-inline: 0;
     }
 
-    .quote cite {
-      display: block;
-      color: #8297c5;
-      font-size: .8rem;
-      margin-top: 12px;
-      font-style: normal;
+    body.collapsed .collapse span {
+      transform: rotate(180deg);
     }
 
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+    /* ================= MAIN ================= */
+
+    .main {
+      margin-left: var(--sidebar);
+      transition: margin-left .25s ease;
     }
 
-    .project {
-      padding: 23px;
-      border-radius: 22px;
-      min-height: 205px;
-      transition: .3s ease;
-    }
-
-    .project:hover { transform: translateY(-6px); }
-
-    .project-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      gap: 10px;
-      margin-bottom: 28px;
-    }
-
-    .project h3 { font-size: 1rem; margin-bottom: 8px; }
-    .project p { color: var(--muted); font-size: .82rem; line-height: 1.6; }
-
-    .project-link {
-      width: 37px;
-      height: 37px;
-      display: grid;
-      place-items: center;
-      border-radius: 11px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid var(--line);
-    }
-
-    .tech {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      color: #bfc9e2;
-      font-size: .73rem;
-    }
-
-    .tech i {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #ff6c28;
-      box-shadow: 0 0 10px rgba(255,108,40,.5);
-    }
-
-    .cta {
-      margin-top: 55px;
-      padding: 35px 38px;
-      border-radius: var(--radius);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-      background:
-        radial-gradient(circle at 85% 30%, rgba(160,75,255,.18), transparent 35%),
-        linear-gradient(120deg, rgba(26, 43, 83, .62), rgba(22, 18, 57, .48));
-    }
-
-    .cta h2 { font-size: 1.55rem; margin-bottom: 8px; }
-    .cta p { color: var(--muted); }
-
-
-
-    /* Independent portfolio pages — stacked vertically on the home page */
-    .page-stack {
-      display: grid;
-      gap: 22px;
-      margin-top: 24px;
-    }
-
-    .page-preview {
-      min-height: 250px;
-      padding: 32px;
-      border-radius: var(--radius);
-      display: grid;
-      grid-template-columns: 76px 1fr auto;
-      align-items: center;
-      gap: 24px;
-      position: relative;
-      overflow: hidden;
-      transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
-    }
-
-    .page-preview::after {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      right: -80px;
-      bottom: -120px;
-      border-radius: 50%;
-      background: rgba(100, 120, 255, .16);
-      filter: blur(28px);
-      pointer-events: none;
-    }
-
-    .page-preview:hover {
-      transform: translateY(-5px);
-      border-color: rgba(111, 175, 255, .42);
-      box-shadow: 0 30px 90px rgba(55, 75, 180, .22), inset 0 1px 0 rgba(255,255,255,.08);
-    }
-
-    .page-icon {
-      width: 76px;
-      height: 76px;
-      display: grid;
-      place-items: center;
-      border-radius: 22px;
-      font-size: 2rem;
-      background: linear-gradient(145deg, rgba(75,145,255,.24), rgba(166,74,255,.18));
-      border: 1px solid rgba(125,174,255,.3);
-      box-shadow: 0 0 35px rgba(100,110,255,.14);
-      position: relative;
-      z-index: 1;
-    }
-
-    .page-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .page-content .eyebrow {
-      margin-bottom: 8px;
-    }
-
-    .page-content h3 {
-      font-size: clamp(1.35rem, 3vw, 1.8rem);
-      margin-bottom: 9px;
-      letter-spacing: -.035em;
-    }
-
-    .page-content p {
-      color: var(--muted);
-      line-height: 1.7;
-      max-width: 700px;
-    }
-
-    .page-action {
-      position: relative;
-      z-index: 1;
-      white-space: nowrap;
-    }
-
-    .page-url {
-      display: block;
-      color: #7fb8ff;
-      font-size: .75rem;
-      margin-top: 10px;
-      opacity: .9;
-    }
-
-    .page-preview.about-page { background: linear-gradient(120deg, rgba(30,73,125,.22), rgba(60,27,103,.18)); }
-    .page-preview.projects-page { background: linear-gradient(120deg, rgba(35,75,105,.22), rgba(77,37,112,.18)); }
-    .page-preview.gallery-page { background: linear-gradient(120deg, rgba(25,92,110,.22), rgba(49,39,105,.18)); }
-    .page-preview.blog-page { background: linear-gradient(120deg, rgba(55,55,115,.22), rgba(95,34,94,.18)); }
-    .page-preview.contact-page { background: linear-gradient(120deg, rgba(26,87,112,.22), rgba(73,31,106,.18)); }
-
-    @media (max-width: 700px) {
-      .page-preview {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        padding: 25px;
-      }
-
-      .page-icon {
-        width: 62px;
-        height: 62px;
-        border-radius: 18px;
-      }
-
-      .page-action {
-        justify-self: start;
-      }
-    }
-
-    footer {
-      margin-top: 60px;
-      padding: 35px 0 45px;
-      border-top: 1px solid var(--line);
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .footer-brand p { color: #7888aa; font-size: .76rem; margin-top: 5px; }
-    .footer-links { display: flex; gap: 20px; color: #9ba8c4; font-size: .8rem; }
-    .footer-links a:hover { color: white; }
-    .copyright { color: #687795; font-size: .72rem; text-align: center; margin-top: 28px; }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity .7s ease, transform .7s ease;
-    }
-
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    @media (max-width: 950px) and (min-width: 701px) {
-      nav { width: 190px; }
-      .container { padding-left: 208px; }
-      .hero { grid-template-columns: 1fr; padding-top: 55px; }
-      .hero-art { min-height: 510px; }
-      .cards { grid-template-columns: repeat(2, 1fr); }
-      .projects { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: repeat(5, 1fr); }
-    }
-
-    @media (max-width: 700px) {
-      .container {
-        width: min(100% - 26px, 1180px);
-        padding-left: 0;
-      }
-      nav {
-        position: sticky;
-        top: 10px;
-        left: auto;
-        width: auto;
-        height: auto;
-        margin: 10px auto 0;
-        padding: 13px 18px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .nav-links, .nav-cta { display: none; }
-      .menu-btn {
-        display: grid;
-        place-items: center;
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        border: 1px solid var(--line);
-        background: rgba(255,255,255,.04);
-        color: white;
-        font-size: 1.1rem;
-      }
-      .hero { min-height: auto; padding: 60px 0 20px; }
-      h1 { font-size: clamp(3.2rem, 16vw, 5rem); }
-      .hero-art { min-height: 420px; transform: scale(.86); margin: -25px 0; }
-      .orb { width: 310px; height: 310px; }
-      .glass-card { width: 210px; min-height: 275px; padding: 20px; }
-      .card-main { left: 3%; }
-      .card-back { right: -4%; }
-      .cards { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .stat { border-bottom: 1px solid var(--line); }
-      .stat:nth-child(2n) { border-right: 0; }
-      .cta, .footer-inner { flex-direction: column; align-items: flex-start; }
-      .footer-links { flex-wrap: wrap; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
-      }
-    }
-
-    /* Final navigation: one vertical, right-side, auto-hiding menu */
-    nav.glass {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      left: auto;
-      z-index: 1000;
-      width: 235px;
-      min-height: 62px;
-      height: auto;
-      margin: 0;
-      padding: 11px;
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      background: rgba(8, 14, 30, .78);
-      backdrop-filter: blur(20px) saturate(140%);
-      -webkit-backdrop-filter: blur(20px) saturate(140%);
-      transform: translateX(calc(100% + 28px));
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: transform .35s ease, opacity .25s ease, visibility .35s ease;
-    }
-
-    nav.glass.menu-open {
-      transform: translateX(0);
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    nav.glass .brand {
-      padding: 7px 6px;
-    }
-
-    nav.glass .nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      margin-top: 12px;
-    }
-
-    nav.glass .nav-links a {
-      min-height: 43px;
-      padding: 10px 13px;
-      border-radius: 12px;
-    }
-
-    nav.glass .menu-btn {
-      display: grid;
-      place-items: center;
-      position: fixed;
-      top: 0;
-      right: calc(100% + 12px);
-      width: 46px;
-      height: 46px;
-      border: 1px solid var(--line);
-      border-radius: 13px;
-      background: rgba(9, 15, 32, .9);
-      color: white;
-      font-size: 1.15rem;
-      cursor: pointer;
-      box-shadow: 0 12px 35px rgba(0,0,0,.3);
-    }
-
-    nav.glass.menu-open .menu-btn {
-      background: linear-gradient(135deg, #38bfff, #765fff 55%, #f04fff);
+    body.collapsed .main {
+      margin-left: var(--sidebar-small);
     }
 
     .container {
-      width: min(1180px, calc(100% - 40px));
-      margin: 0 auto;
-      padding-left: 0;
+      width: min(1120px, calc(100% - 72px));
+      margin-inline: auto;
     }
+
+    /* ================= HERO ================= */
 
     .hero {
-      grid-template-columns: 1fr 1fr;
+      min-height: 720px;
+      display: grid;
+      align-items: center;
+      padding: 70px 0;
     }
 
-    /* The old CSS placed the orb/cards independently. Keep the orb centered. */
-    .hero-art {
-      min-height: 500px;
+    .eyebrow {
+      margin-bottom: 14px;
+      color: var(--red);
+      font-size: .66rem;
+      font-weight: 800;
+      letter-spacing: .2em;
     }
 
-    @media (max-width: 950px) {
-      .container {
-        width: min(100% - 32px, 1180px);
-        padding-left: 0;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-art {
-        min-height: 430px;
-      }
+    .hero h1 {
+      max-width: 720px;
+      font-size: clamp(3.2rem, 6vw, 5.8rem);
+      line-height: .94;
+      letter-spacing: -.075em;
     }
 
-    @media (max-width: 700px) {
-      nav.glass {
+    .hero h1 span {
+      color: var(--red);
+    }
+
+    .hero-title {
+      margin-top: 22px;
+      color: #555a63;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .hero-description {
+      max-width: 650px;
+      margin-top: 17px;
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.85;
+    }
+
+    .slogan {
+      max-width: 640px;
+      margin-top: 16px;
+      color: #626770;
+      font-size: .84rem;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    /* ================= ABOUT PREVIEW ================= */
+
+    .about {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      align-items: center;
+      gap: 50px;
+      padding: 70px 0;
+    }
+
+    .about-photos {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .about-photo {
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #e9edf3;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .about h2 {
+      max-width: 600px;
+      font-size: clamp(2rem, 4vw, 3.15rem);
+      line-height: 1.04;
+      letter-spacing: -.06em;
+    }
+
+    .about p {
+      max-width: 620px;
+      margin-top: 17px;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.85;
+    }
+
+    .text-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: var(--red);
+      font-size: .72rem;
+      font-weight: 700;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      width: min(1120px, calc(100% - 72px));
+      margin-inline: auto;
+      padding: 42px 0 28px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 16px 30px;
+      border-top: 1px solid var(--line);
+    }
+
+    footer strong {
+      color: var(--red);
+      font-size: .9rem;
+    }
+
+    footer p {
+      margin-top: 4px;
+      color: #8b9098;
+      font-size: .62rem;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      align-items: center;
+      justify-self: center;
+    }
+
+    .socials a {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #dfe2e7;
+      border-radius: 50%;
+      background: white;
+      color: #666d76;
+      font-size: .92rem;
+      font-weight: 500;
+      transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+    }
+
+    .socials a i {
+      line-height: 1;
+    }
+
+    .socials a:hover {
+      color: var(--red);
+      background: var(--red-soft);
+      border-color: #f2b9bd;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(220, 38, 46, .12);
+    }
+
+    .copyright {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    /* ================= MOBILE ================= */
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .backdrop {
+      display: none;
+    }
+
+    @media (max-width: 1050px) {
+      :root {
+        --sidebar: 225px;
+      }
+
+      .container,
+      footer {
+        width: min(100% - 48px, 900px);
+      }
+
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        width: min(285px, 86vw);
+        transform: translateX(-105%);
+        box-shadow: 18px 0 45px rgba(18,28,45,.13);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .collapse {
+        display: none;
+      }
+
+      .main,
+      body.collapsed .main {
+        margin-left: 0;
+      }
+
+      .mobile-menu {
+        position: fixed;
         top: 14px;
-        right: 14px;
-        width: min(250px, calc(100vw - 28px));
+        left: 14px;
+        z-index: 1100;
+        width: 43px;
+        height: 43px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        border: 0;
+        border-radius: 8px;
+        background: var(--red);
+        cursor: pointer;
+        box-shadow: 0 8px 22px rgba(227,27,35,.18);
       }
 
-      nav.glass .menu-btn {
-        top: 0;
-        right: calc(100% + 9px);
+      .mobile-menu span {
+        width: 18px;
+        height: 2px;
+        background: white;
+        border-radius: 2px;
       }
 
-      .container {
-        width: min(100% - 26px, 1180px);
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 900;
+        display: block;
+        background: rgba(20,27,39,.35);
+        opacity: 0;
+        visibility: hidden;
+        transition: .2s ease;
+      }
+
+      .backdrop.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .container,
+      footer {
+        width: min(100% - 34px, 720px);
       }
 
       .hero {
         min-height: auto;
-        padding-top: 55px;
-      }
-
-      .hero-art {
-        min-height: 360px;
-      }
-
-      .orb {
-        width: 270px;
-        height: 270px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      nav.glass {
-        transition: none;
-      }
-    }
-
-
-    /* =========================================================
-       MOBILE / PHONE OPTIMIZATION
-       Designed for 320px–767px screens and touch interaction.
-       ========================================================= */
-
-    html {
-      width: 100%;
-      max-width: 100%;
-      overflow-x: hidden;
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
-    }
-
-    body {
-      width: 100%;
-      max-width: 100%;
-      min-width: 0;
-      overflow-x: hidden;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    img, svg, video, canvas {
-      max-width: 100%;
-      height: auto;
-    }
-
-    button, a {
-      touch-action: manipulation;
-    }
-
-    @media (max-width: 767px) {
-      .container {
-        width: calc(100% - 28px) !important;
-        max-width: 100%;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      /* Compact, thumb-friendly menu */
-      nav.glass {
-        top: 10px !important;
-        right: 10px !important;
-        width: min(260px, calc(100vw - 20px)) !important;
-        max-height: calc(100dvh - 20px);
-        overflow-y: auto;
-        border-radius: 18px;
-        padding: 10px !important;
-      }
-
-      nav.glass .brand {
-        min-height: 42px;
-      }
-
-      nav.glass .nav-links a {
-        min-height: 48px;
-        padding: 12px 13px;
-        font-size: .88rem;
-      }
-
-      nav.glass .menu-btn {
-        width: 44px;
-        height: 44px;
-        right: calc(100% + 8px);
-        border-radius: 12px;
-      }
-
-      /* Prevent the hero from becoming oversized */
-      .hero {
-        min-height: 0 !important;
-        display: flex !important;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px !important;
-        padding: 88px 0 30px !important;
-      }
-
-      .hero > .reveal:first-child {
-        width: 100%;
-      }
-
-      .availability {
-        max-width: 100%;
-        margin-bottom: 18px;
-        padding: 7px 11px;
-        font-size: .7rem;
-      }
-
-      .eyebrow {
-        font-size: .68rem;
-        letter-spacing: .23em;
-      }
-
-      h1 {
-        max-width: 100%;
-        font-size: clamp(2.65rem, 15vw, 4.4rem) !important;
-        line-height: .92;
-        overflow-wrap: anywhere;
-        word-break: normal;
-      }
-
-      .hero-subtitle {
-        font-size: .95rem;
-        line-height: 1.55;
-        max-width: 100%;
-      }
-
-      .hero-slogan {
-        font-size: .91rem;
-        line-height: 1.6;
-        max-width: 100%;
-      }
-
-      .hero-description {
-        font-size: .88rem;
-        line-height: 1.7;
-        max-width: 100%;
-      }
-
-      .actions {
-        width: 100%;
-        display: grid !important;
         grid-template-columns: 1fr;
-        gap: 10px;
-        margin: 24px 0 18px;
+        padding: 90px 0 55px;
       }
 
-      .btn-primary,
-      .btn-secondary {
-        width: 100%;
-        min-height: 48px;
-        padding: 13px 16px;
-        font-size: .86rem;
-      }
-
-      .socials {
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-
-      .socials a {
-        width: 42px;
-        height: 42px;
-      }
-
-      /* Keep hero artwork contained and centered */
-      .hero-art {
-        width: 100%;
-        min-height: 315px !important;
-        margin: 4px 0 0;
-        transform: none !important;
-        overflow: visible;
-      }
-
-      .orb {
-        width: min(245px, 68vw) !important;
-        height: min(245px, 68vw) !important;
-      }
-
-      .glass-card {
-        width: min(180px, 52vw) !important;
-        min-height: 220px !important;
-        padding: 18px !important;
-        border-radius: 20px;
-      }
-
-      .card-main {
-        left: 0 !important;
-        top: 16% !important;
-      }
-
-      .card-back {
-        right: -1% !important;
-        top: 20% !important;
-      }
-
-      .code-symbol {
-        font-size: 2rem;
-        margin-bottom: 28px;
-      }
-
-      .glass-card h3 {
-        font-size: 1.05rem;
-      }
-
-      .glass-card p {
-        font-size: .78rem;
-      }
-
-      .floating-tag {
-        padding: 8px 10px;
-        font-size: .65rem;
-        border-radius: 11px;
-        white-space: nowrap;
-      }
-
-      .tag-one {
-        left: 0;
-        bottom: 7%;
-      }
-
-      .tag-two {
-        right: 0;
-        bottom: 13%;
-      }
-
-      section {
-        padding: 48px 0;
-      }
-
-      .section-heading {
-        margin-bottom: 26px;
-      }
-
-      .section-heading h2 {
-        font-size: clamp(1.8rem, 9vw, 2.55rem);
-        line-height: 1.05;
-      }
-
-      .section-heading p {
-        font-size: .86rem;
-        line-height: 1.65;
-      }
-
-      /* Single-column cards on phones */
-      .cards,
-      .projects {
-        grid-template-columns: 1fr !important;
-        gap: 12px;
-      }
-
-      .service-card {
-        min-height: 0;
-        padding: 22px;
-        border-radius: 19px;
-      }
-
-      .project {
-        min-height: 0;
-        padding: 20px;
-        border-radius: 19px;
-      }
-
-      .project-top {
-        margin-bottom: 20px;
-      }
-
-      /* Stats: two columns, with the final item centered */
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        border-radius: 19px;
-      }
-
-      .stat {
-        min-width: 0;
-        padding: 18px 9px;
-      }
-
-      .stat strong {
-        font-size: .82rem;
-        line-height: 1.35;
-      }
-
-      .stat span {
-        font-size: .67rem;
-        line-height: 1.35;
-      }
-
-      .stat:nth-child(3) {
-        border-right: 1px solid var(--line);
-      }
-
-      .stat:last-child {
-        grid-column: 1 / -1;
-        border-right: 0;
-      }
-
-      .quote {
-        margin: 25px 0;
-        padding: 27px 19px;
-        border-radius: 19px;
-      }
-
-      .quote blockquote {
-        font-size: 1.05rem;
-        line-height: 1.5;
-      }
-
-      /* Portfolio preview cards */
-      .page-stack {
-        gap: 13px;
-      }
-
-      .page-preview {
-        grid-template-columns: 1fr !important;
-        gap: 15px;
-        min-height: 0;
-        padding: 21px !important;
-        border-radius: 19px;
-      }
-
-      .page-icon {
-        width: 56px !important;
-        height: 56px !important;
-        border-radius: 17px;
-        font-size: 1.5rem;
-      }
-
-      .page-content h3 {
-        font-size: 1.25rem;
-        line-height: 1.2;
-      }
-
-      .page-content p {
-        font-size: .82rem;
-        line-height: 1.65;
-      }
-
-      .page-url {
-        font-size: .66rem;
-        overflow-wrap: anywhere;
-      }
-
-      .page-action {
-        justify-self: stretch !important;
-        width: 100%;
-      }
-
-      .cta {
-        margin-top: 35px;
-        padding: 25px 20px;
-        border-radius: 19px;
-        flex-direction: column;
-        align-items: stretch !important;
-        gap: 18px;
-      }
-
-      .cta h2 {
-        font-size: 1.3rem;
-      }
-
-      .cta p {
-        font-size: .82rem;
-        line-height: 1.6;
-      }
-
-      /* Prevent decorative effects from creating a huge phone canvas */
-      .aurora {
-        width: 300px;
-        height: 300px;
-        filter: blur(65px);
-        opacity: .11;
-      }
-
-      body::before {
-        background-size: 48px 48px;
-      }
-
-      /* Footer */
-      .signature-footer {
-        margin-top: 55px !important;
-        padding: 42px 0 18px !important;
-      }
-
-      .footer-name {
-        font-size: clamp(2.35rem, 14vw, 4rem) !important;
-        overflow-wrap: anywhere;
-      }
-
-      .footer-slogan {
-        font-size: .78rem;
-        line-height: 1.65;
-        margin-bottom: 25px;
-      }
-
-      .footer-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-      }
-
-      .footer-nav {
-        width: 100%;
-        gap: 8px 15px;
-      }
-
-      .footer-nav a {
-        font-size: .68rem;
-        padding: 4px 0;
-      }
-
-      .footer-socials {
-        gap: 7px;
-      }
-
-      .footer-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 7px;
-        font-size: .6rem;
-        line-height: 1.5;
-      }
-    }
-
-    /* Very small phones: 320–380px */
-    @media (max-width: 380px) {
-      .container {
-        width: calc(100% - 22px) !important;
-      }
-
-      nav.glass {
-        right: 8px !important;
-        top: 8px !important;
-        width: min(245px, calc(100vw - 16px)) !important;
-      }
-
-      nav.glass .menu-btn {
-        right: calc(100% + 6px);
-      }
-
-      .hero {
-        padding-top: 82px !important;
-      }
-
-      h1 {
-        font-size: clamp(2.45rem, 15vw, 3.4rem) !important;
-      }
-
-      .hero-art {
-        min-height: 285px !important;
-      }
-
-      .orb {
-        width: 210px !important;
-        height: 210px !important;
-      }
-
-      .glass-card {
-        width: 155px !important;
-        min-height: 190px !important;
-        padding: 14px !important;
-      }
-
-      .card-main {
-        left: -3% !important;
-      }
-
-      .card-back {
-        right: -5% !important;
-      }
-
-      .floating-tag {
-        font-size: .58rem;
-        padding: 7px 8px;
-      }
-
-      .stat {
-        padding: 16px 6px;
-      }
-    }
-
-    /* Landscape phones: don't waste vertical space */
-    @media (max-height: 520px) and (max-width: 900px) {
-      .hero {
-        padding-top: 75px !important;
-      }
-
-      .hero-art {
-        min-height: 250px !important;
-      }
-
-      .orb {
-        width: 190px !important;
-        height: 190px !important;
-      }
-    }
-
-    /* Touch devices: remove hover lifting that can feel jumpy */
-    @media (hover: none) and (pointer: coarse) {
-      .service-card:hover,
-      .project:hover,
-      .page-preview:hover,
-      .btn-primary:hover,
-      .btn-secondary:hover,
-      .socials a:hover,
-      .footer-nav a:hover,
-      .footer-socials a:hover {
-        transform: none;
-      }
-
-      .btn-primary,
-      .btn-secondary,
-      .socials a,
-      .footer-nav a,
-      .footer-socials a {
-        -webkit-tap-highlight-color: transparent;
-      }
-    }
-
-
-    /* =========================================================
-       FINAL RESPONSIVE PHONE OVERRIDES
-       Treat tablet-sized CSS viewports and mobile browsers alike.
-       ========================================================= */
-    @media (max-width: 900px) {
-      html, body {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        overflow-x: clip !important;
-      }
-
-      .container,
-      main .container,
-      section .container,
-      footer .container {
-        width: 100% !important;
-        max-width: none !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-      }
-
-      /* Never let the old desktop sidebar reserve space on phones/tablets. */
-      nav.glass {
-        position: fixed !important;
-        left: auto !important;
-        right: 10px !important;
-        top: 10px !important;
-        width: min(280px, calc(100vw - 20px)) !important;
-        height: auto !important;
-        min-height: 0 !important;
-        margin: 0 !important;
-        padding: 10px !important;
-      }
-
-      .hero {
-        display: flex !important;
-        flex-direction: column !important;
-        min-height: 0 !important;
-        width: 100% !important;
-        padding: 92px 0 30px !important;
-        gap: 6px !important;
-      }
-
-      .hero > * {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-      }
-
-      .hero-art {
-        order: 2;
-        min-height: clamp(230px, 70vw, 330px) !important;
-        height: clamp(230px, 70vw, 330px) !important;
-        margin: 12px 0 0 !important;
-        transform: none !important;
-        overflow: hidden !important;
-      }
-
-      .orb {
-        width: min(58vw, 245px) !important;
-        height: min(58vw, 245px) !important;
-        max-width: 245px !important;
-        max-height: 245px !important;
-      }
-
-      .glass-card {
-        width: min(43vw, 175px) !important;
-        min-width: 0 !important;
-        min-height: 185px !important;
-        padding: 15px !important;
-        border-radius: 18px !important;
-      }
-
-      .card-main { left: 0 !important; top: 15% !important; }
-      .card-back { right: 0 !important; top: 18% !important; }
-
-      .floating-tag {
-        max-width: 45% !important;
-        white-space: normal !important;
+      .hero-copy {
         text-align: center;
       }
 
-      section {
-        width: 100% !important;
-        padding: 42px 0 !important;
+      .hero-description,
+      .slogan {
+        margin-inline: auto;
       }
 
-      .section-heading,
-      .section-heading p,
-      .section-heading h2 {
-        width: 100% !important;
-        max-width: 100% !important;
+
+
+      .about {
+        grid-template-columns: 1fr;
       }
 
-      .section-heading h2 {
-        font-size: clamp(1.75rem, 7.5vw, 2.6rem) !important;
+      .about-photos {
+        max-width: 620px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container,
+      footer {
+        width: calc(100% - 28px);
       }
 
-      .cards,
-      .projects,
-      .page-stack {
-        display: grid !important;
-        grid-template-columns: minmax(0, 1fr) !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        gap: 14px !important;
+      .hero {
+        padding-top: 78px;
       }
 
-      .service-card,
-      .project,
-      .page-preview,
-      .quote,
-      .cta,
-      .stats {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+      .hero h1 {
+        font-size: clamp(2.65rem, 14vw, 4rem);
       }
 
-      .service-card,
-      .project,
-      .page-preview {
-        min-height: 0 !important;
+      .hero-title {
+        font-size: .86rem;
       }
 
-      .service-card { padding: 20px !important; }
-      .project { padding: 19px !important; }
-
-      .stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      .hero-description,
+      .slogan {
+        font-size: .78rem;
       }
 
-      .stat {
-        min-width: 0 !important;
-        padding: 18px 10px !important;
-        overflow-wrap: anywhere;
+
+
+
+
+      .about {
+        padding: 52px 0;
       }
 
-      .stat:last-child { grid-column: 1 / -1 !important; }
-
-      .page-preview {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 14px !important;
-        padding: 20px !important;
+      footer {
+        grid-template-columns: 1fr;
+        text-align: center;
       }
 
-      .page-content,
-      .page-content p {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-      }
-
-      .page-action,
-      .page-action a,
-      .cta .btn-primary,
-      .cta .btn-secondary {
-        width: 100% !important;
-        max-width: 100% !important;
-      }
-
-      .cta {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        padding: 22px 19px !important;
-        gap: 16px !important;
-      }
-
-      .cta > * { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
-
-      .quote {
-        padding: 25px 18px !important;
-        margin: 22px 0 !important;
-      }
-
-      .quote blockquote {
-        font-size: clamp(.98rem, 4.2vw, 1.3rem) !important;
-      }
-
-      h1 {
-        font-size: clamp(2.55rem, 14vw, 4.5rem) !important;
-        line-height: .94 !important;
-        overflow-wrap: break-word !important;
-      }
-
-      .hero-subtitle,
-      .hero-slogan,
-      .hero-description {
-        max-width: 100% !important;
-      }
-
-      .actions {
-        display: grid !important;
-        grid-template-columns: 1fr !important;
-        width: 100% !important;
-      }
-
-      .actions > a,
-      .actions > button {
-        width: 100% !important;
-        min-width: 0 !important;
+      .about-photos {
+        width: 100%;
       }
 
       .socials {
-        width: 100% !important;
-        flex-wrap: wrap !important;
+        justify-content: center;
       }
 
-      footer,
-      .signature-footer {
-        width: 100% !important;
-        margin-top: 35px !important;
+      .copyright {
+        grid-column: auto;
       }
-
-      .footer-inner,
-      .footer-row {
-        width: 100% !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-      }
-
-      .footer-links,
-      .footer-nav {
-        width: 100% !important;
-        flex-wrap: wrap !important;
-      }
-
-      /* Avoid fixed decorative elements widening the layout. */
-      .aurora { max-width: 70vw !important; max-height: 70vw !important; }
-      .particles { width: 100% !important; max-width: 100% !important; }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 380px) {
       .container,
-      main .container,
-      section .container,
-      footer .container {
-        padding-left: 14px !important;
-        padding-right: 14px !important;
+      footer {
+        width: calc(100% - 22px);
       }
 
-      .hero { padding-top: 82px !important; }
-      section { padding: 34px 0 !important; }
-
-      .availability { margin-bottom: 14px !important; }
-      .hero-subtitle { font-size: .94rem !important; }
-      .hero-slogan { font-size: .88rem !important; }
-      .hero-description { font-size: .84rem !important; line-height: 1.65 !important; }
-
-      .hero-art {
-        min-height: 245px !important;
-        height: 245px !important;
-      }
-
-      .orb {
-        width: 190px !important;
-        height: 190px !important;
-      }
-
-      .glass-card {
-        width: min(41vw, 150px) !important;
-        min-height: 165px !important;
-        padding: 12px !important;
-      }
-
-      .code-symbol { font-size: 1.65rem !important; margin-bottom: 18px !important; }
-      .glass-card h3 { font-size: .88rem !important; }
-      .glass-card p { font-size: .68rem !important; line-height: 1.45 !important; }
-
-      .tag-one { left: 1% !important; bottom: 3% !important; }
-      .tag-two { right: 1% !important; bottom: 5% !important; }
-
-      .stats { grid-template-columns: 1fr 1fr !important; }
-      .stat { padding: 16px 7px !important; }
-      .stat strong { font-size: .76rem !important; }
-      .stat span { font-size: .63rem !important; }
-    }
-
-    @media (max-width: 350px) {
-      .container,
-      main .container,
-      section .container,
-      footer .container {
-        padding-left: 11px !important;
-        padding-right: 11px !important;
-      }
-
-      h1 { font-size: clamp(2.35rem, 14.5vw, 3.1rem) !important; }
-      .hero-art { min-height: 220px !important; height: 220px !important; }
-      .orb { width: 165px !important; height: 165px !important; }
-      .glass-card { width: 132px !important; min-height: 145px !important; }
-    }
-
-  
-    .footer-socials {
-      margin: 18px auto 8px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .footer-socials a {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-    }
-    .footer-socials a svg {
-      width: 18px;
-      height: 18px;
-    }
-    @media (max-width: 480px) {
-      .footer-socials { gap: 7px; }
-      .footer-socials a { width: 38px; height: 38px; }
-    }
-
-  
-    /* Updated skills grid */
-    #skills .cards {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    #skills .service-card {
-      min-width: 0;
-    }
-    @media (max-width: 767px) {
-      #skills .cards {
-        grid-template-columns: 1fr;
-      }
-    }
-
-  
-    /* Personal college photo showcase */
-    .about-photo-showcase {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
-      gap: 18px;
-      margin: 34px 0 24px;
-      align-items: stretch;
-    }
-    .about-photo {
-      position: relative;
-      margin: 0;
-      min-width: 0;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 24px;
-      background: rgba(12,18,48,.45);
-      box-shadow: 0 18px 50px rgba(0,0,0,.22);
-    }
-    .about-photo img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 300px;
-      object-fit: cover;
-      object-position: center;
-      transition: transform .5s ease;
-    }
-    .about-photo-main img {
-      min-height: 390px;
-    }
-    .about-photo:hover img {
-      transform: scale(1.025);
-    }
-    .about-photo figcaption {
-      position: absolute;
-      left: 14px;
-      right: 14px;
-      bottom: 14px;
-      padding: 10px 13px;
-      border-radius: 13px;
-      color: #fff;
-      font-size: .78rem;
-      letter-spacing: .04em;
-      background: rgba(8,12,30,.68);
-      border: 1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(12px);
-    }
-    @media (max-width: 767px) {
-      .about-photo-showcase {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        margin: 24px 0 18px;
-      }
-      .about-photo img,
-      .about-photo-main img {
-        min-height: 0;
-        height: auto;
-        aspect-ratio: 4 / 3;
-      }
-      .about-photo-main img {
-        aspect-ratio: 4 / 3;
-      }
-      .about-photo figcaption {
-        font-size: .72rem;
-        padding: 8px 10px;
-        bottom: 10px;
+      .mobile-menu {
+        top: 10px;
         left: 10px;
-        right: 10px;
-      }
-    }
-    @media (max-width: 380px) {
-      .about-photo-showcase {
-        gap: 11px;
-      }
-      .about-photo {
-        border-radius: 18px;
-      }
-    }
-
-  
-    /* =========================================================
-       COMPACT CARD / RECTANGLE DESIGN
-       Reduces the visual size of all major glass rectangles
-       while preserving readability and touch accessibility.
-       ========================================================= */
-    .glass,
-    .service-card,
-    .project-card,
-    .preview-card,
-    .quote-card,
-    .cta-card,
-    .stat-card,
-    .contact-card,
-    .about-card,
-    .page-card {
-      border-radius: 18px !important;
-    }
-
-    .service-card,
-    .project-card,
-    .preview-card,
-    .quote-card,
-    .cta-card,
-    .contact-card,
-    .about-card,
-    .page-card {
-      padding: 22px !important;
-    }
-
-    .cards {
-      gap: 14px !important;
-    }
-
-    .stats {
-      gap: 0 !important;
-    }
-
-    .stat-card {
-      padding: 17px !important;
-      min-height: 0 !important;
-    }
-
-    .quote-card {
-      padding: 20px 22px !important;
-    }
-
-    .cta-card {
-      padding: 22px !important;
-    }
-
-    /* Reduce excessive section whitespace */
-    section {
-      padding-top: 58px !important;
-      padding-bottom: 58px !important;
-    }
-
-    /* Hero and major visual blocks */
-    .hero {
-      min-height: auto !important;
-    }
-
-    /* Phones: substantially tighter cards without becoming cramped */
-    @media (max-width: 767px) {
-      .service-card,
-      .project-card,
-      .preview-card,
-      .quote-card,
-      .cta-card,
-      .contact-card,
-      .about-card,
-      .page-card {
-        padding: 16px !important;
-        border-radius: 16px !important;
       }
 
-      .cards {
-        gap: 11px !important;
-      }
 
-      .stat-card {
-        padding: 13px 10px !important;
-      }
+    }
 
-      .quote-card {
-        padding: 16px !important;
-      }
-
-      .cta-card {
-        padding: 17px !important;
-      }
-
-      section {
-        padding-top: 38px !important;
-        padding-bottom: 38px !important;
-      }
-
-      .icon {
-        width: 48px !important;
-        height: 48px !important;
-        font-size: 1.35rem !important;
-      }
-
-      .service-card h3,
-      .project-card h3,
-      .preview-card h3 {
-        margin-top: 12px !important;
-        margin-bottom: 7px !important;
-      }
-
-      .service-card p,
-      .project-card p,
-      .preview-card p {
-        margin-bottom: 12px !important;
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
       }
     }
-
-    @media (max-width: 380px) {
-      .service-card,
-      .project-card,
-      .preview-card,
-      .quote-card,
-      .cta-card,
-      .contact-card,
-      .about-card,
-      .page-card {
-        padding: 14px !important;
-        border-radius: 14px !important;
-      }
-
-      .cards {
-        gap: 9px !important;
-      }
-
-      section {
-        padding-top: 30px !important;
-        padding-bottom: 30px !important;
-      }
-    }
-
-
-    /* =========================================================
-       VERTICAL LINE SIDEBAR MENU
-       Desktop/tablet: slim vertical rail on the right.
-       Mobile: compact vertical rail that stays inside viewport.
-       ========================================================= */
-    .side-menu,
-    .menu,
-    .right-menu,
-    nav.side-nav {
-      position: fixed !important;
-      right: 14px !important;
-      top: 50% !important;
-      left: auto !important;
-      bottom: auto !important;
-      transform: translateY(-50%) !important;
-      width: 54px !important;
-      padding: 9px 7px !important;
-      z-index: 9999 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      gap: 7px !important;
-      border: 1px solid rgba(255,255,255,.13) !important;
-      border-radius: 28px !important;
-      background: rgba(8,12,30,.62) !important;
-      backdrop-filter: blur(18px) !important;
-      -webkit-backdrop-filter: blur(18px) !important;
-      box-shadow: 0 16px 45px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06) !important;
-    }
-
-    .side-menu a,
-    .menu a,
-    .right-menu a,
-    nav.side-nav a {
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      border-radius: 50% !important;
-      font-size: 0 !important;
-      color: rgba(255,255,255,.72) !important;
-      text-decoration: none !important;
-      position: relative !important;
-      transition: .22s ease !important;
-    }
-
-    .side-menu a::before,
-    .menu a::before,
-    .right-menu a::before,
-    nav.side-nav a::before {
-      content: "" !important;
-      width: 7px !important;
-      height: 7px !important;
-      border-radius: 50% !important;
-      background: currentColor !important;
-      opacity: .72 !important;
-      transition: .22s ease !important;
-    }
-
-    .side-menu a::after,
-    .menu a::after,
-    .right-menu a::after,
-    nav.side-nav a::after {
-      content: attr(aria-label) !important;
-      position: absolute !important;
-      right: calc(100% + 11px) !important;
-      top: 50% !important;
-      transform: translateY(-50%) translateX(4px) !important;
-      white-space: nowrap !important;
-      pointer-events: none !important;
-      opacity: 0 !important;
-      padding: 7px 10px !important;
-      border-radius: 9px !important;
-      background: rgba(8,12,30,.9) !important;
-      border: 1px solid rgba(255,255,255,.12) !important;
-      color: #fff !important;
-      font-size: 12px !important;
-      line-height: 1 !important;
-      letter-spacing: .02em !important;
-      transition: .2s ease !important;
-    }
-
-    .side-menu a:hover,
-    .menu a:hover,
-    .right-menu a:hover,
-    nav.side-nav a:hover,
-    .side-menu a.active,
-    .menu a.active,
-    .right-menu a.active,
-    nav.side-nav a.active {
-      color: #fff !important;
-      background: rgba(255,255,255,.10) !important;
-      box-shadow: 0 0 18px rgba(115,92,255,.25) !important;
-    }
-
-    .side-menu a:hover::before,
-    .menu a:hover::before,
-    .right-menu a:hover::before,
-    nav.side-nav a:hover::before,
-    .side-menu a.active::before,
-    .menu a.active::before,
-    .right-menu a.active::before,
-    nav.side-nav a.active::before {
-      width: 11px !important;
-      height: 11px !important;
-      opacity: 1 !important;
-      box-shadow: 0 0 12px currentColor !important;
-    }
-
-    .side-menu a:hover::after,
-    .menu a:hover::after,
-    .right-menu a:hover::after,
-    nav.side-nav a:hover::after {
-      opacity: 1 !important;
-      transform: translateY(-50%) translateX(0) !important;
-    }
-
-    /* Small vertical line through the navigation dots */
-    .side-menu::before,
-    .menu::before,
-    .right-menu::before,
-    nav.side-nav::before {
-      content: "" !important;
-      position: absolute !important;
-      top: 17px !important;
-      bottom: 17px !important;
-      left: 50% !important;
-      width: 1px !important;
-      transform: translateX(-50%) !important;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,.22), transparent) !important;
-      pointer-events: none !important;
-    }
-
-    .side-menu a,
-    .menu a,
-    .right-menu a,
-    nav.side-nav a {
-      z-index: 1 !important;
-    }
-
-    @media (max-width: 767px) {
-      .side-menu,
-      .menu,
-      .right-menu,
-      nav.side-nav {
-        right: 8px !important;
-        width: 44px !important;
-        padding: 7px 5px !important;
-        gap: 4px !important;
-        border-radius: 23px !important;
-      }
-
-      .side-menu a,
-      .menu a,
-      .right-menu a,
-      nav.side-nav a {
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important;
-      }
-
-      .side-menu a::before,
-      .menu a::before,
-      .right-menu a::before,
-      nav.side-nav a::before {
-        width: 6px !important;
-        height: 6px !important;
-      }
-
-      .side-menu a::after,
-      .menu a::after,
-      .right-menu a::after,
-      nav.side-nav a::after {
-        display: none !important;
-      }
-
-      .side-menu::before,
-      .menu::before,
-      .right-menu::before,
-      nav.side-nav::before {
-        top: 13px !important;
-        bottom: 13px !important;
-      }
-    }
-
-    @media (max-width: 380px) {
-      .side-menu,
-      .menu,
-      .right-menu,
-      nav.side-nav {
-        right: 6px !important;
-        width: 40px !important;
-        padding: 6px 4px !important;
-      }
-
-      .side-menu a,
-      .menu a,
-      .right-menu a,
-      nav.side-nav a {
-        width: 30px !important;
-        height: 30px !important;
-        min-width: 30px !important;
-      }
-    }
-
-    /* Make sure page content never sits underneath the sidebar. */
-    @media (min-width: 768px) {
-      main,
-      .container,
-      .content,
-      .page-content {
-        padding-right: max(74px, 6vw) !important;
-      }
-    }
-
-
-    /* =========================================================
-       REFERENCE-STYLE SIDEBAR MENU
-       Compact app-style panel inspired by the supplied reference.
-       ========================================================= */
-    nav.sidebar-menu {
-      position: fixed !important;
-      top: 50% !important;
-      right: 18px !important;
-      left: auto !important;
-      bottom: auto !important;
-      width: 245px !important;
-      height: min(620px, calc(100vh - 36px)) !important;
-      min-height: 0 !important;
-      margin: 0 !important;
-      padding: 14px !important;
-      box-sizing: border-box !important;
-      transform: translateY(-50%) translateX(calc(100% + 28px)) !important;
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: stretch !important;
-      gap: 0 !important;
-      overflow: hidden !important;
-      border: 1px solid rgba(255,255,255,.12) !important;
-      border-radius: 16px !important;
-      background: rgba(10,10,23,.96) !important;
-      backdrop-filter: blur(24px) saturate(125%) !important;
-      -webkit-backdrop-filter: blur(24px) saturate(125%) !important;
-      box-shadow: 0 24px 70px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04) !important;
-      transition: transform .32s ease, opacity .22s ease, visibility .32s ease !important;
-    }
-
-    nav.sidebar-menu.menu-open {
-      transform: translateY(-50%) translateX(0) !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    nav.sidebar-menu .sidebar-top {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      height: 43px !important;
-      flex: 0 0 43px !important;
-    }
-
-    nav.sidebar-menu .sidebar-brand {
-      display: inline-flex !important;
-      align-items: center !important;
-      gap: 10px !important;
-      padding: 0 !important;
-      color: #f5f7ff !important;
-      text-decoration: none !important;
-    }
-
-    nav.sidebar-menu .brand-mark {
-      width: 32px !important;
-      height: 32px !important;
-      display: grid !important;
-      place-items: center !important;
-      border-radius: 10px !important;
-      font-size: 12px !important;
-      font-weight: 800 !important;
-      color: #fff !important;
-      background: linear-gradient(135deg, #3cbcff, #bd3cff) !important;
-      box-shadow: 0 6px 18px rgba(117,83,255,.3) !important;
-    }
-
-    nav.sidebar-menu .sidebar-brand-name {
-      font-size: 15px !important;
-      font-weight: 700 !important;
-      letter-spacing: -.02em !important;
-    }
-
-    nav.sidebar-menu .menu-btn {
-      position: static !important;
-      width: 30px !important;
-      height: 30px !important;
-      padding: 0 !important;
-      display: grid !important;
-      place-items: center !important;
-      border: 0 !important;
-      border-radius: 8px !important;
-      background: rgba(255,255,255,.06) !important;
-      color: rgba(255,255,255,.7) !important;
-      font-size: 21px !important;
-      line-height: 1 !important;
-      cursor: pointer !important;
-    }
-
-    nav.sidebar-menu .menu-btn:hover {
-      background: rgba(255,255,255,.11) !important;
-      color: #fff !important;
-    }
-
-    nav.sidebar-menu .sidebar-search {
-      height: 38px !important;
-      flex: 0 0 38px !important;
-      margin: 10px 0 11px !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 8px !important;
-      padding: 0 10px !important;
-      border-radius: 7px !important;
-      background: rgba(255,255,255,.12) !important;
-      color: rgba(255,255,255,.45) !important;
-    }
-
-    nav.sidebar-menu .sidebar-search svg {
-      width: 15px !important;
-      height: 15px !important;
-      fill: none !important;
-      stroke: currentColor !important;
-      stroke-width: 1.7 !important;
-      flex: 0 0 auto !important;
-    }
-
-    nav.sidebar-menu .sidebar-search input {
-      width: 100% !important;
-      min-width: 0 !important;
-      border: 0 !important;
-      outline: 0 !important;
-      background: transparent !important;
-      color: #fff !important;
-      font: inherit !important;
-      font-size: 11px !important;
-    }
-
-    nav.sidebar-menu .sidebar-search input::placeholder {
-      color: rgba(255,255,255,.5) !important;
-    }
-
-    nav.sidebar-menu .nav-links {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 3px !important;
-      margin: 0 !important;
-    }
-
-    nav.sidebar-menu .nav-links a {
-      min-height: 36px !important;
-      height: 36px !important;
-      padding: 0 10px !important;
-      border: 1px solid transparent !important;
-      border-radius: 6px !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 11px !important;
-      color: rgba(255,255,255,.58) !important;
-      background: transparent !important;
-      text-decoration: none !important;
-      font-size: 11px !important;
-      font-weight: 500 !important;
-      transition: background .18s ease, color .18s ease, transform .18s ease !important;
-    }
-
-    nav.sidebar-menu .nav-links a svg {
-      width: 16px !important;
-      height: 16px !important;
-      flex: 0 0 16px !important;
-      fill: none !important;
-      stroke: currentColor !important;
-      stroke-width: 1.55 !important;
-      stroke-linecap: round !important;
-      stroke-linejoin: round !important;
-    }
-
-    nav.sidebar-menu .nav-links a:hover {
-      color: #fff !important;
-      background: rgba(255,255,255,.065) !important;
-      transform: translateX(1px) !important;
-    }
-
-    nav.sidebar-menu .nav-links a.active {
-      color: #141421 !important;
-      background: #f7f7fa !important;
-    }
-
-    nav.sidebar-menu .nav-links a.active svg {
-      color: #141421 !important;
-    }
-
-    nav.sidebar-menu .sidebar-divider {
-      height: 1px !important;
-      flex: 0 0 1px !important;
-      margin: 13px -14px 8px !important;
-      background: rgba(255,255,255,.09) !important;
-    }
-
-    nav.sidebar-menu .sidebar-extra {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 3px !important;
-    }
-
-    nav.sidebar-menu .sidebar-extra-item {
-      min-height: 35px !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 11px !important;
-      padding: 0 10px !important;
-      border-radius: 6px !important;
-      color: rgba(255,255,255,.5) !important;
-      font-size: 10.5px !important;
-    }
-
-    nav.sidebar-menu .extra-icon {
-      width: 16px !important;
-      text-align: center !important;
-      color: rgba(255,255,255,.65) !important;
-      font-size: 14px !important;
-    }
-
-    nav.sidebar-menu .sidebar-profile {
-      margin-top: auto !important;
-      min-height: 47px !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 9px !important;
-      padding: 8px 4px 2px !important;
-      border-top: 1px solid rgba(255,255,255,.07) !important;
-    }
-
-    nav.sidebar-menu .profile-avatar {
-      width: 27px !important;
-      height: 27px !important;
-      flex: 0 0 27px !important;
-      display: grid !important;
-      place-items: center !important;
-      border-radius: 50% !important;
-      color: #fff !important;
-      font-size: 11px !important;
-      font-weight: 700 !important;
-      background: linear-gradient(135deg, #6f7cff, #9c48ff) !important;
-    }
-
-    nav.sidebar-menu .profile-copy {
-      min-width: 0 !important;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 2px !important;
-      overflow: hidden !important;
-    }
-
-    nav.sidebar-menu .profile-copy strong {
-      color: rgba(255,255,255,.82) !important;
-      font-size: 9.5px !important;
-      font-weight: 600 !important;
-      white-space: nowrap !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-    }
-
-    nav.sidebar-menu .profile-copy span {
-      color: rgba(255,255,255,.35) !important;
-      font-size: 8px !important;
-      white-space: nowrap !important;
-      overflow: hidden !important;
-      text-overflow: ellipsis !important;
-    }
-
-    nav.sidebar-menu .profile-help {
-      margin-left: auto !important;
-      width: 18px !important;
-      height: 18px !important;
-      flex: 0 0 18px !important;
-      border: 0 !important;
-      border-radius: 50% !important;
-      background: rgba(255,255,255,.1) !important;
-      color: rgba(255,255,255,.6) !important;
-      font-size: 10px !important;
-      cursor: pointer !important;
-    }
-
-    @media (max-width: 767px) {
-      nav.sidebar-menu {
-        top: 50% !important;
-        right: 10px !important;
-        width: min(255px, calc(100vw - 20px)) !important;
-        height: min(570px, calc(100vh - 24px)) !important;
-        border-radius: 14px !important;
-        padding: 12px !important;
-      }
-
-      nav.sidebar-menu .nav-links a {
-        min-height: 38px !important;
-        height: 38px !important;
-      }
-
-      nav.sidebar-menu .sidebar-divider {
-        margin-left: -12px !important;
-        margin-right: -12px !important;
-      }
-    }
-
-    @media (max-width: 380px) {
-      nav.sidebar-menu {
-        right: 7px !important;
-        width: calc(100vw - 14px) !important;
-        height: calc(100vh - 14px) !important;
-        max-height: 560px !important;
-      }
-    }
-
-
-    /* Homepage cleanup after removing secondary sections */
-    #skills,
-    .skills-section,
-    .skill-section,
-    .connect-section,
-    .contact-cta-section {
-      display: none !important;
-    }
-
-    @media (max-width: 767px) {
-      section {
-        padding-top: 30px !important;
-        padding-bottom: 30px !important;
-      }
-    }
-
-
-    /* Homepage secondary sections removed */
-    #projects,
-    #contact-preview {
-      display: none !important;
-    }
-
-
-    /* Hero hierarchy: primary actions first, social media immediately below */
-    .hero .social-links,
-    .hero .social-icons,
-    .hero .hero-social {
-      margin-top: 18px !important;
-      display: flex !important;
-      flex-wrap: wrap !important;
-      gap: 10px !important;
-    }
-
-    /* Footer stays minimal after removing the brand block. */
-    footer .footer-brand,
-    footer .brand-footer {
-      display: none !important;
-    }
-
-    @media (max-width: 767px) {
-      .hero .social-links,
-      .hero .social-icons,
-      .hero .hero-social {
-        margin-top: 14px !important;
-        justify-content: flex-start !important;
-        gap: 8px !important;
-      }
-    }
-
-
-    /* Hero cleanup: removed the View My Work / About Me action row
-       and the social-media icon row from the homepage. */
-    .hero .hero-actions,
-    .hero .hero-buttons,
-    .hero .cta-buttons,
-    .hero .social-links,
-    .hero .social-icons,
-    .hero .hero-social {
-      display: none !important;
-    }
-
-
-    /* Homepage final cleanup */
-    .hero-art,
-    .hero-visual,
-    .hero-orb,
-    .orb,
-    .planet,
-    .planet-orb,
-    .floating-card,
-    .floating-label,
-    [class*="planet"],
-    [class*="orb"],
-    [class*="floating"] {
-      display: none !important;
-    }
-
-    .social-links,
-    .social-icons,
-    .hero-social,
-    .footer-social {
-      display: none !important;
-    }
-
-    /* Remove decorative down-arrow controls shown beside the hero/footer. */
-    .scroll-indicator,
-    .scroll-down,
-    .down-arrow,
-    [class*="scroll-arrow"] {
-      display: none !important;
-    }
-
-    /* Prevent empty gaps left by removed visual blocks. */
-    .hero {
-      min-height: auto !important;
-    }
-
-
-    /* Social media belongs in the footer only. */
-    .site-footer {
-      margin-top: 48px !important;
-      padding: 28px 20px 24px !important;
-      border-top: 1px solid rgba(255,255,255,.08) !important;
-    }
-
-    .footer-inner {
-      width: 100% !important;
-      max-width: 1100px !important;
-      margin: 0 auto !important;
-      display: flex !important;
-      justify-content: center !important;
-    }
-
-    .footer-social-section {
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: center !important;
-      gap: 12px !important;
-    }
-
-    .footer-social-label {
-      color: rgba(210,220,255,.52) !important;
-      font-size: 10px !important;
-      font-weight: 700 !important;
-      letter-spacing: .24em !important;
-    }
-
-    .footer-socials {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      flex-wrap: wrap !important;
-      gap: 9px !important;
-    }
-
-    .footer-socials a {
-      width: 42px !important;
-      height: 42px !important;
-      display: grid !important;
-      place-items: center !important;
-      border: 1px solid rgba(255,255,255,.11) !important;
-      border-radius: 12px !important;
-      background: rgba(255,255,255,.035) !important;
-      color: rgba(225,232,255,.78) !important;
-      transition: .22s ease !important;
-    }
-
-    .footer-socials a:hover {
-      color: #fff !important;
-      border-color: rgba(120,150,255,.48) !important;
-      background: rgba(100,120,255,.10) !important;
-      transform: translateY(-3px) !important;
-      box-shadow: 0 10px 25px rgba(60,80,200,.18) !important;
-    }
-
-    .footer-socials svg {
-      width: 19px !important;
-      height: 19px !important;
-      fill: currentColor !important;
-      stroke: none !important;
-    }
-
-    .footer-socials a:nth-child(5) svg {
-      fill: none !important;
-      stroke: currentColor !important;
-      stroke-width: 1.8 !important;
-    }
-
-    .copyright {
-      margin-top: 18px !important;
-      text-align: center !important;
-      color: rgba(210,220,255,.42) !important;
-      font-size: 11px !important;
-    }
-
-    @media (max-width: 480px) {
-      .site-footer {
-        margin-top: 30px !important;
-        padding: 24px 12px 20px !important;
-      }
-      .footer-socials {
-        gap: 7px !important;
-      }
-      .footer-socials a {
-        width: 39px !important;
-        height: 39px !important;
-        border-radius: 11px !important;
-      }
-    }
-
-</style>
+  </style>
 </head>
 
 <body>
-  <div class="aurora one"></div>
-  <div class="aurora two"></div>
-  <div class="aurora three"></div>
-  <div class="particles" id="particles"></div>
 
-  <div class="container">
-    <nav class="glass sidebar-menu" aria-label="Main navigation">
-      <div class="sidebar-top">
-        <a class="sidebar-brand" href="https://agootson.is-a.dev/" aria-label="Agootson home">
-          
-          
-        </a>
-        <button class="menu-btn" type="button" aria-label="Close menu" aria-expanded="true">×</button>
-      </div>
+  <aside class="sidebar" id="sidebar">
+    <button class="collapse" id="collapse" aria-label="Collapse sidebar">
+      <span>‹</span>
+    </button>
 
-      <div class="sidebar-search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4.2 4.2"></path></svg>
-        <input id="menuSearch" type="search" placeholder="Search" aria-label="Search menu">
-      </div>
+    <nav class="nav" aria-label="Main navigation">
+      <a class="active" href="https://agootson.is-a.dev/">
+        <span class="icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
+        <span class="nav-label">Home</span>
+      </a>
 
-      <div class="nav-links" id="mainNavLinks">
-        <a class="active" href="https://agootson.is-a.dev/" aria-label="Home">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10Z"></path></svg>
-          <span>Home</span>
-        </a>
-        <a href="https://agootson.is-a.dev/services.html" aria-label="Services">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path><circle cx="8" cy="7" r="1.5"></circle><circle cx="15" cy="12" r="1.5"></circle><circle cx="11" cy="17" r="1.5"></circle></svg>
-          <span>Services</span>
-        </a>
-        <a href="https://agootson.is-a.dev/project.html" aria-label="Projects">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7-5 5 5 5M15 7l5 5-5 5M13 4l-2 16"></path></svg>
-          <span>Projects</span>
-        </a>
-        <a href="https://agootson.is-a.dev/skills.html" aria-label="Skills">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19V9M12 19V5M18 19v-7"></path></svg>
-          <span>Skills</span>
-        </a>
-        <a href="https://agootson.is-a.dev/about.html" aria-label="About Me">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.2"></circle><path d="M5.5 20c.7-3.5 2.8-5.3 6.5-5.3s5.8 1.8 6.5 5.3"></path></svg>
-          <span>About Me</span>
-        </a>
-        <a href="https://agootson.is-a.dev/gallery.html" aria-label="Gallery">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="2"></rect><circle cx="9" cy="10" r="1.5"></circle><path d="m6 17 4.2-4 3.2 3 2.1-2 2.5 3"></path></svg>
-          <span>Gallery</span>
-        </a>
-        <a href="https://agootson.is-a.dev/blog.html" aria-label="Blog">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4Zm0 0v14a2 2 0 0 0 2 2M8 8h7M8 12h7"></path></svg>
-          <span>Blog</span>
-        </a>
-        <a href="https://agootson.is-a.dev/contact.html" aria-label="Contact Me">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"></rect><path d="m5.5 7 6.5 5 6.5-5"></path></svg>
-          <span>Contact Me</span>
-        </a>
-      </div>
+      <a href="https://agootson.is-a.dev/services.html">
+        <span class="icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+        <span class="nav-label">Services</span>
+      </a>
 
-      <div class="sidebar-divider"></div>
+      <a href="https://agootson.is-a.dev/project.html">
+        <span class="icon"><i class="fa-solid fa-folder-open" aria-hidden="true"></i></span>
+        <span class="nav-label">Projects</span>
+      </a>
 
-      <div class="sidebar-extra">
-        <div class="sidebar-extra-item">
-          <span class="extra-icon">✦</span>
-          <span>Connect</span>
-        </div>
-        <div class="sidebar-extra-item">
-          <span class="extra-icon">◌</span>
-          <span>Social Media</span>
-        </div>
-      </div>
+      <a href="https://agootson.is-a.dev/skills.html">
+        <span class="icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+        <span class="nav-label">Skills</span>
+      </a>
 
-      <div class="sidebar-profile">
-        <div class="profile-avatar">A</div>
-        <div class="profile-copy">
-          <strong>David Agootson</strong>
-          <span>Computer Science Student</span>
-        </div>
-        <button class="profile-help" type="button" aria-label="About this menu">?</button>
-      </div>
+      <a href="https://agootson.is-a.dev/about.html">
+        <span class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
+        <span class="nav-label">About Me</span>
+      </a>
+
+      <a href="https://agootson.is-a.dev/gallery.html">
+        <span class="icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
+        <span class="nav-label">Gallery</span>
+      </a>
+
+      <a href="https://agootson.is-a.dev/blog.html">
+        <span class="icon"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
+        <span class="nav-label">Blog</span>
+      </a>
+
+      <a href="https://agootson.is-a.dev/contact.html">
+        <span class="icon"><i class="fa-regular fa-envelope" aria-hidden="true"></i></span>
+        <span class="nav-label">Contact Me</span>
+      </a>
     </nav>
 
-    <main id="home">
-      <section class="hero">
-        <div class="reveal">
-          <div class="availability"><span class="dot"></span> Open to Opportunities</div>
-          <div class="eyebrow">Hi, I'm</div>
-          <h1>David Agootson</h1>
-          <p class="hero-subtitle">Computer Science Student · Builder · Learner · Dreamer</p>
-          <p class="hero-slogan">Stand for your principles even if they are unpopular or out of fashion.</p>
-          <p class="hero-description">
-            I'm a Computer Science and Engineering student at GTU and an ICCR scholar from South Sudan. Welcome to my website. I hope you enjoy sweetness here!
-          </p>
+  </aside>
 
-          
+  <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 
-          
+  <div class="backdrop" id="backdrop"></div>
+
+  <main class="main">
+
+    <section class="hero container">
+      <div class="hero-copy">
+        <div class="eyebrow">WELCOME TO MY WEBSITE</div>
+
+        <h1>
+          Hi, I'm<br>
+          <span>David Agootson.</span>
+        </h1>
+
+        <p class="hero-title">
+          Computer Science Student
+        </p>
+
+        <p class="slogan">
+          “Stand for your principles even if they are unpopular or out of fashion.”
+        </p>
+
+        <p class="hero-description">
+          I'm a Computer Science and Engineering student at GTU and an ICCR scholar from South Sudan.
+          I enjoy learning, building projects and exploring technology through practical work.
+          Welcome to my website. I hope you enjoy sweetness here!
+        </p>
+
+
+      </div>
+
+    </section>
+
+    <section class="about container">
+      <div class="about-photos">
+        <div class="about-photo">
+          <img
+            src="https://agootson.is-a.dev/WhatsApp%20Image%202026-09-03%20at%207.25.30%20PM.jpeg"
+            alt="David Agootson at college"
+            loading="lazy">
         </div>
-
-        
-          <div class="floating-tag tag-one"></div>
-          <div class="floating-tag tag-two"></div>
-        </div>
-      </section>
-
-      <section id="about">
-        <div class="about-photo-showcase reveal" aria-label="David Agootson at college">
-          <figure class="about-photo about-photo-main">
-            <img src="https://agootson.is-a.dev/WhatsApp%20Image%202026-09-03%20at%207.25.30%20PM.jpeg" alt="David Agootson at college" loading="lazy" decoding="async">
-            <figcaption>Campus moment</figcaption>
-          </figure>
-          <figure class="about-photo about-photo-secondary">
-            <img src="https://agootson.is-a.dev/WhatsApp%20Image%202026-09-03%20at%207.25.29%20PM.jpeg" alt="David Agootson on campus" loading="lazy" decoding="async">
-            <figcaption>Campus moment</figcaption>
-          </figure>
-        </div>
-
-        <div class="section-heading reveal">
-          <div class="eyebrow">Explore My Portfolio</div>
-          <p>
-            The homepage gives you a quick overview. Each section below connects to its own
-            independent page on this website.
-          </p>
-        </div>
-
-        <div class="page-stack">
-
-          <article class="page-preview about-page glass reveal">
-            <div class="page-icon">👋</div>
-            <div class="page-content">
-              <div class="eyebrow">01 · About Me</div>
-              <p>
-                Learn more about my journey, interests, goals, experiences, and the ideas that motivate me.
-              </p>
-            </div>
-            <a class="btn-primary page-action" href="https://agootson.is-a.dev/about.html">
-              Open About Me →
-            </a>
-          </article>
-
-          <article class="page-preview projects-page glass reveal">
-            <div class="page-icon">🚀</div>
-            <div class="page-content">
-              <div class="eyebrow">02 · Projects</div>
-              <p>
-                Explore my work.
-              </p>
-            </div>
-            <a class="btn-primary page-action" href="https://agootson.is-a.dev/project.html">
-              View Projects →
-            </a>
-          </article>
-
-          <article class="page-preview gallery-page glass reveal">
-            <div class="page-icon">🖼️</div>
-            <div class="page-content">
-              <div class="eyebrow">03 · Gallery</div>
-              <p>
-                Browse photos about places, and moments from
-                my journey, studies, and travels in India.
-              </p>
-            </div>
-            <a class="btn-primary page-action" href="https://agootson.is-a.dev/gallery.html">
-              Open Gallery →
-            </a>
-          </article>
-
-          <article class="page-preview blog-page glass reveal">
-            <div class="page-icon">✍️</div>
-            <div class="page-content">
-              <div class="eyebrow">04 · Blog</div>
-            
-              <p>
-                Read my posts about technology, learning, experiences,
-                projects, and the lessons I have learnt in India.
-              </p>
-            </div>
-            <a class="btn-primary page-action" href="https://agootson.is-a.dev/blog.html">
-              Read Blog →
-            </a>
-          </article>
-
-          <article class="page-preview contact-page glass reveal">
-            <div class="page-icon">✈️</div>
-            <div class="page-content">
-              <div class="eyebrow">05 · Contact Me</div>
-              
-              <p>
-                If you would like to get in touch with me then hit me u
-              </p>
-            </div>
-            <a class="btn-primary page-action" href="https://agootson.is-a.dev/contact.html">
-              Contact Me →
-            </a>
-          </article>
-
-        </div>
-      </section>
-
-      
-
-      
-
-      
-    </main>
-
-    <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-social-section">
-          <span class="footer-social-label">GET IN TOUCH WITH ME</span>
-          <div class="footer-socials" aria-label="Social media links">
-            <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.2H3.2V20h3.3V8.2ZM4.85 3A1.95 1.95 0 1 0 4.85 6.9 1.95 1.95 0 0 0 4.85 3ZM20.8 13.2c0-3.55-1.9-5.2-4.45-5.2-2.05 0-2.95 1.13-3.46 1.92V8.2H9.55V20h3.34v-5.83c0-1.54.29-3.03 2.2-3.03 1.88 0 1.9 1.76 1.9 3.13V20h3.33l.48-6.8Z"/></svg>
-            </a>
-            <a href="https://www.threads.net/@agootson" target="_blank" rel="noopener noreferrer" aria-label="Threads" title="Threads">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.15 21c-5.25 0-8.15-3.28-8.15-9.23C4 5.9 7.05 3 12.05 3c4.2 0 7.02 2.04 7.77 5.76l-2.55.55c-.5-2.3-2.15-3.6-5.08-3.6-3.32 0-5.48 1.85-5.48 5.99 0 4.36 1.77 6.7 5.47 6.7 2.63 0 4.42-1.3 4.42-3.34 0-1.48-.92-2.34-2.6-2.34-1.72 0-2.78.82-2.78 2.02 0 .78.58 1.27 1.54 1.27 1.23 0 2.34-.7 2.82-1.93l2.14.83C16.7 18.23 14.67 21 12.15 21Zm-.12-6.12c-.62 0-.98.25-.98.63 0 .35.3.57.8.57.7 0 1.24-.38 1.52-1.02-.43-.12-.88-.18-1.34-.18Z"/></svg>
-            </a>
-            <a href="https://www.facebook.com/agootson" target="_blank" rel="noopener noreferrer" aria-label="Facebook" title="Facebook">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.7 21v-8h2.7l.4-3h-3.1V8.1c0-.87.24-1.46 1.5-1.46h1.7V4.02c-.3-.04-1.34-.13-2.56-.13-2.53 0-4.27 1.55-4.27 4.4V10H7.2v3h2.87v8h3.63Z"/></svg>
-            </a>
-            <a href="https://x.com/agootson" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h4.2l4.08 5.47L16.9 4H20l-6.3 7.35L20.3 20h-4.2l-4.6-6.17L6.65 20H3.55l6.42-7.5L4 4Zm4.55 2.2H6.9l7.76 11.6h1.66L8.55 6.2Z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/agootson" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.6" cy="6.5" r="1"></circle></svg>
-            </a>
-            <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener noreferrer" aria-label="YouTube" title="YouTube">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8.2a2.8 2.8 0 0 0-2-2C17.25 5.7 12 5.7 12 5.7s-5.25 0-7 .5a2.8 2.8 0 0 0-2 2C2.5 9.95 2.5 12 2.5 12s0 2.05.5 3.8a2.8 2.8 0 0 0 2 2c1.75.5 7 .5 7 .5s5.25 0 7-.5a2.8 2.8 0 0 0 2-2c.5-1.75.5-3.8.5-3.8s0-2.05-.5-3.8ZM10 15.3V8.7l5.2 3.3-5.2 3.3Z"/></svg>
-            </a>
-            <a href="https://www.reddit.com/u/hereoutsidethebox" target="_blank" rel="noopener noreferrer" aria-label="Reddit" title="Reddit">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.7 13.1c.5-.45.8-1.1.8-1.8a2.5 2.5 0 0 0-4.75-1.1c-1.1-.5-2.35-.8-3.7-.86l.63-3.08 2.15.45a1.75 1.75 0 1 0 .27-1.3l-2.7-.56a.65.65 0 0 0-.77.5l-.75 3.72c-1.35.05-2.62.35-3.73.86A2.5 2.5 0 1 0 4.1 13.1c-.05.27-.08.55-.08.84 0 3.2 3.58 5.8 8 5.8s8-2.6 8-5.8c0-.29-.03-.57-.08-.84ZM8.2 14.3c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1Zm7.6 3.05c-1.05.95-2.65 1.4-3.8 1.4s-2.75-.45-3.8-1.4a.6.6 0 0 1 .8-.9c.7.62 1.82 1 3 1s2.3-.38 3-1a.6.6 0 1 1 .8.9Zm.05-1.05c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1Z"/></svg>
-            </a>
-          </div>
+        <div class="about-photo">
+          <img
+            src="https://agootson.is-a.dev/WhatsApp%20Image%202026-09-03%20at%207.25.29%20PM.jpeg"
+            alt="David Agootson"
+            loading="lazy">
         </div>
       </div>
-      <div class="copyright">© 2026 Agootson. All rights reserved.</div>
+
+      <div>
+        <div class="eyebrow">A LITTLE ABOUT ME</div>
+        <h2>Learning by building real things.</h2>
+
+        <p>
+          I am pursuing Computer Science and Engineering at GTU, developing my knowledge through
+          academics, practical projects and continuous experimentation with technology.
+        </p>
+
+        <a class="text-link" href="https://agootson.is-a.dev/about.html">
+          Read my story →
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        <
+      </div>
+
+      <div class="socials">
+        <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+        <a href="https://www.threads.net/@agootson" target="_blank" rel="noopener" aria-label="Threads" title="Threads"><i class="fa-brands fa-threads" aria-hidden="true"></i></a>
+        <a href="https://www.facebook.com/agootson" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+        <a href="https://x.com/agootson" target="_blank" rel="noopener" aria-label="X" title="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+        <a href="https://www.instagram.com/agootson" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+        <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit u/hereoutsidethebox" title="Reddit — u/hereoutsidethebox"><i class="fa-brands fa-reddit-alien" aria-hidden="true"></i></a>
+      </div>
+
+      <p class="copyright">
+        © <span id="year"></span> David Agootson. All rights reserved.
+      </p>
     </footer>
-  </div>
+
+  </main>
+
   <script>
-    // Floating particles
-    const particleBox = document.getElementById("particles");
-    if (particleBox) {
-      for (let i = 0; i < 42; i++) {
-        const particle = document.createElement("span");
-        particle.className = "particle";
-        particle.style.left = Math.random() * 100 + "%";
-        particle.style.animationDuration = (9 + Math.random() * 16) + "s";
-        particle.style.animationDelay = (-Math.random() * 20) + "s";
-        particle.style.opacity = (.25 + Math.random() * .65).toFixed(2);
-        particle.style.transform = `scale(${(.5 + Math.random() * 1.5).toFixed(2)})`;
-        particleBox.appendChild(particle);
-      }
+    const sidebar = document.getElementById("sidebar");
+    const collapse = document.getElementById("collapse");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const backdrop = document.getElementById("backdrop");
+
+    collapse.addEventListener("click", () => {
+      document.body.classList.toggle("collapsed");
+    });
+
+    function mobileSidebar(open) {
+      sidebar.classList.toggle("open", open);
+      backdrop.classList.toggle("show", open);
+      mobileMenu.setAttribute("aria-expanded", open);
+      document.body.style.overflow = open ? "hidden" : "";
     }
 
-    // Reveal animations with a safe fallback for older browsers.
-    const revealItems = document.querySelectorAll(".reveal");
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
+    mobileMenu.addEventListener("click", () => {
+      mobileSidebar(!sidebar.classList.contains("open"));
+    });
 
-      revealItems.forEach(el => observer.observe(el));
-    } else {
-      revealItems.forEach(el => el.classList.add("visible"));
-    }
+    backdrop.addEventListener("click", () => mobileSidebar(false));
 
-    // One right-side vertical menu.
-    const menu = document.querySelector("nav.glass");
-    const menuButton = document.querySelector(".menu-btn");
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900) mobileSidebar(false);
+    });
 
-    function closeMenu() {
-      if (!menu || !menuButton) return;
-      menu.classList.remove("menu-open");
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Open menu");
-    }
-
-    function openMenu() {
-      if (!menu || !menuButton) return;
-      menu.classList.add("menu-open");
-      menuButton.setAttribute("aria-expanded", "true");
-      menuButton.setAttribute("aria-label", "Close menu");
-    }
-
-    if (menu && menuButton) {
-      menuButton.addEventListener("click", (event) => {
-        event.stopPropagation();
-        menu.classList.contains("menu-open") ? closeMenu() : openMenu();
-      });
-
-      menu.querySelectorAll(".nav-links a").forEach(link => {
-        link.addEventListener("click", closeMenu);
-      });
-
-      document.addEventListener("click", (event) => {
-        if (!menu.contains(event.target)) closeMenu();
-      });
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeMenu();
-      });
-
-      // Automatically hide after a short idle period.
-      let idleTimer;
-      const resetIdle = () => {
-        clearTimeout(idleTimer);
-        if (menu.classList.contains("menu-open")) {
-          idleTimer = setTimeout(closeMenu, 7000);
-        }
-      };
-
-      menu.addEventListener("mousemove", resetIdle);
-      menu.addEventListener("touchstart", resetIdle, { passive: true });
-      menuButton.addEventListener("click", resetIdle);
-    }
-  
-    // Sidebar menu search: filter navigation items as the user types.
-    const menuSearch = document.getElementById("menuSearch");
-    const mainNavLinks = document.getElementById("mainNavLinks");
-    if (menuSearch && mainNavLinks) {
-      menuSearch.addEventListener("input", () => {
-        const query = menuSearch.value.trim().toLowerCase();
-        mainNavLinks.querySelectorAll("a").forEach(link => {
-          const label = link.textContent.trim().toLowerCase();
-          link.style.display = !query || label.includes(query) ? "flex" : "none";
-        });
-      });
-    }
-
-</script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 
 </body>
 </html>
