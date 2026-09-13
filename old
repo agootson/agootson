@@ -557,34 +557,10 @@
     </button>
 
     <nav class="nav" aria-label="Main navigation">
+<nav class="nav" aria-label="Main navigation">
       <a class="active" href="https://agootson.is-a.dev/">
         <span class="icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
         <span class="nav-label">Home</span>
-      </a>
-
-      <a href="https://agootson.is-a.dev/services.html">
-        <span class="icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
-        <span class="nav-label">Services</span>
-      </a>
-
-      <a href="https://agootson.is-a.dev/project.html">
-        <span class="icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span>
-        <span class="nav-label">Projects</span>
-      </a>
-
-      <a href="https://agootson.is-a.dev/skills.html">
-        <span class="icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
-        <span class="nav-label">Skills</span>
-      </a>
-
-      <a href="https://agootson.is-a.dev/about.html">
-        <span class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
-        <span class="nav-label">About Me</span>
-      </a>
-
-      <a href="https://agootson.is-a.dev/gallery.html">
-        <span class="icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
-        <span class="nav-label">Gallery</span>
       </a>
 
       <a href="https://agootson.is-a.dev/blog.html">
@@ -592,11 +568,36 @@
         <span class="nav-label">Blog</span>
       </a>
 
+      <a href="https://agootson.is-a.dev/skills.html">
+        <span class="icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+        <span class="nav-label">Skills</span>
+      </a>
+
+      <a href="https://agootson.is-a.dev/gallery.html">
+        <span class="icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
+        <span class="nav-label">Gallery</span>
+      </a>
+
+      <a href="https://agootson.is-a.dev/project.html">
+        <span class="icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span>
+        <span class="nav-label">Projects</span>
+      </a>
+
+      <a href="https://agootson.is-a.dev/services.html">
+        <span class="icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+        <span class="nav-label">Services</span>
+      </a>
+
+      <a href="https://agootson.is-a.dev/about.html">
+        <span class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
+        <span class="nav-label">About Me</span>
+      </a>
+
       <a href="https://agootson.is-a.dev/contact.html">
         <span class="icon"><i class="fa-regular fa-paper-plane" aria-hidden="true"></i></span>
         <span class="nav-label">Contact Me</span>
       </a>
-    </nav>
+        </nav>
 
   </aside>
 
