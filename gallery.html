@@ -452,15 +452,28 @@
       document.body.style.overflow = "hidden";
     }
 
+    function resolveImagePath(image) {
+      if (!image) return "";
+      if (image.startsWith("http://") || image.startsWith("https://") || image.startsWith("/")) {
+        return image;
+      }
+      if (image.startsWith("images/")) {
+        return "/" + image;
+      }
+      return "/images/" + image;
+    }
+
     function createMemoryCard(photo) {
+      const imagePath = resolveImagePath(photo.image);
+
       const card = document.createElement("article");
       card.className = "memory";
-      card.dataset.image = photo.image;
+      card.dataset.image = imagePath;
       card.dataset.title = photo.title;
       card.dataset.description = photo.description;
 
       const img = document.createElement("img");
-      img.src = photo.image;
+      img.src = imagePath;
       img.alt = photo.title + " — David Agootson";
       img.loading = "lazy";
       img.decoding = "async";
@@ -478,7 +491,7 @@
       actions.className = "memory-actions";
 
       const download = document.createElement("a");
-      download.href = photo.image;
+      download.href = imagePath;
       download.setAttribute("download", "");
       download.textContent = "Download";
 
@@ -494,7 +507,7 @@
 
     async function loadGallery() {
       try {
-        const response = await fetch("images/photos.json", { cache: "no-store" });
+        const response = await fetch("/images/photos.json", { cache: "no-store" });
 
         if (!response.ok) {
           throw new Error("Unable to load photos.json");
