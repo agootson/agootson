@@ -507,30 +507,46 @@
 
     async function loadGallery() {
       try {
-        const response = await fetch("/images/photos.json", { cache: "no-store" });
+        // Use the site-root path so this works on the custom domain.
+        // The timestamp also prevents an old cached JSON response from being used.
+        const jsonUrl = "/images/photos.json?v=" + Date.now();
+        const response = await fetch(jsonUrl, {
+          method: "GET",
+          cache: "no-store",
+          headers: { "Accept": "application/json" }
+        });
 
         if (!response.ok) {
-          throw new Error("Unable to load photos.json");
+          throw new Error(`photos.json returned HTTP ${response.status}`);
         }
 
-        const photos = await response.json();
+        // Read as text first so a UTF-8 BOM or unusual JSON content type cannot
+        // make response.json() fail unnecessarily.
+        const raw = await response.text();
+        const photos = JSON.parse(raw.replace(/^\uFEFF/, "").trim());
 
         if (!Array.isArray(photos)) {
           throw new Error("photos.json must contain an array of photos");
         }
 
         const fragment = document.createDocumentFragment();
+        let validPhotos = 0;
 
         photos.forEach(photo => {
-          if (!photo.image || !photo.title) return;
+          if (!photo || !photo.image || !photo.title) return;
           fragment.appendChild(createMemoryCard(photo));
+          validPhotos++;
         });
+
+        if (!validPhotos) {
+          throw new Error("photos.json contains no valid photo entries");
+        }
 
         memoryGrid.replaceChildren(fragment);
       } catch (error) {
         console.error("Gallery loading error:", error);
         memoryGrid.innerHTML =
-          '<p style="grid-column:1/-1;color:#747981;padding:20px 0;">Unable to load the photo journal right now.</p>';
+          '<p style="grid-column:1/-1;color:#747981;padding:20px 0;">Unable to load the photo journal right now. Please refresh the page.</p>';
       }
     }
 
