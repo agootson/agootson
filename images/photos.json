@@ -1,8 +1,74 @@
 [
   {
+    "image": "images/Handover of the bike.jpeg",
+    "title": "Handover of the bike",
+    "description": "A memorable moment during the handover of the bike.",
+    "category": "Daily life"
+  },
+  {
+    "image": "images/Evening break.jpeg",
+    "title": "Evening break",
+    "description": "A quiet evening moment captured during a break.",
+    "category": "Journey"
+  },
+  {
+    "image": "images/The new bike.jpeg",
+    "title": "The new bike",
+    "description": "A memorable moment with the new bike.",
+    "category": "Journey"
+  },
+  {
+    "image": "images/WhatsApp Image 2026-09-03 at 7.25.30 PM.jpeg",
+    "title": "A day at college",
+    "description": "A moment from my college life — one of the everyday experiences behind my journey as a Computer Science student.",
+    "category": "Daily life"
+  },
+  {
+    "image": "images/WhatsApp Image 2026-09-03 at 7.25.29 PM.jpeg",
+    "title": "A moment from the journey",
+    "description": "A personal snapshot from my daily life and the experiences I am collecting while studying and building.",
+    "category": "Daily life"
+  },
+  {
+    "image": "images/CKP.jpeg",
+    "title": "CKP",
+    "description": "A personal moment captured in CKP.",
+    "category": "Daily life"
+  },
+  {
+    "image": "images/Daman.jpeg",
+    "title": "Daman",
+    "description": "A moment from my time in Daman.",
+    "category": "Daily life"
+  },
+  {
+    "image": "images/Guitar.jpeg",
+    "title": "Guitar",
+    "description": "A musical moment with the guitar.",
+    "category": "Daily life"
+  },
+  {
+    "image": "images/SSD.jpeg",
+    "title": "With Ahmedabad SSD Football team",
+    "description": "A personal memory connected with South Sudan.",
+    "category": "Daily life"
+  },
+  {
     "image": "images/Anand.jpeg",
     "title": "With a friend in Anand",
-    "description": "During my trip from Anand to Surat.",
+    "description": "A personal memory connected with South Sudan.",
     "category": "Journey"
+  },
+  {
+    "image": "images/Seated.jpeg",
+    "title": "After some guitar momemt",
+    "description": "A quiet everyday moment.",
+    "category": "Daily life"
+  },
+  {
+    "image": "images/Uka.jpeg",
+    "title": "At UKA hostel",
+    "description": "Another moment from my daily-life photo journal.",
+    "category": "Daily life"
   }
 ]
