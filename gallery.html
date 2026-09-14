@@ -377,11 +377,17 @@
     .comment-box { margin-top:24px; padding-top:20px; border-top:1px solid var(--line); }
     .comment-box h3 { font-size:.9rem; }
     .comment-box p { font-size:.64rem; color:var(--muted); line-height:1.5; }
+    .comment-box input {
+      width:100%; margin-top:10px; border:1px solid var(--line); border-radius:7px;
+      padding:10px; font:inherit; font-size:.68rem; outline:none;
+    }
     .comment-box textarea {
-      width:100%; min-height:82px; margin-top:10px; resize:vertical; border:1px solid var(--line);
+      width:100%; min-height:82px; margin-top:8px; resize:vertical; border:1px solid var(--line);
       border-radius:7px; padding:10px; font:inherit; font-size:.68rem; outline:none;
     }
-    .comment-box textarea:focus { border-color:#e9a4a8; box-shadow:0 0 0 3px var(--red-soft); }
+    .comment-box input:focus, .comment-box textarea:focus {
+      border-color:#e9a4a8; box-shadow:0 0 0 3px var(--red-soft);
+    }
     .comment-box button {
       margin-top:7px; border:0; border-radius:7px; padding:9px 12px; background:var(--red);
       color:white; font-size:.63rem; font-weight:800; cursor:pointer;
@@ -390,8 +396,10 @@
     .comment { padding:10px; border:1px solid var(--line); border-radius:7px; background:#fafbfc; }
     .comment small { color:#9297a0; font-size:.55rem; }
     .comment p { margin-top:5px; color:#555c65; font-size:.65rem; line-height:1.55; }
-    .comment-delete { float:right; border:0; background:none; color:#a0a5ad; cursor:pointer; font-size:.58rem; }
-    .comment-delete:hover { color:var(--red); }
+    .comment-author { color:var(--text); font-weight:800; }
+    .comment-status { margin-top:8px!important; min-height:1em; }
+    .comment-status.success { color:#2e7d32!important; }
+    .comment-status.error { color:var(--red)!important; }
     .gallery-error { grid-column:1 / -1; padding:22px; border:1px solid #f0c3c6; border-radius:10px; background:var(--red-soft); color:var(--text); }
     .gallery-error strong { display:block; color:var(--red); font-size:.82rem; margin-bottom:8px; }
     .gallery-error p { font-size:.76rem; line-height:1.6; }
@@ -494,9 +502,11 @@
           </div>
           <div class="comment-box">
             <h3>Visitor notes</h3>
-            <p>Comments are stored in this browser only. A backend is required for public comments shared between visitors.</p>
-            <textarea id="commentInput" maxlength="500" placeholder="Write a comment about this memory..."></textarea>
-            <button id="commentSubmit" type="button">Add Comment</button>
+            <p>Share your thoughts about this memory. Comments are reviewed before they appear publicly.</p>
+            <input id="commentName" maxlength="80" placeholder="Your name" aria-label="Your name">
+            <textarea id="commentInput" maxlength="500" placeholder="Write a comment about this memory..." aria-label="Your comment"></textarea>
+            <button id="commentSubmit" type="button">Submit Comment</button>
+            <p class="comment-status" id="commentStatus" aria-live="polite"></p>
             <div class="comment-list" id="commentList"></div>
           </div>
         </div>
@@ -518,7 +528,12 @@
       <p class="copyright">© <span id="year"></span> David Agootson. All rights reserved.</p>
     </footer>
   </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
+    const SUPABASE_URL = "https://jxfrevwvpyxbljfkrhyo.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dEtGqJaPQmhdgiGgkMwQRw_LI6Itzwo";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
     const sidebar = document.getElementById("sidebar");
     const collapse = document.getElementById("collapse");
     const mobileMenu = document.getElementById("mobileMenu");
@@ -548,8 +563,10 @@
     const lightboxPrev = document.getElementById("lightboxPrev");
     const lightboxNext = document.getElementById("lightboxNext");
     const lightboxCounter = document.getElementById("lightboxCounter");
+    const commentName = document.getElementById("commentName");
     const commentInput = document.getElementById("commentInput");
     const commentSubmit = document.getElementById("commentSubmit");
+    const commentStatus = document.getElementById("commentStatus");
     const commentList = document.getElementById("commentList");
     const memoryGrid = document.getElementById("memoryGrid");
     const timelineView = document.getElementById("timelineView");
@@ -572,7 +589,6 @@
     let favoritesOnly = false;
 
     const FAVORITES_KEY = "david-gallery-favorites-v1";
-    const COMMENTS_KEY = "david-gallery-comments-v1";
 
     function getFavorites() {
       try { return new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]")); }
@@ -594,12 +610,6 @@
         updateLightboxFavorite(photo);
       }
     }
-
-    function getComments() {
-      try { return JSON.parse(localStorage.getItem(COMMENTS_KEY) || "{}"); }
-      catch { return {}; }
-    }
-    function saveComments(comments) { localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments)); }
 
     function formatDate(value) {
       if (!value) return "Date not added";
@@ -662,7 +672,33 @@
     }
 
     function buildFilters() {
-      const categories = ["All", ...new Set(photos.map(p => p.category).filter(Boolean))];
+      // Available category options for the photo journal.
+      // Categories already used in photos.json are kept, while these
+      // additional options are available for future memories.
+      const availableCategories = [
+        "Daily life",
+        "College",
+        "Journey",
+        "Travel",
+        "Friends",
+        "Family",
+        "Events",
+        "Food",
+        "Places",
+        "Nature",
+        "Projects",
+        "Technology",
+        "Sports",
+        "Music",
+        "Vehicles",
+        "Festivals",
+        "Achievements",
+        "Memories",
+        "Other"
+      ];
+
+      const usedCategories = photos.map(p => p.category).filter(Boolean);
+      const categories = ["All", ...new Set([...availableCategories, ...usedCategories])];
       categoryCount.textContent = Math.max(0, categories.length - 1);
       filterBar.replaceChildren();
       categories.forEach(category => {
@@ -778,29 +814,48 @@
         : '<i class="fa-regular fa-heart"></i> Favorite';
     }
 
-    function renderComments(photo) {
-      const comments = getComments()[photoKey(photo)] || [];
+    async function renderComments(photo) {
       commentList.replaceChildren();
-      if (!comments.length) {
+      commentStatus.textContent = "";
+      commentStatus.className = "comment-status";
+
+      const { data, error } = await supabaseClient
+        .from("comments")
+        .select("id, name, comment, created_at")
+        .eq("photo_id", photoKey(photo))
+        .eq("status", "approved")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("[Comments] Load failed:", error);
         const note = document.createElement("p");
         note.className = "comment-note";
-        note.textContent = "No comments in this browser yet.";
+        note.textContent = "Comments are temporarily unavailable.";
         commentList.appendChild(note);
         return;
       }
-      comments.forEach((comment, index) => {
+
+      if (!data.length) {
+        const note = document.createElement("p");
+        note.className = "comment-note";
+        note.textContent = "No approved comments yet. Be the first to share a thought.";
+        commentList.appendChild(note);
+        return;
+      }
+
+      data.forEach(comment => {
         const item = document.createElement("div");
         item.className = "comment";
-        const del = document.createElement("button");
-        del.type = "button";
-        del.className = "comment-delete";
-        del.dataset.commentIndex = index;
-        del.textContent = "Delete";
         const small = document.createElement("small");
-        small.textContent = new Date(comment.createdAt).toLocaleString();
+        const author = document.createElement("span");
+        author.className = "comment-author";
+        author.textContent = comment.name || "Visitor";
+        const date = document.createElement("span");
+        date.textContent = " · " + new Date(comment.created_at).toLocaleString();
+        small.append(author, date);
         const p = document.createElement("p");
-        p.textContent = comment.text;
-        item.append(del, small, p);
+        p.textContent = comment.comment;
+        item.append(small, p);
         commentList.appendChild(item);
       });
     }
@@ -819,8 +874,11 @@
       lightboxDownload.href = imagePath;
       lightboxCounter.textContent = `${currentIndex + 1} / ${filteredPhotos.length}`;
       updateLightboxFavorite(photo);
-      renderComments(photo);
       commentInput.value = "";
+      commentName.value = "";
+      commentStatus.textContent = "";
+      commentStatus.className = "comment-status";
+      renderComments(photo);
       lightbox.classList.add("show");
       document.body.style.overflow = "hidden";
       lightboxClose.focus();
@@ -860,18 +918,54 @@
       }
     }
 
-    function addComment() {
+    async function addComment() {
       if (currentIndex < 0) return;
+
+      const name = commentName.value.trim();
       const text = commentInput.value.trim();
-      if (!text) return;
       const photo = filteredPhotos[currentIndex];
-      const comments = getComments();
-      const key = photoKey(photo);
-      comments[key] = comments[key] || [];
-      comments[key].push({ text, createdAt: new Date().toISOString() });
-      saveComments(comments);
+
+      commentStatus.textContent = "";
+      commentStatus.className = "comment-status";
+
+      if (!name) {
+        commentStatus.textContent = "Please enter your name.";
+        commentStatus.classList.add("error");
+        commentName.focus();
+        return;
+      }
+      if (!text) {
+        commentStatus.textContent = "Please write a comment.";
+        commentStatus.classList.add("error");
+        commentInput.focus();
+        return;
+      }
+
+      commentSubmit.disabled = true;
+      commentSubmit.textContent = "Submitting…";
+
+      const { error } = await supabaseClient.from("comments").insert({
+        name,
+        comment: text,
+        photo_id: photoKey(photo),
+        status: "pending"
+      });
+
+      commentSubmit.disabled = false;
+      commentSubmit.textContent = "Submit Comment";
+
+      if (error) {
+        console.error("[Comments] Submit failed:", error);
+        commentStatus.textContent = "Could not submit your comment. Please try again.";
+        commentStatus.classList.add("error");
+        return;
+      }
+
+      commentName.value = "";
       commentInput.value = "";
-      renderComments(photo);
+      await renderComments(photo);
+      commentStatus.textContent = "Thanks! Your comment was submitted for review.";
+      commentStatus.classList.add("success");
     }
 
     filterBar.addEventListener("click", event => {
@@ -933,17 +1027,6 @@
     commentInput.addEventListener("keydown", event => {
       if ((event.ctrlKey || event.metaKey) && event.key === "Enter") addComment();
     });
-    commentList.addEventListener("click", event => {
-      const button = event.target.closest("[data-comment-index]");
-      if (!button || currentIndex < 0) return;
-      const photo = filteredPhotos[currentIndex];
-      const comments = getComments();
-      const key = photoKey(photo);
-      comments[key]?.splice(Number(button.dataset.commentIndex), 1);
-      saveComments(comments);
-      renderComments(photo);
-    });
-
     document.addEventListener("keydown", event => {
       if (!lightbox.classList.contains("show")) return;
       if (event.key === "Escape") closeLightbox();
