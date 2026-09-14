@@ -9,6 +9,7 @@
 <meta property="og:description" id="ogDescription" content="Articles, lessons, projects and ideas from David Agootson.">
 <meta property="og:type" content="article">
 <title id="pageTitle">Blog | David Agootson</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -134,6 +135,8 @@ body.collapsed .main{margin-left:var(--sidebar-small)}
 .admin-trigger{display:none}
 body.local-admin .admin-trigger{display:inline-flex}
 .local-admin-bar{display:none;margin-top:20px;padding:13px 15px;border:1px dashed #e0a2a6;background:var(--red-soft);border-radius:9px;color:#8d2025;font-size:.66rem;font-weight:700}
+  .supabase-admin-bar{display:none;margin-top:20px;padding:13px 15px;border:1px dashed #e0a2a6;background:var(--red-soft);border-radius:9px;color:#8d2025;font-size:.66rem;font-weight:700;align-items:center;justify-content:space-between;gap:10px}
+  .supabase-admin-bar.show{display:flex}.admin-auth{margin-top:18px;padding:16px;background:#f8f9fb;border:1px solid var(--line);border-radius:10px}.admin-auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.admin-auth small{display:block;color:var(--muted);font-size:.62rem;line-height:1.6;margin-bottom:10px}.admin-user{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:#f8f9fb;border:1px solid var(--line);border-radius:8px;font-size:.65rem}.admin-user strong{font-size:.68rem}.admin-lock{color:#16824a;font-weight:800}
 body.local-admin .local-admin-bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .admin-panel{display:none;position:fixed;inset:0;z-index:2000;background:rgba(20,27,39,.5);padding:30px}
 .admin-panel.show{display:flex;align-items:center;justify-content:center}
@@ -176,7 +179,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
   .container,footer{width:calc(100% - 28px)}.page h1{font-size:clamp(2.65rem,14vw,4rem)}
   .lead{font-size:.78rem}.toolbar{grid-template-columns:1fr}.grid{grid-template-columns:1fr}
   .newsletter-input{grid-template-columns:1fr}.newsletter-input button{min-height:43px}
-  .form-grid,.admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
+  .form-grid,.admin-grid,.admin-auth-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
   footer{grid-template-columns:1fr;text-align:center}.copyright{grid-column:auto}
   .admin-panel{padding:12px}
 }
@@ -210,9 +213,9 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     <h1>Ideas, lessons & <span>things worth sharing.</span></h1>
     <p class="lead">A publishing space for Computer Science, web development, programming, projects, technology and lessons from my journey as a student builder.</p>
 
-    <div class="local-admin-bar">
-      <span><i class="fa-solid fa-flask"></i> Local prototype mode: articles, comments, likes and subscribers are stored only in this browser until Supabase is connected.</span>
-      <button class="btn secondary admin-trigger" id="openAdmin">Open Publisher</button>
+    <div class="supabase-admin-bar" id="adminBar">
+      <span><i class="fa-solid fa-database"></i> Supabase-powered blog. Publishing and moderation require your authenticated admin account.</span>
+      <button class="btn secondary" id="openAdmin">Open Publisher</button>
     </div>
 
     <div class="toolbar">
@@ -249,7 +252,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
             <button class="btn" type="submit" id="newsletterButton">Subscribe</button>
           </div>
           <p id="newsletterStatus" class="newsletter-status"></p>
-          <p class="newsletter-note">No spam. Unsubscribe anytime. Email delivery will be connected through Resend after Supabase integration.</p>
+          <p class="newsletter-note">No spam. Unsubscribe anytime. Newsletter subscribers are securely stored in Supabase.</p>
         </form>
       </div>
     </section>
@@ -279,7 +282,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
           </div>
           <textarea id="commentText" maxlength="1000" placeholder="Join the conversation..."></textarea>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px">
-            <span style="font-size:.61rem;color:#969ba3">Be respectful. Spam moderation will be connected with Supabase.</span>
+            <span style="font-size:.61rem;color:#969ba3">Be respectful. Comments are held for moderation before they appear publicly.</span>
             <button class="btn" id="commentSubmit">Post comment</button>
           </div>
           <p id="commentStatus" class="form-status"></p>
@@ -309,358 +312,847 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 </footer>
 </main>
 
-<!-- Local publisher prototype. This is intentionally not secure and will be replaced by Supabase Auth/RLS. -->
+<!-- Secure Supabase publisher. Access is protected by Supabase Auth + admin RLS. -->
 <div class="admin-panel" id="adminPanel" aria-hidden="true">
   <div class="admin-box">
     <div class="admin-head">
       <div>
-        <div class="eyebrow">LOCAL PUBLISHER</div>
+        <div class="eyebrow">SUPABASE PUBLISHER</div>
         <h2>Blog content manager</h2>
       </div>
       <button class="close" id="closeAdmin" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
-    <form class="editor" id="editorForm" style="margin-top:18px">
-      <input type="hidden" id="editId">
-      <div class="admin-grid">
-        <div class="editor full"><label>Title</label><input id="editTitle" required maxlength="180" placeholder="Article title"></div>
-        <div class="editor"><label>Category</label><input id="editCategory" required maxlength="50" placeholder="Technology"></div>
-        <div class="editor"><label>Tags (comma separated)</label><input id="editTags" maxlength="180" placeholder="JavaScript, Learning"></div>
-        <div class="editor"><label>Excerpt</label><textarea id="editExcerpt" style="min-height:90px" required maxlength="300"></textarea></div>
-        <div class="editor"><label>Cover image URL (optional)</label><input id="editCover" placeholder="images/cover.jpg"></div>
-        <div class="editor full"><label>Article content (HTML supported in this prototype)</label><textarea id="editContent" required placeholder="<p>Write your article...</p>"></textarea></div>
-        <div class="editor"><label>Status</label>
-          <select id="editStatus"><option value="published">Published</option><option value="draft">Draft</option></select>
-        </div>
-        <div class="editor"><label>Publication date</label><input id="editDate" type="datetime-local"></div>
+    <div class="admin-auth" id="adminAuth">
+      <small>Sign in with an existing Supabase Auth account. Only users listed in <code>admin_users</code> can manage articles.</small>
+      <div class="admin-auth-grid">
+        <input id="adminEmail" type="email" autocomplete="username" placeholder="Admin email">
+        <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Password">
       </div>
       <div class="admin-actions">
-        <button class="btn" type="submit" id="saveArticle">Save article</button>
-        <button class="btn secondary" type="button" id="newArticle">Clear / New article</button>
-        <button class="btn secondary" type="button" id="exportData">Export local content</button>
+        <button class="btn" type="button" id="adminLogin">Sign in</button>
       </div>
-      <p id="editorStatus" class="form-status"></p>
-    </form>
+      <p id="authStatus" class="form-status"></p>
+    </div>
 
-    <div class="admin-posts" id="adminPosts"></div>
+    <div id="adminWorkspace" hidden>
+      <div class="admin-user">
+        <span>Signed in as <strong id="adminUserEmail"></strong></span>
+        <span class="admin-lock"><i class="fa-solid fa-shield-halved"></i> Admin</span>
+        <button class="btn secondary" type="button" id="adminLogout">Sign out</button>
+      </div>
+
+      <form class="editor" id="editorForm" style="margin-top:18px">
+        <input type="hidden" id="editId">
+        <div class="admin-grid">
+          <div class="editor full"><label>Title</label><input id="editTitle" required maxlength="180" placeholder="Article title"></div>
+          <div class="editor"><label>Category</label><input id="editCategory" required maxlength="50" placeholder="Technology"></div>
+          <div class="editor"><label>Tags (comma separated)</label><input id="editTags" maxlength="180" placeholder="JavaScript, Learning"></div>
+          <div class="editor"><label>Excerpt</label><textarea id="editExcerpt" style="min-height:90px" required maxlength="300"></textarea></div>
+          <div class="editor"><label>Cover image URL (optional)</label><input id="editCover" placeholder="images/cover.jpg"></div>
+          <div class="editor full"><label>Article content (HTML supported)</label><textarea id="editContent" required placeholder="<p>Write your article...</p>"></textarea></div>
+          <div class="editor"><label>Status</label>
+            <select id="editStatus">
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+              <option value="scheduled">Scheduled</option>
+              <option value="archived">Archived</option>
+            </select>
+          </div>
+          <div class="editor"><label>Publication / schedule date</label><input id="editDate" type="datetime-local"></div>
+        </div>
+        <div class="admin-actions">
+          <button class="btn" type="submit" id="saveArticle">Save article</button>
+          <button class="btn secondary" type="button" id="newArticle">Clear / New article</button>
+          <button class="btn secondary" type="button" id="seedArticles">Import starter articles</button>
+        </div>
+        <p id="editorStatus" class="form-status"></p>
+      </form>
+
+      <div class="admin-posts" id="adminPosts"></div>
+    </div>
   </div>
 </div>
 
 <script>
 (() => {
-  const STORAGE = {
-    posts: "agootson_blog_posts_v2",
-    likes: "agootson_blog_likes_v2",
-    views: "agootson_blog_views_v2",
-    comments: "agootson_blog_comments_v2",
-    subscribers: "agootson_newsletter_subscribers_v2"
-  };
+  "use strict";
+
+  const SUPABASE_URL = "https://jxfrevwvpyxbljfkrhyo.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dEtGqJaPQmhdgiGgkMwQRw_LI6Itzwo";
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+  const slugify = s => String(s).toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
 
   const seedPosts = [
     {
-      id:"web-development-real-things", slug:"web-development-real-things",
       title:"Learning Web Development by Building Real Things",
-      category:"Web Development", tags:["Web Development","Learning"],
+      slug:"web-development-real-things",
+      category:"Web Development",
+      tags:["Web Development","Learning"],
       excerpt:"A practical look at how building websites turns HTML, CSS, JavaScript and responsive design concepts into real experience.",
-      cover:"", status:"published", publishedAt:"2026-09-10T09:00:00",
+      cover_image:"",
+      status:"published",
+      published_at:"2026-09-10T09:00:00",
       content:`<p>Building real websites has taught me that web development becomes much easier to understand when theory is connected to something people can actually use.</p>
       <h3>Start with a small, complete project</h3><p>A small website forces you to think about structure, styling, interaction, responsiveness and deployment at the same time.</p>
       <h3>Learn by improving</h3><p>Instead of trying to master everything first, build, test, identify a weakness and improve it. Each iteration becomes another lesson.</p>
       <blockquote>Real projects turn individual concepts into practical experience.</blockquote>`
     },
     {
-      id:"python-beyond-syntax", slug:"python-beyond-syntax",
       title:"What Python Teaches Beyond Syntax",
-      category:"Programming", tags:["Python","Programming"],
+      slug:"python-beyond-syntax",
+      category:"Programming",
+      tags:["Python","Programming"],
       excerpt:"Lessons from Python practice, exception handling, database operations and solving problems with code.",
-      cover:"", status:"published", publishedAt:"2026-09-07T09:00:00",
+      cover_image:"",
+      status:"published",
+      published_at:"2026-09-07T09:00:00",
       content:`<p>Programming is not only about remembering syntax. Python makes it easier to focus on logic, data and the decisions a program needs to make.</p>
       <h3>Errors are part of the process</h3><p>Exception handling teaches us to expect failure and design programs that respond to it clearly.</p>
       <h3>Code should solve a problem</h3><p>Whether the task involves a database, data analysis or automation, the important skill is translating a problem into a sequence of reliable steps.</p>`
     },
     {
-      id:"understanding-data-analysis", slug:"understanding-data-analysis",
       title:"Understanding Data Through Analysis",
-      category:"Data", tags:["Data","Analysis"],
+      slug:"understanding-data-analysis",
+      category:"Data",
+      tags:["Data","Analysis"],
       excerpt:"A beginner-friendly exploration of measurement scales and univariate, bivariate and multivariate analysis.",
-      cover:"", status:"published", publishedAt:"2026-09-03T09:00:00",
+      cover_image:"",
+      status:"published",
+      published_at:"2026-09-03T09:00:00",
       content:`<p>Data analysis becomes clearer when we understand what kind of data we have and what question we are trying to answer.</p>
       <h3>Choose the right perspective</h3><p>Univariate analysis focuses on one variable, bivariate analysis studies relationships between two variables, and multivariate analysis considers several variables together.</p>
       <p>Good analysis begins before the calculation: define the question, understand the data and select an appropriate method.</p>`
     },
     {
-      id:"microprocessors-hardware", slug:"microprocessors-hardware",
       title:"From Hardware to Software: What Microprocessors Teach Me",
-      category:"Computer Science", tags:["Microprocessors","CSE"],
+      slug:"microprocessors-hardware",
+      category:"Computer Science",
+      tags:["Microprocessors","CSE"],
       excerpt:"Reflections from studying microprocessors and understanding the hardware foundations behind computing.",
-      cover:"", status:"published", publishedAt:"2026-08-29T09:00:00",
+      cover_image:"",
+      status:"published",
+      published_at:"2026-08-29T09:00:00",
       content:`<p>Microprocessors provide a useful reminder that software does not exist in isolation. Instructions eventually have to be represented and executed by hardware.</p>
       <h3>Understanding the machine</h3><p>Registers, the ALU, control logic, buses and memory interactions help connect high-level programming ideas to the physical operation of a computer.</p>`
     },
     {
-      id:"compiler-design", slug:"compiler-design", title:"Making Sense of Compiler Design",
-      category:"Theory", tags:["Compiler Design","Theory"],
+      title:"Making Sense of Compiler Design",
+      slug:"compiler-design",
+      category:"Theory",
+      tags:["Compiler Design","Theory"],
       excerpt:"How grammars, productions and language-processing concepts connect the rules we write to programs computers can process.",
-      cover:"", status:"published", publishedAt:"2026-08-25T09:00:00",
+      cover_image:"",
+      status:"published",
+      published_at:"2026-08-25T09:00:00",
       content:`<p>Compiler design is where formal language theory meets practical programming. Grammars describe valid structures while compiler phases transform source code into forms a machine can execute.</p>
       <h3>From rules to programs</h3><p>Understanding productions, parsing and syntax helps explain why programming languages behave consistently and how source code is processed.</p>`
     },
     {
-      id:"student-builder", slug:"student-builder", title:"My Journey as a Student Builder",
-      category:"Personal", tags:["Journey","Personal"],
+      title:"My Journey as a Student Builder",
+      slug:"student-builder",
+      category:"Personal",
+      tags:["Journey","Personal"],
       excerpt:"From early web pages to studying Computer Science at GTU, a continuing story of learning, experimentation and growth.",
-      cover:"", status:"published", publishedAt:"2026-08-20T09:00:00",
+      cover_image:"",
+      status:"published",
+      published_at:"2026-08-20T09:00:00",
       content:`<p>Building things while studying Computer Science has become one of the most useful ways for me to connect academic concepts with practical work.</p>
       <h3>Keep experimenting</h3><p>Every project reveals something new: a technical problem, a design decision, a deployment lesson or a better way to communicate an idea.</p>`
     }
   ];
 
-  const $ = id => document.getElementById(id);
-  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const slugify = s => String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
-  const getPosts = () => JSON.parse(localStorage.getItem(STORAGE.posts) || "null") || seedPosts.map(p => ({...p,tags:[...p.tags]}));
-  const savePosts = posts => localStorage.setItem(STORAGE.posts, JSON.stringify(posts));
-  const getMap = key => JSON.parse(localStorage.getItem(key) || "{}");
-  const saveMap = (key,map) => localStorage.setItem(key, JSON.stringify(map));
-  const getComments = () => JSON.parse(localStorage.getItem(STORAGE.comments) || "[]");
-  const saveComments = x => localStorage.setItem(STORAGE.comments, JSON.stringify(x));
-  const getSubscribers = () => JSON.parse(localStorage.getItem(STORAGE.subscribers) || "[]");
-  const saveSubscribers = x => localStorage.setItem(STORAGE.subscribers, JSON.stringify(x));
-
+  let posts = [];
+  let stats = {};
   let currentPost = null;
+  let visitorKey = localStorage.getItem("agootson_blog_visitor_key");
 
-  function isLocalAdmin(){
+  if (!visitorKey) {
+    visitorKey = (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`)
+      .replace(/-/g,"");
+    localStorage.setItem("agootson_blog_visitor_key", visitorKey);
+  }
+
+  function isAdminEntry() {
     return location.hash === "#admin" || new URLSearchParams(location.search).get("admin") === "1";
   }
-  if(isLocalAdmin()) document.body.classList.add("local-admin");
 
-  function categories(){
-    return [...new Set(getPosts().filter(p=>p.status==="published").map(p=>p.category))].sort();
+  function setStatus(el, text, type="") {
+    el.textContent = text;
+    el.className = el.className.replace(/\s?(success|error)\b/g,"").trim();
+    if (type) el.classList.add(type);
   }
 
-  function setupFilters(){
-    const select = $("categoryFilter");
-    select.innerHTML = `<option value="all">All categories</option>` + categories().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  async function isAdmin() {
+    const { data:{ user }, error } = await sb.auth.getUser();
+    if (error || !user) return false;
+    const { data, error:rpcError } = await sb.rpc("is_admin");
+    return !rpcError && data === true;
   }
 
-  function renderList(){
-    const posts = getPosts().filter(p=>p.status==="published");
+  async function loadPosts(includeAdmin=false) {
+    let query = sb.from("blog_posts").select("*");
+
+    if (!includeAdmin) {
+      query = query.eq("status","published")
+        .not("published_at","is",null)
+        .lte("published_at",new Date().toISOString())
+        .order("published_at",{ascending:false});
+    } else {
+      query = query.order("created_at",{ascending:false});
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.error(error);
+      $("articleGrid").innerHTML = `<div class="empty"><i class="fa-solid fa-triangle-exclamation"></i><p>Unable to load articles right now.</p></div>`;
+      $("articleCount").textContent = "Unable to load articles";
+      return [];
+    }
+    return data || [];
+  }
+
+  async function loadStats(list) {
+    const result = {};
+    await Promise.all((list || []).map(async post => {
+      const { data, error } = await sb.rpc("get_blog_stats", {
+        p_post_id: post.id,
+        p_visitor_key: visitorKey
+      });
+      if (!error && data && data[0]) {
+        result[post.id] = data[0];
+      } else {
+        result[post.id] = {like_count:0,view_count:0,liked:false};
+      }
+    }));
+    stats = result;
+  }
+
+  function categories() {
+    return [...new Set(posts.map(p=>p.category).filter(Boolean))].sort();
+  }
+
+  function setupFilters() {
+    $("categoryFilter").innerHTML =
+      `<option value="all">All categories</option>` +
+      categories().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  }
+
+  function renderList() {
     const q = $("search").value.trim().toLowerCase();
     const cat = $("categoryFilter").value;
     const sort = $("sortFilter").value;
-    const likes = getMap(STORAGE.likes), views = getMap(STORAGE.views);
 
     let filtered = posts.filter(p => {
-      const hay = [p.title,p.excerpt,p.category,...(p.tags||[])].join(" ").toLowerCase();
-      return (!q || hay.includes(q)) && (cat==="all" || p.category===cat);
+      const hay = [p.title,p.excerpt,p.category,...(p.tags || [])].join(" ").toLowerCase();
+      return (!q || hay.includes(q)) && (cat === "all" || p.category === cat);
     });
 
     filtered.sort((a,b) => {
-      if(sort==="popular") return (likes[b.id]||0)-(likes[a.id]||0);
-      if(sort==="viewed") return (views[b.id]||0)-(views[a.id]||0);
-      return sort==="oldest" ? new Date(a.publishedAt)-new Date(b.publishedAt) : new Date(b.publishedAt)-new Date(a.publishedAt);
+      if (sort === "popular") return (stats[b.id]?.like_count || 0) - (stats[a.id]?.like_count || 0);
+      if (sort === "viewed") return (stats[b.id]?.view_count || 0) - (stats[a.id]?.view_count || 0);
+      return sort === "oldest"
+        ? new Date(a.published_at) - new Date(b.published_at)
+        : new Date(b.published_at) - new Date(a.published_at);
     });
 
-    $("articleCount").textContent = `${filtered.length} published article${filtered.length===1?"":"s"}`;
+    $("articleCount").textContent =
+      `${filtered.length} published article${filtered.length === 1 ? "" : "s"}`;
+
     $("articleGrid").innerHTML = filtered.length ? filtered.map(p => {
-      const liked = !!likes[p.id];
-      const cover = p.cover ? `<img src="${esc(p.cover)}" alt="" loading="lazy">` : `<i class="fa-solid fa-pen-nib"></i>`;
+      const s = stats[p.id] || {like_count:0,view_count:0,liked:false};
+      const cover = p.cover_image
+        ? `<img src="${esc(p.cover_image)}" alt="" loading="lazy">`
+        : `<i class="fa-solid fa-pen-nib"></i>`;
+
       return `<article class="card article-card">
         <div class="article-cover">${cover}</div>
-        <div class="article-meta"><span class="category">${esc(p.category).toUpperCase()}</span><span>·</span><span>${new Date(p.publishedAt).toLocaleDateString()}</span></div>
+        <div class="article-meta">
+          <span class="category">${esc(p.category).toUpperCase()}</span>
+          <span>·</span>
+          <span>${new Date(p.published_at).toLocaleDateString()}</span>
+        </div>
         <h3>${esc(p.title)}</h3>
         <p>${esc(p.excerpt)}</p>
-        <div class="tags">${(p.tags||[]).map((t,i)=>`<span class="tag ${i===0?'red':''}">${esc(t)}</span>`).join("")}</div>
+        <div class="tags">${(p.tags || []).map((t,i)=>
+          `<span class="tag ${i===0 ? "red" : ""}">${esc(t)}</span>`).join("")}</div>
         <div class="card-actions">
           <a class="read-link" href="?post=${encodeURIComponent(p.slug)}">Read article <i class="fa-solid fa-arrow-right"></i></a>
           <div class="engagement">
-            <button class="icon-btn ${liked?'liked':''}" data-like="${esc(p.id)}" title="Like"><i class="${liked?'fa-solid':'fa-regular'} fa-heart"></i> ${likes[p.id]||0}</button>
-            <button class="icon-btn" data-share="${esc(p.slug)}" title="Share"><i class="fa-solid fa-share-nodes"></i></button>
+            <button class="icon-btn ${s.liked ? "liked" : ""}" data-like="${esc(p.id)}" title="Like">
+              <i class="${s.liked ? "fa-solid" : "fa-regular"} fa-heart"></i> ${s.like_count || 0}
+            </button>
+            <button class="icon-btn" data-share="${esc(p.slug)}" title="Share">
+              <i class="fa-solid fa-share-nodes"></i>
+            </button>
           </div>
         </div>
       </article>`;
-    }).join("") : `<div class="empty"><i class="fa-regular fa-face-frown"></i><p>No articles match your search.</p></div>`;
+    }).join("") : `<div class="empty"><i class="fa-regular fa-face-frown"></i><p>No published articles match your search.</p></div>`;
   }
 
-  function openPost(slug){
-    const post = getPosts().find(p=>p.slug===slug && p.status==="published");
-    if(!post){ showList(); return; }
+  async function openPost(slug, updateHistory=true) {
+    const post = posts.find(p => p.slug === slug);
+    if (!post) {
+      await loadPublic();
+      const retry = posts.find(p => p.slug === slug);
+      if (!retry) { showList(false); return; }
+      return openPost(slug, updateHistory);
+    }
+
     currentPost = post;
-    const views = getMap(STORAGE.views);
-    views[post.id] = (views[post.id]||0)+1;
-    saveMap(STORAGE.views,views);
+
+    const { data:viewCount, error:viewError } = await sb.rpc("record_blog_view", {
+      p_post_id: post.id,
+      p_visitor_key: visitorKey
+    });
+
+    if (!viewError) {
+      stats[post.id] = stats[post.id] || {like_count:0,liked:false};
+      stats[post.id].view_count = Number(viewCount || 0);
+    }
+
+    const s = stats[post.id] || {like_count:0,view_count:Number(viewCount||0),liked:false};
 
     $("blogList").classList.add("hidden");
     $("articleView").classList.add("show");
-    $("articleHero").innerHTML = post.cover ? `<img src="${esc(post.cover)}" alt="${esc(post.title)}">` : `<i class="fa-solid fa-pen-nib"></i>`;
-    $("articleMeta").innerHTML = `<span class="tag red">${esc(post.category)}</span><span>${new Date(post.publishedAt).toLocaleDateString()}</span><span>·</span><span>${views[post.id]} view${views[post.id]===1?"":"s"}</span>`;
+    $("articleHero").innerHTML = post.cover_image
+      ? `<img src="${esc(post.cover_image)}" alt="${esc(post.title)}">`
+      : `<i class="fa-solid fa-pen-nib"></i>`;
+    $("articleMeta").innerHTML =
+      `<span class="tag red">${esc(post.category)}</span>` +
+      `<span>${new Date(post.published_at).toLocaleDateString()}</span>` +
+      `<span>·</span><span>${Number(s.view_count || 0)} view${Number(s.view_count || 0) === 1 ? "" : "s"}</span>`;
     $("articleTitle").textContent = post.title;
     $("articleExcerpt").textContent = post.excerpt;
     $("articleContent").innerHTML = post.content;
-    $("articleStats").textContent = `${getMap(STORAGE.likes)[post.id]||0} likes · ${getComments().filter(c=>c.postId===post.id).length} comments`;
-    const liked = !!getMap(STORAGE.likes)[post.id];
-    $("articleLike").classList.toggle("liked",liked);
-    $("articleLike").innerHTML = `<i class="${liked?'fa-solid':'fa-regular'} fa-heart"></i> ${liked?'Liked':'Like'} (${getMap(STORAGE.likes)[post.id]||0})`;
-    renderComments();
+    $("articleStats").textContent = `${Number(s.like_count || 0)} likes`;
+    $("articleLike").classList.toggle("liked",!!s.liked);
+    $("articleLike").innerHTML =
+      `<i class="${s.liked ? "fa-solid" : "fa-regular"} fa-heart"></i> ${s.liked ? "Liked" : "Like"} (${Number(s.like_count || 0)})`;
+
+    await renderComments();
+
     document.title = `${post.title} | David Agootson`;
     $("metaDescription").setAttribute("content",post.excerpt);
     $("ogTitle").setAttribute("content",post.title);
     $("ogDescription").setAttribute("content",post.excerpt);
-    history.pushState({post:post.slug},"",`?post=${encodeURIComponent(post.slug)}`);
+
+    if (updateHistory) {
+      history.pushState({post:post.slug},"",`?post=${encodeURIComponent(post.slug)}`);
+    }
     window.scrollTo({top:0,behavior:"smooth"});
   }
 
-  function showList(){
+  function showList(updateHistory=true) {
     currentPost = null;
     $("articleView").classList.remove("show");
     $("blogList").classList.remove("hidden");
-    document.title="Blog | David Agootson";
-    $("metaDescription").setAttribute("content","Articles and posts by David Agootson about Computer Science, web development, programming, learning and technology.");
-    history.pushState({},"","blog.html");
+    document.title = "Blog | David Agootson";
+    $("metaDescription").setAttribute("content",
+      "Articles and posts by David Agootson about Computer Science, web development, programming, learning and technology.");
+    $("ogTitle").setAttribute("content","Blog | David Agootson");
+    $("ogDescription").setAttribute("content","Articles, lessons, projects and ideas from David Agootson.");
+    if (updateHistory) history.pushState({},"","blog.html");
     window.scrollTo({top:0,behavior:"smooth"});
   }
 
-  function renderComments(){
-    if(!currentPost) return;
-    const comments = getComments().filter(c=>c.postId===currentPost.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  async function renderComments() {
+    if (!currentPost) return;
+
+    const { data, error } = await sb.from("blog_comments_public")
+      .select("id,post_id,parent_id,name,comment,created_at")
+      .eq("post_id",currentPost.id)
+      .order("created_at",{ascending:false});
+
+    if (error) {
+      $("commentList").innerHTML = `<div class="empty"><p>Comments are temporarily unavailable.</p></div>`;
+      return;
+    }
+
+    const comments = data || [];
     $("commentCount").textContent = comments.length ? `(${comments.length})` : "";
-    $("commentList").innerHTML = comments.length ? comments.map(c=>`<div class="comment">
-      <div class="comment-top"><strong>${esc(c.name)}</strong><time>${new Date(c.createdAt).toLocaleString()}</time></div>
-      <p>${esc(c.text)}</p>
-      <div class="comment-actions"><button type="button"><i class="fa-regular fa-heart"></i> Like</button><button type="button">Reply</button></div>
-    </div>`).join("") : `<div class="empty"><p>No comments yet. Start the conversation.</p></div>`;
+    $("articleStats").textContent =
+      `${Number(stats[currentPost.id]?.like_count || 0)} likes · ${comments.length} comments`;
+
+    $("commentList").innerHTML = comments.length ? comments.map(c => `
+      <div class="comment">
+        <div class="comment-top">
+          <strong>${esc(c.name)}</strong>
+          <time>${new Date(c.created_at).toLocaleString()}</time>
+        </div>
+        <p>${esc(c.comment)}</p>
+        <div class="comment-actions">
+          <button type="button" disabled title="Comment likes coming in a later moderation update">
+            <i class="fa-regular fa-heart"></i> Like
+          </button>
+          <button type="button" disabled title="Replies will be managed from the admin panel">
+            Reply
+          </button>
+        </div>
+      </div>`).join("")
+      : `<div class="empty"><p>No approved comments yet. Start the conversation.</p></div>`;
   }
 
-  async function sharePost(post){
+  async function sharePost(post) {
     const url = `${location.origin}${location.pathname}?post=${encodeURIComponent(post.slug)}`;
-    if(navigator.share){
-      try { await navigator.share({title:post.title,text:post.excerpt,url}); } catch(e){}
+    if (navigator.share) {
+      try {
+        await navigator.share({title:post.title,text:post.excerpt,url});
+      } catch (e) {}
     } else {
-      await navigator.clipboard?.writeText(url);
-      alert("Article link copied.");
+      try {
+        await navigator.clipboard.writeText(url);
+        alert("Article link copied.");
+      } catch (e) {
+        alert(url);
+      }
     }
   }
 
-  $("articleGrid").addEventListener("click", e => {
+  async function toggleLike(postId) {
+    const { data, error } = await sb.rpc("toggle_blog_like", {
+      p_post_id:postId,
+      p_visitor_key:visitorKey
+    });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const row = data && data[0];
+    if (!row) return;
+
+    stats[postId] = stats[postId] || {view_count:0};
+    stats[postId].liked = !!row.liked;
+    stats[postId].like_count = Number(row.like_count || 0);
+
+    renderList();
+
+    if (currentPost && currentPost.id === postId) {
+      $("articleLike").classList.toggle("liked",!!row.liked);
+      $("articleLike").innerHTML =
+        `<i class="${row.liked ? "fa-solid" : "fa-regular"} fa-heart"></i> ${row.liked ? "Liked" : "Like"} (${Number(row.like_count || 0)})`;
+      const commentsText = $("commentCount").textContent.replace(/[()]/g,"") || "0";
+      $("articleStats").textContent =
+        `${Number(row.like_count || 0)} likes · ${commentsText} comments`;
+    }
+  }
+
+  async function loadPublic() {
+    posts = await loadPosts(false);
+    await loadStats(posts);
+    setupFilters();
+    renderList();
+  }
+
+  function resetEditor() {
+    $("editorForm").reset();
+    $("editId").value = "";
+    $("editStatus").value = "published";
+    $("editDate").value = new Date(Date.now() + 5 * 60 * 1000).toISOString().slice(0,16);
+    $("editorStatus").textContent = "";
+  }
+
+  function loadEditor(post) {
+    $("editId").value = post.id;
+    $("editTitle").value = post.title || "";
+    $("editCategory").value = post.category || "";
+    $("editTags").value = (post.tags || []).join(", ");
+    $("editExcerpt").value = post.excerpt || "";
+    $("editCover").value = post.cover_image || "";
+    $("editContent").value = post.content || "";
+    $("editStatus").value = post.status || "draft";
+    $("editDate").value = new Date(
+      post.scheduled_at || post.published_at || post.created_at
+    ).toISOString().slice(0,16);
+  }
+
+  async function renderAdminPosts() {
+    const adminPosts = await loadPosts(true);
+    $("adminPosts").innerHTML = adminPosts.length ? adminPosts.map(p => `
+      <div class="admin-post">
+        <div>
+          <strong>${esc(p.title)}</strong>
+          <small>${esc(p.category)} · ${esc(p.status)} · ${new Date(p.published_at || p.scheduled_at || p.created_at).toLocaleString()}</small>
+        </div>
+        <div class="admin-post-actions">
+          <button data-edit="${esc(p.id)}">Edit</button>
+          <button data-preview="${esc(p.slug)}">Preview</button>
+          <button data-delete="${esc(p.id)}">Delete</button>
+        </div>
+      </div>`).join("")
+      : `<div class="empty"><p>No articles in Supabase yet. Use “Import starter articles” to add the six existing starter articles.</p></div>`;
+  }
+
+  async function openAdmin() {
+    $("adminPanel").classList.add("show");
+    $("adminPanel").setAttribute("aria-hidden","false");
+    await refreshAuthUI();
+  }
+
+  async function refreshAuthUI() {
+    const { data:{ user } } = await sb.auth.getUser();
+
+    if (!user) {
+      $("adminAuth").hidden = false;
+      $("adminWorkspace").hidden = true;
+      $("adminUserEmail").textContent = "";
+      return;
+    }
+
+    const admin = await isAdmin();
+
+    if (!admin) {
+      $("adminAuth").hidden = false;
+      $("adminWorkspace").hidden = true;
+      setStatus($("authStatus"),
+        "This account is authenticated but is not listed in admin_users.",
+        "error");
+      return;
+    }
+
+    $("adminAuth").hidden = true;
+    $("adminWorkspace").hidden = false;
+    $("adminUserEmail").textContent = user.email || "Authenticated admin";
+    setStatus($("authStatus"),"");
+    resetEditor();
+    await renderAdminPosts();
+  }
+
+  async function loginAdmin() {
+    const email = $("adminEmail").value.trim();
+    const password = $("adminPassword").value;
+
+    if (!email || !password) {
+      setStatus($("authStatus"),"Enter your admin email and password.","error");
+      return;
+    }
+
+    $("adminLogin").disabled = true;
+    setStatus($("authStatus"),"Signing in...");
+
+    const { error } = await sb.auth.signInWithPassword({email,password});
+
+    $("adminLogin").disabled = false;
+
+    if (error) {
+      setStatus($("authStatus"),error.message || "Sign-in failed.","error");
+      return;
+    }
+
+    $("adminPassword").value = "";
+    await refreshAuthUI();
+  }
+
+  async function saveArticle(e) {
+    e.preventDefault();
+
+    const title = $("editTitle").value.trim();
+    const category = $("editCategory").value.trim();
+    const tags = $("editTags").value.split(",").map(x=>x.trim()).filter(Boolean);
+    const excerpt = $("editExcerpt").value.trim();
+    const cover_image = $("editCover").value.trim() || null;
+    const content = $("editContent").value;
+    const status = $("editStatus").value;
+    const dateValue = $("editDate").value;
+    const editId = $("editId").value;
+
+    if (!title || !category || !excerpt || !content) {
+      setStatus($("editorStatus"),"Please complete the required fields.","error");
+      return;
+    }
+
+    const slugBase = slugify(title);
+    let slug = slugBase;
+    if (!editId) {
+      slug = `${slugBase}-${Date.now().toString(36)}`;
+    }
+
+    const payload = {
+      title,
+      slug,
+      excerpt,
+      content,
+      cover_image,
+      category,
+      tags,
+      status,
+      author_id: (await sb.auth.getUser()).data.user?.id || null,
+      published_at: status === "published" ? new Date(dateValue || Date.now()).toISOString() : null,
+      scheduled_at: status === "scheduled" ? new Date(dateValue || Date.now()).toISOString() : null
+    };
+
+    if (editId) {
+      const existing = (await sb.from("blog_posts").select("slug,author_id").eq("id",editId).single()).data;
+      if (existing) {
+        payload.slug = existing.slug;
+        payload.author_id = existing.author_id;
+      }
+    }
+
+    $("saveArticle").disabled = true;
+    setStatus($("editorStatus"),"Saving to Supabase...");
+
+    let result;
+    if (editId) {
+      result = await sb.from("blog_posts").update(payload).eq("id",editId).select().single();
+    } else {
+      result = await sb.from("blog_posts").insert(payload).select().single();
+    }
+
+    $("saveArticle").disabled = false;
+
+    if (result.error) {
+      console.error(result.error);
+      setStatus($("editorStatus"),result.error.message || "Unable to save article.","error");
+      return;
+    }
+
+    setStatus($("editorStatus"),
+      status === "published" ? "✓ Article published to Supabase." :
+      status === "scheduled" ? "✓ Article scheduled." :
+      status === "archived" ? "✓ Article archived." :
+      "✓ Draft saved to Supabase.",
+      "success"
+    );
+
+    await loadPublic();
+    await renderAdminPosts();
+    loadEditor(result.data);
+  }
+
+  async function seedArticles() {
+    if (!(await isAdmin())) {
+      setStatus($("editorStatus"),"Admin authentication required.","error");
+      return;
+    }
+
+    const { count, error:countError } = await sb.from("blog_posts")
+      .select("id",{count:"exact",head:true});
+
+    if (countError) {
+      setStatus($("editorStatus"),countError.message,"error");
+      return;
+    }
+
+    if (Number(count || 0) > 0) {
+      setStatus($("editorStatus"),"Starter import skipped because blog_posts already contains articles.","error");
+      return;
+    }
+
+    const user = (await sb.auth.getUser()).data.user;
+
+    const payload = seedPosts.map(p => ({
+      title:p.title,
+      slug:p.slug,
+      excerpt:p.excerpt,
+      content:p.content,
+      cover_image:p.cover_image || null,
+      category:p.category,
+      tags:p.tags,
+      status:p.status,
+      published_at:new Date(p.published_at).toISOString(),
+      scheduled_at:null,
+      author_id:user?.id || null
+    }));
+
+    $("seedArticles").disabled = true;
+    setStatus($("editorStatus"),"Importing six starter articles...");
+
+    const { error } = await sb.from("blog_posts").insert(payload);
+
+    $("seedArticles").disabled = false;
+
+    if (error) {
+      console.error(error);
+      setStatus($("editorStatus"),error.message || "Import failed.","error");
+      return;
+    }
+
+    setStatus($("editorStatus"),"✓ Six starter articles imported into Supabase.","success");
+    await loadPublic();
+    await renderAdminPosts();
+  }
+
+  $("articleGrid").addEventListener("click", async e => {
     const like = e.target.closest("[data-like]");
     const share = e.target.closest("[data-share]");
-    if(like){
-      const id = like.dataset.like, map=getMap(STORAGE.likes);
-      map[id] = map[id] ? 0 : 1;
-      saveMap(STORAGE.likes,map); renderList();
+
+    if (like) {
+      await toggleLike(like.dataset.like);
       return;
     }
-    if(share){
-      const post=getPosts().find(p=>p.slug===share.dataset.share);
-      if(post) sharePost(post);
+
+    if (share) {
+      const post = posts.find(p=>p.slug===share.dataset.share);
+      if (post) await sharePost(post);
     }
   });
 
-  $("articleLike").addEventListener("click",()=>{
-    if(!currentPost) return;
-    const map=getMap(STORAGE.likes);
-    map[currentPost.id]=map[currentPost.id]?0:1;
-    saveMap(STORAGE.likes,map);
-    openPost(currentPost.slug);
-  });
-  $("articleShare").addEventListener("click",()=>currentPost&&sharePost(currentPost));
-  $("articleCopy").addEventListener("click",async()=>{
-    if(!currentPost) return;
-    const url=`${location.origin}${location.pathname}?post=${encodeURIComponent(currentPost.slug)}`;
-    try{await navigator.clipboard.writeText(url);$("articleCopy").innerHTML='<i class="fa-solid fa-check"></i> Copied';setTimeout(()=>$("articleCopy").innerHTML='<i class="fa-regular fa-copy"></i> Copy link',1400)}catch(e){alert(url)}
-  });
-  $("backToBlog").addEventListener("click",e=>{e.preventDefault();showList()});
-  window.addEventListener("popstate",()=>route());
-
-  $("commentSubmit").addEventListener("click",()=>{
-    if(!currentPost) return;
-    const name=$("commentName").value.trim(), email=$("commentEmail").value.trim(), text=$("commentText").value.trim();
-    if(name.length<1 || name.length>80){$("commentStatus").textContent="Please enter your name."; $("commentStatus").className="form-status error";return}
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ $("commentStatus").textContent="Please enter a valid email."; $("commentStatus").className="form-status error";return}
-    if(text.length<1 || text.length>1000){$("commentStatus").textContent="Comment must be between 1 and 1000 characters."; $("commentStatus").className="form-status error";return}
-    const comments=getComments();
-    comments.push({id:crypto.randomUUID?.()||String(Date.now()),postId:currentPost.id,name,email,text,createdAt:new Date().toISOString()});
-    saveComments(comments);
-    $("commentText").value="";
-    $("commentStatus").textContent="✓ Comment posted in this local prototype.";
-    $("commentStatus").className="form-status success";
-    renderComments();
+  $("articleLike").addEventListener("click", async () => {
+    if (currentPost) await toggleLike(currentPost.id);
   });
 
-  $("newsletterForm").addEventListener("submit",e=>{
+  $("articleShare").addEventListener("click", () => {
+    if (currentPost) sharePost(currentPost);
+  });
+
+  $("articleCopy").addEventListener("click", async () => {
+    if (!currentPost) return;
+    const url = `${location.origin}${location.pathname}?post=${encodeURIComponent(currentPost.slug)}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      $("articleCopy").innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+      setTimeout(() => {
+        $("articleCopy").innerHTML = '<i class="fa-regular fa-copy"></i> Copy link';
+      }, 1400);
+    } catch (e) {
+      alert(url);
+    }
+  });
+
+  $("backToBlog").addEventListener("click",e => {
     e.preventDefault();
-    const email=$("subscriberEmail").value.trim().toLowerCase();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-    const subs=getSubscribers();
-    if(subs.some(x=>x.email===email)){
-      $("newsletterStatus").textContent="You're already subscribed.";
-      $("newsletterStatus").className="newsletter-status";
+    showList();
+  });
+
+  $("commentSubmit").addEventListener("click", async () => {
+    if (!currentPost) return;
+
+    const name = $("commentName").value.trim();
+    const email = $("commentEmail").value.trim();
+    const comment = $("commentText").value.trim();
+
+    if (name.length < 1 || name.length > 80) {
+      setStatus($("commentStatus"),"Please enter your name.","error");
       return;
     }
-    subs.push({email,createdAt:new Date().toISOString(),status:"active"});
-    saveSubscribers(subs);
-    $("newsletterStatus").textContent="✓ Successfully subscribed.";
-    $("newsletterStatus").className="newsletter-status success";
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus($("commentStatus"),"Please enter a valid email.","error");
+      return;
+    }
+
+    if (comment.length < 1 || comment.length > 1000) {
+      setStatus($("commentStatus"),"Comment must be between 1 and 1000 characters.","error");
+      return;
+    }
+
+    $("commentSubmit").disabled = true;
+    setStatus($("commentStatus"),"Submitting comment...");
+
+    const { error } = await sb.from("blog_comments").insert({
+      post_id:currentPost.id,
+      parent_id:null,
+      name,
+      email,
+      comment,
+      status:"pending"
+    });
+
+    $("commentSubmit").disabled = false;
+
+    if (error) {
+      console.error(error);
+      setStatus($("commentStatus"),error.message || "Unable to submit comment.","error");
+      return;
+    }
+
+    $("commentText").value = "";
+    setStatus($("commentStatus"),
+      "✓ Comment submitted. It will appear after moderation.",
+      "success"
+    );
+  });
+
+  $("newsletterForm").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const email = $("subscriberEmail").value.trim().toLowerCase();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus($("newsletterStatus"),"Please enter a valid email address.","error");
+      return;
+    }
+
+    $("newsletterButton").disabled = true;
+    setStatus($("newsletterStatus"),"Subscribing...");
+
+    const { error } = await sb.rpc("subscribe_newsletter", {
+      p_email:email,
+      p_name:null
+    });
+
+    $("newsletterButton").disabled = false;
+
+    if (error) {
+      console.error(error);
+      setStatus($("newsletterStatus"),error.message || "Unable to subscribe.","error");
+      return;
+    }
+
+    setStatus($("newsletterStatus"),"✓ Successfully subscribed.","success");
     $("newsletterForm").reset();
   });
 
-  // Local publisher prototype
-  function resetEditor(){
-    $("editorForm").reset();
-    $("editId").value="";
-    $("editDate").value=new Date().toISOString().slice(0,16);
-    $("editorStatus").textContent="";
-  }
-  function renderAdminPosts(){
-    const posts=getPosts().sort((a,b)=>new Date(b.publishedAt)-new Date(a.publishedAt));
-    $("adminPosts").innerHTML=posts.map(p=>`<div class="admin-post">
-      <div><strong>${esc(p.title)}</strong><small>${esc(p.category)} · ${esc(p.status)} · ${new Date(p.publishedAt).toLocaleDateString()}</small></div>
-      <div class="admin-post-actions">
-        <button data-edit="${esc(p.id)}">Edit</button>
-        <button data-preview="${esc(p.slug)}">Preview</button>
-        <button data-delete="${esc(p.id)}">Delete</button>
-      </div>
-    </div>`).join("");
-  }
-  function loadEditor(post){
-    $("editId").value=post.id;$("editTitle").value=post.title;$("editCategory").value=post.category;
-    $("editTags").value=(post.tags||[]).join(", ");$("editExcerpt").value=post.excerpt;$("editCover").value=post.cover||"";
-    $("editContent").value=post.content;$("editStatus").value=post.status;
-    $("editDate").value=new Date(post.publishedAt).toISOString().slice(0,16);
-  }
-  $("openAdmin").addEventListener("click",()=>{$("adminPanel").classList.add("show");$("adminPanel").setAttribute("aria-hidden","false");renderAdminPosts();resetEditor()});
-  $("closeAdmin").addEventListener("click",()=>{$("adminPanel").classList.remove("show");$("adminPanel").setAttribute("aria-hidden","true")});
+  $("openAdmin").addEventListener("click",openAdmin);
+
+  $("closeAdmin").addEventListener("click",() => {
+    $("adminPanel").classList.remove("show");
+    $("adminPanel").setAttribute("aria-hidden","true");
+  });
+
+  $("adminLogin").addEventListener("click",loginAdmin);
+  $("adminPassword").addEventListener("keydown",e => {
+    if (e.key === "Enter") loginAdmin();
+  });
+
+  $("adminLogout").addEventListener("click",async () => {
+    await sb.auth.signOut();
+    await refreshAuthUI();
+  });
+
   $("newArticle").addEventListener("click",resetEditor);
+  $("seedArticles").addEventListener("click",seedArticles);
+  $("editorForm").addEventListener("submit",saveArticle);
 
-  $("editorForm").addEventListener("submit",e=>{
-    e.preventDefault();
-    const posts=getPosts(), id=$("editId").value || slugify($("editTitle").value)+"-"+Date.now();
-    const post={
-      id,slug:slugify($("editTitle").value),
-      title:$("editTitle").value.trim(),category:$("editCategory").value.trim(),
-      tags:$("editTags").value.split(",").map(x=>x.trim()).filter(Boolean),
-      excerpt:$("editExcerpt").value.trim(),cover:$("editCover").value.trim(),
-      content:$("editContent").value,status:$("editStatus").value,
-      publishedAt:new Date($("editDate").value || Date.now()).toISOString()
-    };
-    const idx=posts.findIndex(p=>p.id===id);
-    if(idx>=0) posts[idx]=post; else posts.unshift(post);
-    savePosts(posts);setupFilters();renderList();renderAdminPosts();loadEditor(post);
-    $("editorStatus").textContent=post.status==="published"?"✓ Article published locally.":"✓ Draft saved locally.";
-    $("editorStatus").className="form-status success";
-  });
+  $("adminPosts").addEventListener("click",async e => {
+    const edit = e.target.closest("[data-edit]");
+    const del = e.target.closest("[data-delete]");
+    const preview = e.target.closest("[data-preview]");
 
-  $("adminPosts").addEventListener("click",e=>{
-    const edit=e.target.closest("[data-edit]"), del=e.target.closest("[data-delete]"), preview=e.target.closest("[data-preview]");
-    if(edit){const p=getPosts().find(x=>x.id===edit.dataset.edit);if(p)loadEditor(p)}
-    if(del){if(confirm("Delete this local article?")){savePosts(getPosts().filter(x=>x.id!==del.dataset.delete));setupFilters();renderList();renderAdminPosts();resetEditor()}}
-    if(preview){$("adminPanel").classList.remove("show");openPost(preview.dataset.preview)}
-  });
+    if (edit) {
+      const { data, error } = await sb.from("blog_posts").select("*").eq("id",edit.dataset.edit).single();
+      if (!error && data) loadEditor(data);
+    }
 
-  $("exportData").addEventListener("click",()=>{
-    const data={posts:getPosts(),comments:getComments(),subscribers:getSubscribers(),likes:getMap(STORAGE.likes),views:getMap(STORAGE.views)};
-    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="agootson-blog-local-export.json";a.click();URL.revokeObjectURL(a.href);
+    if (del) {
+      if (!confirm("Delete this article from Supabase? This cannot be undone.")) return;
+
+      const { error } = await sb.from("blog_posts").delete().eq("id",del.dataset.delete);
+      if (error) {
+        setStatus($("editorStatus"),error.message || "Unable to delete article.","error");
+        return;
+      }
+
+      setStatus($("editorStatus"),"✓ Article deleted.","success");
+      await loadPublic();
+      await renderAdminPosts();
+      resetEditor();
+    }
+
+    if (preview) {
+      $("adminPanel").classList.remove("show");
+      await openPost(preview.dataset.preview);
+    }
   });
 
   $("search").addEventListener("input",renderList);
@@ -668,21 +1160,51 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
   $("sortFilter").addEventListener("change",renderList);
 
   // Sidebar
-  $("collapse").addEventListener("click",()=>document.body.classList.toggle("collapsed"));
-  function mobileSidebar(open){$("sidebar").classList.toggle("open",open);$("backdrop").classList.toggle("show",open);$("mobileMenu").setAttribute("aria-expanded",open);document.body.classList.toggle("no-scroll",open)}
-  $("mobileMenu").addEventListener("click",()=>mobileSidebar(!$("sidebar").classList.contains("open")));
-  $("backdrop").addEventListener("click",()=>mobileSidebar(false));
-  window.addEventListener("resize",()=>{if(innerWidth>900)mobileSidebar(false)});
-  $("year").textContent=new Date().getFullYear();
+  $("collapse").addEventListener("click",() => document.body.classList.toggle("collapsed"));
 
-  function route(){
-    const slug=new URLSearchParams(location.search).get("post");
-    if(slug) openPost(slug); else { $("articleView").classList.remove("show");$("blogList").classList.remove("hidden"); }
+  function mobileSidebar(open) {
+    $("sidebar").classList.toggle("open",open);
+    $("backdrop").classList.toggle("show",open);
+    $("mobileMenu").setAttribute("aria-expanded",open);
+    document.body.classList.toggle("no-scroll",open);
   }
 
-  setupFilters();
-  renderList();
-  route();
+  $("mobileMenu").addEventListener("click",() =>
+    mobileSidebar(!$("sidebar").classList.contains("open"))
+  );
+  $("backdrop").addEventListener("click",() => mobileSidebar(false));
+  window.addEventListener("resize",() => { if (innerWidth > 900) mobileSidebar(false); });
+  $("year").textContent = new Date().getFullYear();
+
+  async function route() {
+    const slug = new URLSearchParams(location.search).get("post");
+    if (slug) {
+      await openPost(slug,false);
+    } else {
+      showList(false);
+    }
+  }
+
+  window.addEventListener("popstate",() => route());
+
+  sb.auth.onAuthStateChange((_event,session) => {
+    if (isAdminEntry()) {
+      $("adminBar").classList.add("show");
+      if (session) refreshAuthUI();
+    }
+  });
+
+  (async () => {
+    if (isAdminEntry()) $("adminBar").classList.add("show");
+
+    await loadPublic();
+    await route();
+
+    if (isAdminEntry()) {
+      // The panel remains closed until the administrator explicitly opens it.
+      // Authentication is checked when the publisher is opened.
+    }
+  })();
 })();
 </script>
 </body>
