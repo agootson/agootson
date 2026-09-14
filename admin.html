@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comment Admin | David Agootson</title>
+  <title>Website Admin | David Agootson</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -345,6 +345,48 @@
       padding:18px; border-bottom:1px solid var(--line); display:flex; gap:12px;
       align-items:center; justify-content:space-between; flex-wrap:wrap;
     }
+    .section-switcher {
+      display:flex; gap:7px; flex-wrap:wrap; margin-bottom:16px;
+    }
+    .section-btn {
+      border:1px solid var(--line); background:#fff; color:#5f6670;
+      border-radius:8px; padding:10px 14px; font-size:.74rem; font-weight:800; cursor:pointer;
+    }
+    .section-btn.active {
+      background:var(--red); border-color:var(--red); color:#fff;
+    }
+    .section-btn:hover { border-color:#e6a2a5; }
+    .contact-card {
+      border:1px solid var(--line); border-radius:12px; padding:16px;
+      display:grid; grid-template-columns:1fr auto; gap:16px;
+    }
+    .contact-card:hover { border-color:#d8dbe0; }
+    .contact-subject {
+      margin:4px 0 8px; font-size:.95rem; font-weight:800; color:var(--text);
+      overflow-wrap:anywhere;
+    }
+    .contact-email {
+      color:#5f6670; font-size:.72rem; text-decoration:none; overflow-wrap:anywhere;
+    }
+    .contact-email:hover { color:var(--red); }
+    .contact-message {
+      margin:10px 0 0; color:#4d545e; font-size:.82rem; line-height:1.65;
+      white-space:pre-wrap; overflow-wrap:anywhere;
+    }
+    .badge.new { background:#fff6df; color:var(--yellow); }
+    .badge.read { background:#eef2f7; color:#59636f; }
+    .badge.replied { background:#eaf7ee; color:var(--green); }
+    .badge.archived { background:#f2f3f5; color:#737a84; }
+    .badge.spam { background:var(--red-soft); color:var(--red-dark); }
+    .contact-meta-line {
+      display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:8px;
+      color:#8b919a; font-size:.64rem;
+    }
+    .category-badge {
+      display:inline-flex; align-items:center; border-radius:999px; padding:5px 9px;
+      font-size:.64rem; font-weight:800; background:#f2f3f5; color:#646b75;
+    }
+
     .tabs { display:flex; gap:7px; flex-wrap:wrap; }
     .tab {
       border:1px solid var(--line); background:#f7f8fa; color:#5f6670;
@@ -418,7 +460,8 @@
     #adminApp { display:none; }
     @media(max-width:800px) {
       .stats { grid-template-columns:repeat(2,1fr); }
-      .comment-card { grid-template-columns:1fr; }
+      .comment-card,
+      .contact-card { grid-template-columns:1fr; }
       .actions { flex-direction:row; flex-wrap:wrap; }
     }
     @media(max-width:520px) {
@@ -441,8 +484,8 @@
     <div class="login-card">
       <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
       <div class="eyebrow">PRIVATE ADMIN</div>
-      <h1>Comment moderation</h1>
-      <p>Sign in with your to review, approve, reject, or delete visitor comments.</p>
+      <h1>Website administration</h1>
+      <p>Sign in to manage visitor comments and contact messages.</p>
       <form id="loginForm">
         <label for="email">Email</label>
         <input id="email" type="email" autocomplete="username" required placeholder="Admin email">
@@ -514,7 +557,7 @@
     <header class="topbar">
       <div class="brand">
         <div class="brand-mark"><i class="fa-solid fa-comments"></i></div>
-        <span>Comment Admin</span>
+        <span>Website Admin</span>
       </div>
       <div class="top-actions">
         <span class="user-email" id="userEmail"></span>
@@ -524,18 +567,27 @@
 
     <main class="wrap">
       <section class="hero">
-        <div class="eyebrow">WEBSITE MODERATION</div>
-        <h1>Visitor comments</h1>
-        <p>Review comments before they become visible on your public photo gallery.</p>
+        <div class="eyebrow" id="heroEyebrow">WEBSITE MODERATION</div>
+        <h1 id="heroTitle">Visitor comments</h1>
+        <p id="heroDescription">Review comments before they become visible on your public photo gallery.</p>
       </section>
 
       <div class="notice" id="notice" aria-live="polite"></div>
 
+      <div class="section-switcher" id="sectionSwitcher" aria-label="Admin sections">
+        <button class="section-btn active" data-section="comments" type="button">
+          <i class="fa-regular fa-images"></i> Gallery Comments
+        </button>
+        <button class="section-btn" data-section="contacts" type="button">
+          <i class="fa-regular fa-envelope"></i> Contact Messages
+        </button>
+      </div>
+
       <section class="stats">
-        <div class="stat"><small>Total</small><strong id="totalCount">0</strong></div>
-        <div class="stat pending"><small>Pending</small><strong id="pendingCount">0</strong></div>
-        <div class="stat approved"><small>Approved</small><strong id="approvedCount">0</strong></div>
-        <div class="stat rejected"><small>Rejected</small><strong id="rejectedCount">0</strong></div>
+        <div class="stat"><small id="stat1Label">Total</small><strong id="totalCount">0</strong></div>
+        <div class="stat pending"><small id="stat2Label">Pending</small><strong id="pendingCount">0</strong></div>
+        <div class="stat approved"><small id="stat3Label">Approved</small><strong id="approvedCount">0</strong></div>
+        <div class="stat rejected"><small id="stat4Label">Rejected</small><strong id="rejectedCount">0</strong></div>
       </section>
 
       <section class="panel">
@@ -546,10 +598,21 @@
             <button class="tab" data-status="rejected" type="button">Rejected</button>
             <button class="tab" data-status="all" type="button">All</button>
           </div>
+          <div class="tabs" id="contactTabs" hidden>
+            <button class="tab active" data-contact-status="new" type="button">New</button>
+            <button class="tab" data-contact-status="read" type="button">Read</button>
+            <button class="tab" data-contact-status="replied" type="button">Replied</button>
+            <button class="tab" data-contact-status="archived" type="button">Archived</button>
+            <button class="tab" data-contact-status="spam" type="button">Spam</button>
+            <button class="tab" data-contact-status="all" type="button">All</button>
+          </div>
           <input class="search" id="search" type="search" placeholder="Search name, comment or photo…">
         </div>
         <div class="list" id="commentList">
           <div class="loading">Loading comments…</div>
+        </div>
+        <div class="list" id="contactList" hidden>
+          <div class="loading">Loading contact messages…</div>
         </div>
       </section>
     </main>
@@ -589,12 +652,18 @@
     const logoutBtn = document.getElementById("logoutBtn");
     const userEmail = document.getElementById("userEmail");
     const commentList = document.getElementById("commentList");
+    const contactList = document.getElementById("contactList");
     const search = document.getElementById("search");
     const tabs = document.getElementById("tabs");
+    const contactTabs = document.getElementById("contactTabs");
+    const sectionSwitcher = document.getElementById("sectionSwitcher");
     const notice = document.getElementById("notice");
 
     let comments = [];
+    let contacts = [];
     let activeStatus = "pending";
+    let activeContactStatus = "new";
+    let activeSection = "comments";
     let photoMap = new Map();
 
     function showNotice(message, type = "success") {
@@ -664,7 +733,7 @@
       adminApp.style.display = "block";
       userEmail.textContent = user.email || "";
       await loadPhotos();
-      await loadComments();
+      await Promise.all([loadComments(), loadContacts()]);
     }
 
     async function loadComments() {
@@ -682,14 +751,47 @@
 
       comments = data || [];
       updateStats();
-      renderComments();
+      renderActiveSection();
+    }
+
+    async function loadContacts() {
+      contactList.innerHTML = '<div class="loading">Loading contact messages…</div>';
+      const { data, error } = await supabaseClient
+        .from("contact_messages")
+        .select("id, name, email, subject, category, message, status, created_at, replied_at")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        contactList.innerHTML = '<div class="empty">Could not load contact messages. Check your RLS policies and admin setup.</div>';
+        return;
+      }
+
+      contacts = data || [];
+      updateStats();
+      renderActiveSection();
     }
 
     function updateStats() {
-      document.getElementById("totalCount").textContent = comments.length;
-      document.getElementById("pendingCount").textContent = comments.filter(c => c.status === "pending").length;
-      document.getElementById("approvedCount").textContent = comments.filter(c => c.status === "approved").length;
-      document.getElementById("rejectedCount").textContent = comments.filter(c => c.status === "rejected").length;
+      if (activeSection === "comments") {
+        document.getElementById("stat1Label").textContent = "Total";
+        document.getElementById("stat2Label").textContent = "Pending";
+        document.getElementById("stat3Label").textContent = "Approved";
+        document.getElementById("stat4Label").textContent = "Rejected";
+        document.getElementById("totalCount").textContent = comments.length;
+        document.getElementById("pendingCount").textContent = comments.filter(c => c.status === "pending").length;
+        document.getElementById("approvedCount").textContent = comments.filter(c => c.status === "approved").length;
+        document.getElementById("rejectedCount").textContent = comments.filter(c => c.status === "rejected").length;
+      } else {
+        document.getElementById("stat1Label").textContent = "Total";
+        document.getElementById("stat2Label").textContent = "New";
+        document.getElementById("stat3Label").textContent = "Replied";
+        document.getElementById("stat4Label").textContent = "Spam";
+        document.getElementById("totalCount").textContent = contacts.length;
+        document.getElementById("pendingCount").textContent = contacts.filter(c => c.status === "new").length;
+        document.getElementById("approvedCount").textContent = contacts.filter(c => c.status === "replied").length;
+        document.getElementById("rejectedCount").textContent = contacts.filter(c => c.status === "spam").length;
+      }
     }
 
     function filteredComments() {
@@ -703,6 +805,33 @@
         ].join(" ").toLowerCase().includes(query);
         return statusMatch && searchMatch;
       });
+    }
+
+    function filteredContacts() {
+      const query = search.value.trim().toLowerCase();
+      return contacts.filter(contact => {
+        const statusMatch = activeContactStatus === "all" || contact.status === activeContactStatus;
+        const searchMatch = !query || [
+          contact.name, contact.email, contact.subject, contact.category, contact.message
+        ].join(" ").toLowerCase().includes(query);
+        return statusMatch && searchMatch;
+      });
+    }
+
+    function renderActiveSection() {
+      commentList.hidden = activeSection !== "comments";
+      contactList.hidden = activeSection !== "contacts";
+      tabs.hidden = activeSection !== "comments";
+      contactTabs.hidden = activeSection !== "contacts";
+      updateStats();
+
+      if (activeSection === "comments") {
+        search.placeholder = "Search name, comment or photo…";
+        renderComments();
+      } else {
+        search.placeholder = "Search name, email, subject or message…";
+        renderContacts();
+      }
     }
 
     function renderComments() {
@@ -764,7 +893,7 @@
           approve.className = "action approve";
           approve.type = "button";
           approve.innerHTML = '<i class="fa-solid fa-check"></i> Approve';
-          approve.addEventListener("click", () => updateStatus(comment.id, "approved"));
+          approve.addEventListener("click", () => updateCommentStatus(comment.id, "approved"));
           actions.appendChild(approve);
         }
 
@@ -773,7 +902,7 @@
           reject.className = "action reject";
           reject.type = "button";
           reject.innerHTML = '<i class="fa-solid fa-xmark"></i> Reject';
-          reject.addEventListener("click", () => updateStatus(comment.id, "rejected"));
+          reject.addEventListener("click", () => updateCommentStatus(comment.id, "rejected"));
           actions.appendChild(reject);
         }
 
@@ -789,7 +918,117 @@
       });
     }
 
-    async function updateStatus(id, status) {
+    function renderContacts() {
+      const items = filteredContacts();
+      contactList.replaceChildren();
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = activeContactStatus === "new"
+          ? "No new contact messages."
+          : "No contact messages match this view.";
+        contactList.appendChild(empty);
+        return;
+      }
+
+      items.forEach(contact => {
+        const card = document.createElement("article");
+        card.className = "contact-card";
+
+        const body = document.createElement("div");
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+
+        const name = document.createElement("span");
+        name.className = "name";
+        name.textContent = escapeForText(contact.name || "Visitor");
+
+        const badge = document.createElement("span");
+        badge.className = "badge " + contact.status;
+        badge.textContent = contact.status;
+
+        const date = document.createElement("span");
+        date.className = "date";
+        date.textContent = formatDate(contact.created_at);
+
+        meta.append(name, badge, date);
+
+        const subject = document.createElement("div");
+        subject.className = "contact-subject";
+        subject.textContent = escapeForText(contact.subject || "(No subject)");
+
+        const email = document.createElement("a");
+        email.className = "contact-email";
+        email.href = `mailto:${contact.email}`;
+        email.textContent = escapeForText(contact.email);
+
+        const metaLine = document.createElement("div");
+        metaLine.className = "contact-meta-line";
+        const category = document.createElement("span");
+        category.className = "category-badge";
+        category.textContent = escapeForText(contact.category || "General inquiry");
+        metaLine.appendChild(category);
+
+        const message = document.createElement("p");
+        message.className = "contact-message";
+        message.textContent = escapeForText(contact.message);
+
+        body.append(meta, subject, email, metaLine, message);
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        if (contact.status !== "read" && contact.status !== "replied") {
+          const markRead = document.createElement("button");
+          markRead.className = "action approve";
+          markRead.type = "button";
+          markRead.innerHTML = '<i class="fa-solid fa-eye"></i> Mark Read';
+          markRead.addEventListener("click", () => updateContactStatus(contact.id, "read"));
+          actions.appendChild(markRead);
+        }
+
+        if (contact.status !== "replied") {
+          const reply = document.createElement("button");
+          reply.className = "action approve";
+          reply.type = "button";
+          reply.innerHTML = '<i class="fa-solid fa-reply"></i> Replied';
+          reply.addEventListener("click", () => updateContactStatus(contact.id, "replied"));
+          actions.appendChild(reply);
+        }
+
+        if (contact.status !== "archived") {
+          const archive = document.createElement("button");
+          archive.className = "action reject";
+          archive.type = "button";
+          archive.innerHTML = '<i class="fa-solid fa-box-archive"></i> Archive';
+          archive.addEventListener("click", () => updateContactStatus(contact.id, "archived"));
+          actions.appendChild(archive);
+        }
+
+        if (contact.status !== "spam") {
+          const spam = document.createElement("button");
+          spam.className = "action reject";
+          spam.type = "button";
+          spam.innerHTML = '<i class="fa-solid fa-ban"></i> Spam';
+          spam.addEventListener("click", () => updateContactStatus(contact.id, "spam"));
+          actions.appendChild(spam);
+        }
+
+        const remove = document.createElement("button");
+        remove.className = "action delete";
+        remove.type = "button";
+        remove.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
+        remove.addEventListener("click", () => deleteContact(contact.id));
+        actions.appendChild(remove);
+
+        card.append(body, actions);
+        contactList.appendChild(card);
+      });
+    }
+
+    async function updateCommentStatus(id, status) {
       const label = status === "approved" ? "approve" : "reject";
       if (!confirm(`Are you sure you want to ${label} this comment?`)) return;
 
@@ -829,6 +1068,61 @@
       updateStats();
       renderComments();
       showNotice("Comment deleted.");
+    }
+
+    async function updateContactStatus(id, status) {
+      const label = status === "read" ? "mark this message as read"
+        : status === "replied" ? "mark this message as replied"
+        : status === "archived" ? "archive this message"
+        : "mark this message as spam";
+
+      if (!confirm(`Are you sure you want to ${label}?`)) return;
+
+      const updates = {
+        status,
+        replied_at: status === "replied" ? new Date().toISOString() : null
+      };
+
+      const { error } = await supabaseClient
+        .from("contact_messages")
+        .update(updates)
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        showNotice("Could not update the contact message. Check your RLS policy.", "error");
+        return;
+      }
+
+      const item = contacts.find(c => c.id === id);
+      if (item) {
+        item.status = status;
+        item.replied_at = updates.replied_at;
+      }
+
+      updateStats();
+      renderContacts();
+      showNotice(`Message ${status}.`);
+    }
+
+    async function deleteContact(id) {
+      if (!confirm("Permanently delete this contact message? This cannot be undone.")) return;
+
+      const { error } = await supabaseClient
+        .from("contact_messages")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        showNotice("Could not delete the contact message. Check your RLS policy.", "error");
+        return;
+      }
+
+      contacts = contacts.filter(c => c.id !== id);
+      updateStats();
+      renderContacts();
+      showNotice("Contact message deleted.");
     }
 
     loginForm.addEventListener("submit", async event => {
@@ -873,7 +1167,34 @@
       renderComments();
     });
 
-    search.addEventListener("input", renderComments);
+    sectionSwitcher.addEventListener("click", event => {
+      const button = event.target.closest("[data-section]");
+      if (!button) return;
+
+      activeSection = button.dataset.section;
+      sectionSwitcher.querySelectorAll(".section-btn").forEach(btn => {
+        btn.classList.toggle("active", btn === button);
+      });
+
+      renderActiveSection();
+    });
+
+    contactTabs.addEventListener("click", event => {
+      const button = event.target.closest("[data-contact-status]");
+      if (!button) return;
+
+      activeContactStatus = button.dataset.contactStatus;
+      contactTabs.querySelectorAll(".tab").forEach(tab => {
+        tab.classList.toggle("active", tab === button);
+      });
+
+      renderContacts();
+    });
+
+    search.addEventListener("input", () => {
+      if (activeSection === "comments") renderComments();
+      else renderContacts();
+    });
 
     /* Public-site navigation behavior */
     const sidebar = document.getElementById("sidebar");
