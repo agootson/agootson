@@ -266,126 +266,152 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
     }
-  
 
+    /* ================= PHOTO JOURNAL UPGRADE ================= */
     .gallery-toolbar {
-      display:flex; align-items:center; justify-content:space-between;
-      gap:15px; margin-top:30px; padding:12px 14px;
-      background:var(--white); border:1px solid var(--line); border-radius:10px;
+      display:grid; grid-template-columns:1fr auto; gap:16px; margin-top:30px;
+      padding:14px; background:var(--white); border:1px solid var(--line); border-radius:10px;
     }
-    .gallery-toolbar strong { font-size:.72rem; }
-    .gallery-toolbar span { color:#8b9098; font-size:.64rem; }
-    .memory-grid {
-      columns:4 180px; column-gap:8px; margin-top:18px;
+    .gallery-heading strong { font-size:.72rem; }
+    .gallery-heading span { display:block; margin-top:4px; color:#8b9098; font-size:.64rem; }
+    .gallery-controls { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+    .gallery-search {
+      min-width:220px; border:1px solid var(--line); border-radius:8px; padding:10px 12px;
+      background:#fff; color:var(--text); font:inherit; font-size:.68rem; outline:none;
     }
-    .memory {
-      break-inside:avoid; margin:0 0 8px; position:relative;
-      border-radius:6px; overflow:hidden; background:#e9edf3;
-      cursor:pointer;
+    .gallery-search:focus { border-color:#e9a4a8; box-shadow:0 0 0 3px var(--red-soft); }
+    .select-control, .tool-btn {
+      border:1px solid var(--line); border-radius:8px; padding:10px 11px;
+      background:#fff; color:#555c65; font-size:.65rem; font-weight:800; cursor:pointer;
     }
-    .memory img {
-      width:100%; height:auto; display:block; transition:transform .25s ease;
+    .tool-btn:hover, .tool-btn.active { color:var(--red); border-color:#f0c3c6; background:var(--red-soft); }
+    .gallery-stats { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .stat { padding:7px 10px; border-radius:999px; background:#f4f5f7; color:#626770; font-size:.62rem; font-weight:700; }
+    .stat strong { color:var(--red); }
+    .filter-bar { display:flex; flex-wrap:wrap; gap:7px; margin-top:18px; }
+    .filter-btn {
+      border:1px solid var(--line); border-radius:999px; padding:8px 12px;
+      background:#fff; color:#626770; font-size:.63rem; font-weight:800; cursor:pointer;
     }
+    .filter-btn:hover, .filter-btn.active { color:var(--red); border-color:#f0c3c6; background:var(--red-soft); }
+    .journal-view { margin-top:18px; }
+    .memory-grid { columns:4 180px; column-gap:8px; }
+    .memory { break-inside:avoid; margin:0 0 8px; position:relative; border-radius:7px; overflow:hidden; background:#e9edf3; cursor:pointer; }
+    .memory img { width:100%; height:auto; display:block; transition:transform .25s ease; }
     .memory:hover img { transform:scale(1.025); }
     .memory-info {
-      position:absolute; left:0; right:0; bottom:0;
-      padding:38px 11px 10px; color:white;
-      background:linear-gradient(transparent,rgba(0,0,0,.72));
-      opacity:0; transition:opacity .2s ease;
+      position:absolute; left:0; right:0; bottom:0; padding:42px 11px 10px; color:white;
+      background:linear-gradient(transparent,rgba(0,0,0,.78)); opacity:0; transition:opacity .2s ease;
     }
-    .memory:hover .memory-info { opacity:1; }
+    .memory:hover .memory-info, .memory:focus-within .memory-info { opacity:1; }
     .memory-info strong { display:block; font-size:.68rem; }
     .memory-info small { display:block; margin-top:3px; font-size:.57rem; opacity:.9; }
-    .memory-actions {
-      display:flex; gap:6px; margin-top:7px;
-    }
+    .memory-actions { display:flex; gap:6px; margin-top:7px; }
     .memory-actions a, .memory-actions button {
-      border:0; border-radius:5px; padding:6px 8px;
-      background:rgba(255,255,255,.94); color:#333;
-      font-size:.57rem; font-weight:800; cursor:pointer;
+      border:0; border-radius:5px; padding:6px 8px; background:rgba(255,255,255,.94);
+      color:#333; font-size:.57rem; font-weight:800; cursor:pointer;
     }
     .memory-actions a:hover, .memory-actions button:hover { color:var(--red); }
+    .memory-favorite {
+      position:absolute; top:9px; right:9px; z-index:2; width:31px; height:31px;
+      border:1px solid rgba(255,255,255,.55); border-radius:50%; background:rgba(0,0,0,.38);
+      color:#fff; cursor:pointer; display:grid; place-items:center; backdrop-filter:blur(4px);
+    }
+    .memory-favorite:hover, .memory-favorite.is-favorite { background:rgba(255,255,255,.94); color:var(--red); }
+    .empty-state {
+      padding:35px 20px; text-align:center; border:1px dashed #d8dce2; border-radius:12px;
+      color:var(--muted); background:#fff; font-size:.76rem;
+    }
+    .timeline { display:none; margin-top:20px; }
+    .timeline.show { display:grid; gap:12px; }
+    .timeline-year { padding:14px 16px; background:#fff; border:1px solid var(--line); border-radius:10px; }
+    .timeline-year h3 { color:var(--red); font-size:.78rem; }
+    .timeline-item {
+      display:grid; grid-template-columns:105px 1fr auto; gap:14px; align-items:center;
+      padding:12px 0; border-top:1px solid var(--line);
+    }
+    .timeline-item:first-of-type { margin-top:10px; }
+    .timeline-item time { color:#8b9098; font-size:.62rem; font-weight:800; }
+    .timeline-item strong { font-size:.72rem; }
+    .timeline-item p { margin-top:3px; color:var(--muted); font-size:.64rem; line-height:1.5; }
+    .timeline-open { border:0; background:var(--red-soft); color:var(--red); border-radius:6px; padding:7px 9px; cursor:pointer; font-size:.58rem; font-weight:800; }
     .lightbox {
-      position:fixed; inset:0; z-index:2000; display:none;
-      align-items:center; justify-content:center; padding:20px;
-      background:rgba(10,14,20,.9);
+      position:fixed; inset:0; z-index:2000; display:none; align-items:center; justify-content:center;
+      padding:20px; background:rgba(10,14,20,.9);
     }
     .lightbox.show { display:flex; }
     .lightbox-panel {
-      width:min(1100px,96vw); max-height:94vh; display:grid;
-      grid-template-columns:minmax(0,1fr) 310px; overflow:hidden;
-      background:var(--white); border-radius:12px;
+      position:relative; width:min(1180px,96vw); max-height:94vh; display:grid;
+      grid-template-columns:minmax(0,1fr) 330px; overflow:hidden; background:var(--white); border-radius:12px;
     }
-    .lightbox-image {
-      min-height:420px; display:grid; place-items:center; background:#101318;
-    }
+    .lightbox-image { position:relative; min-height:420px; display:grid; place-items:center; background:#101318; }
     .lightbox-image img { max-width:100%; max-height:86vh; object-fit:contain; }
+    .lightbox-nav {
+      position:absolute; top:50%; transform:translateY(-50%); width:42px; height:42px;
+      border:1px solid rgba(255,255,255,.35); border-radius:50%; background:rgba(0,0,0,.48);
+      color:#fff; cursor:pointer; font-size:1.1rem;
+    }
+    .lightbox-nav:hover { background:rgba(227,27,35,.92); }
+    .lightbox-prev { left:14px; } .lightbox-next { right:14px; }
+    .lightbox-counter {
+      position:absolute; left:50%; bottom:14px; transform:translateX(-50%);
+      padding:6px 9px; border-radius:999px; background:rgba(0,0,0,.52); color:#fff; font-size:.58rem;
+    }
     .lightbox-side { padding:24px; overflow:auto; }
     .lightbox-side h2 { font-size:1.25rem; letter-spacing:-.035em; }
     .lightbox-side p { margin-top:10px; color:var(--muted); font-size:.75rem; line-height:1.8; }
-    .lightbox-side .download {
-      display:inline-flex; align-items:center; gap:8px; margin-top:18px;
-      padding:11px 13px; border-radius:7px; background:var(--red); color:white;
-      font-size:.65rem; font-weight:800;
+    .photo-meta { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+    .photo-meta span { padding:6px 8px; border-radius:999px; background:#f4f5f7; color:#666d76; font-size:.58rem; font-weight:700; }
+    .lightbox-tools { display:flex; flex-wrap:wrap; gap:7px; margin-top:16px; }
+    .lightbox-tools a, .lightbox-tools button {
+      display:inline-flex; align-items:center; gap:7px; padding:10px 11px; border:0; border-radius:7px;
+      background:var(--red); color:#fff; font-size:.61rem; font-weight:800; cursor:pointer;
     }
+    .lightbox-tools button.secondary { background:#f4f5f7; color:#555c65; }
+    .lightbox-tools button.secondary:hover { color:var(--red); }
     .lightbox-close {
-      position:absolute; top:18px; right:18px; width:40px; height:40px;
-      border:1px solid rgba(255,255,255,.25); border-radius:50%;
-      background:rgba(0,0,0,.45); color:white; cursor:pointer; font-size:1.2rem;
+      position:absolute; top:12px; right:12px; z-index:3; width:40px; height:40px;
+      border:1px solid rgba(255,255,255,.25); border-radius:50%; background:rgba(0,0,0,.55);
+      color:white; cursor:pointer; font-size:1.2rem;
     }
     .comment-box { margin-top:24px; padding-top:20px; border-top:1px solid var(--line); }
     .comment-box h3 { font-size:.9rem; }
-    .comment-box p { font-size:.68rem; }
+    .comment-box p { font-size:.64rem; color:var(--muted); line-height:1.5; }
     .comment-box textarea {
-      width:100%; min-height:90px; margin-top:10px; resize:vertical;
-      border:1px solid var(--line); border-radius:7px; padding:10px;
-      font:inherit; font-size:.68rem;
+      width:100%; min-height:82px; margin-top:10px; resize:vertical; border:1px solid var(--line);
+      border-radius:7px; padding:10px; font:inherit; font-size:.68rem; outline:none;
     }
+    .comment-box textarea:focus { border-color:#e9a4a8; box-shadow:0 0 0 3px var(--red-soft); }
     .comment-box button {
-      margin-top:7px; border:0; border-radius:7px; padding:9px 12px;
-      background:var(--red); color:white; font-size:.63rem; font-weight:800;
+      margin-top:7px; border:0; border-radius:7px; padding:9px 12px; background:var(--red);
+      color:white; font-size:.63rem; font-weight:800; cursor:pointer;
     }
-    .comment-note { margin-top:9px!important; color:#999!important; }
+    .comment-list { display:grid; gap:8px; margin-top:12px; }
+    .comment { padding:10px; border:1px solid var(--line); border-radius:7px; background:#fafbfc; }
+    .comment small { color:#9297a0; font-size:.55rem; }
+    .comment p { margin-top:5px; color:#555c65; font-size:.65rem; line-height:1.55; }
+    .comment-delete { float:right; border:0; background:none; color:#a0a5ad; cursor:pointer; font-size:.58rem; }
+    .comment-delete:hover { color:var(--red); }
+    .gallery-error { grid-column:1 / -1; padding:22px; border:1px solid #f0c3c6; border-radius:10px; background:var(--red-soft); color:var(--text); }
+    .gallery-error strong { display:block; color:var(--red); font-size:.82rem; margin-bottom:8px; }
+    .gallery-error p { font-size:.76rem; line-height:1.6; }
+    .gallery-error pre { margin-top:12px; padding:12px; overflow-x:auto; white-space:pre-wrap; word-break:break-word; border-radius:7px; background:#fff; border:1px solid var(--line); color:#4f555d; font:.68rem/1.65 ui-monospace, SFMono-Regular, Consolas, monospace; }
     @media(max-width:900px) {
+      .gallery-toolbar { grid-template-columns:1fr; }
+      .gallery-controls { justify-content:flex-start; }
       .memory-grid { columns:3 150px; }
       .lightbox-panel { grid-template-columns:1fr; max-height:90vh; overflow:auto; }
       .lightbox-image { min-height:280px; }
-    }
-    @media(max-width:600px) {
-      .memory-grid { columns:2 125px; }
-      .gallery-toolbar { align-items:flex-start; flex-direction:column; }
       .lightbox-side { padding:18px; }
     }
-
-    .gallery-error {
-      grid-column: 1 / -1;
-      padding: 22px;
-      border: 1px solid #f0c3c6;
-      border-radius: 10px;
-      background: var(--red-soft);
-      color: var(--text);
-    }
-    .gallery-error strong {
-      display: block;
-      color: var(--red);
-      font-size: .82rem;
-      margin-bottom: 8px;
-    }
-    .gallery-error p {
-      font-size: .76rem;
-      line-height: 1.6;
-    }
-    .gallery-error pre {
-      margin-top: 12px;
-      padding: 12px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-word;
-      border-radius: 7px;
-      background: #fff;
-      border: 1px solid var(--line);
-      color: #4f555d;
-      font: .68rem/1.65 ui-monospace, SFMono-Regular, Consolas, monospace;
+    @media(max-width:600px) {
+      .gallery-search { min-width:0; width:100%; }
+      .gallery-controls > * { flex:1 1 auto; }
+      .memory-grid { columns:2 125px; }
+      .timeline-item { grid-template-columns:1fr auto; }
+      .timeline-item time { grid-column:1 / -1; }
+      .lightbox { padding:8px; }
+      .lightbox-panel { width:100%; }
     }
 
   </style>
@@ -413,29 +439,70 @@
       <div class="eyebrow">MY PHOTO JOURNAL</div>
       <h1>Little moments, <span>captured.</span></h1>
       <p class="lead">This is my everyday visual diary , college moments, trips, places, people, food, projects and ordinary days worth remembering. New pictures can be added day by day, with a short description for every memory.</p>
-
       <div class="gallery-toolbar">
-        <div><strong>PHOTO JOURNAL</strong><br><span>Newest memories appear first.</span></div>
-        <span><i class="fa-solid fa-download"></i> Open a photo to view & download it</span>
+        <div class="gallery-heading">
+          <strong>PHOTO JOURNAL</strong>
+          <span>Search, filter, sort, favorite, share and explore your memories.</span>
+          <div class="gallery-stats" aria-live="polite">
+            <span class="stat"><strong id="totalCount">0</strong> photos</span>
+            <span class="stat"><strong id="visibleCount">0</strong> shown</span>
+            <span class="stat"><strong id="favoriteCount">0</strong> favorites</span>
+            <span class="stat"><strong id="categoryCount">0</strong> categories</span>
+          </div>
+        </div>
+        <div class="gallery-controls">
+          <input class="gallery-search" id="gallerySearch" type="search" placeholder="Search memories..." aria-label="Search photos">
+          <select class="select-control" id="sortSelect" aria-label="Sort photos">
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="title">Title A–Z</option>
+            <option value="category">Category</option>
+          </select>
+          <button class="tool-btn active" id="gridViewBtn" type="button"><i class="fa-solid fa-grip"></i> Grid</button>
+          <button class="tool-btn" id="timelineViewBtn" type="button"><i class="fa-solid fa-timeline"></i> Timeline</button>
+          <button class="tool-btn" id="favoritesBtn" type="button"><i class="fa-regular fa-heart"></i> Favorites</button>
+        </div>
       </div>
-
-      <section class="section">
+      <div class="filter-bar" id="filterBar" aria-label="Photo categories"></div>
+      <div class="journal-view" id="gridView">
         <div class="memory-grid" id="memoryGrid" aria-live="polite"></div>
-      </section>
-    </section>
+      </div>
+      <div class="timeline" id="timelineView" aria-live="polite"></div>
 
-    <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    </section>
+    <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="Photo viewer">
       <button class="lightbox-close" id="lightboxClose" aria-label="Close photo viewer">×</button>
       <div class="lightbox-panel">
-        <div class="lightbox-image"><img id="lightboxImg" src="" alt=""></div>
+        <div class="lightbox-image">
+          <img id="lightboxImg" src="" alt="">
+          <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous photo">‹</button>
+          <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next photo">›</button>
+          <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
+        </div>
         <div class="lightbox-side">
           <div class="eyebrow">PHOTO</div>
           <h2 id="lightboxTitle"></h2>
           <p id="lightboxDescription"></p>
-          <a class="download" id="lightboxDownload" href="" download><i class="fa-solid fa-download"></i> Download Photo</a>
+          <div class="photo-meta">
+            <span id="lightboxCategory">Daily life</span>
+            <span id="lightboxDate">Date not added</span>
+          </div>
+          <div class="lightbox-tools">
+            <a id="lightboxDownload" href="" download><i class="fa-solid fa-download"></i> Download</a>
+            <button class="secondary" id="lightboxFavorite" type="button"><i class="fa-regular fa-heart"></i> Favorite</button>
+            <button class="secondary" id="lightboxShare" type="button"><i class="fa-solid fa-share-nodes"></i> Share</button>
+          </div>
+          <div class="comment-box">
+            <h3>Visitor notes</h3>
+            <p>Comments are stored in this browser only. A backend is required for public comments shared between visitors.</p>
+            <textarea id="commentInput" maxlength="500" placeholder="Write a comment about this memory..."></textarea>
+            <button id="commentSubmit" type="button">Add Comment</button>
+            <div class="comment-list" id="commentList"></div>
+          </div>
         </div>
       </div>
     </div>
+
 
     <footer>
       
@@ -456,6 +523,7 @@
     const collapse = document.getElementById("collapse");
     const mobileMenu = document.getElementById("mobileMenu");
     const backdrop = document.getElementById("backdrop");
+
     collapse.addEventListener("click", () => document.body.classList.toggle("collapsed"));
     function mobileSidebar(open) {
       sidebar.classList.toggle("open", open);
@@ -467,192 +535,452 @@
     backdrop.addEventListener("click", () => mobileSidebar(false));
     window.addEventListener("resize", () => { if (window.innerWidth > 900) mobileSidebar(false); });
     document.getElementById("year").textContent = new Date().getFullYear();
+
     const lightbox = document.getElementById("lightbox");
     const lightboxImg = document.getElementById("lightboxImg");
     const lightboxTitle = document.getElementById("lightboxTitle");
     const lightboxDescription = document.getElementById("lightboxDescription");
+    const lightboxCategory = document.getElementById("lightboxCategory");
+    const lightboxDate = document.getElementById("lightboxDate");
     const lightboxDownload = document.getElementById("lightboxDownload");
+    const lightboxFavorite = document.getElementById("lightboxFavorite");
+    const lightboxShare = document.getElementById("lightboxShare");
+    const lightboxPrev = document.getElementById("lightboxPrev");
+    const lightboxNext = document.getElementById("lightboxNext");
+    const lightboxCounter = document.getElementById("lightboxCounter");
+    const commentInput = document.getElementById("commentInput");
+    const commentSubmit = document.getElementById("commentSubmit");
+    const commentList = document.getElementById("commentList");
     const memoryGrid = document.getElementById("memoryGrid");
+    const timelineView = document.getElementById("timelineView");
+    const gridView = document.getElementById("gridView");
+    const filterBar = document.getElementById("filterBar");
+    const searchInput = document.getElementById("gallerySearch");
+    const sortSelect = document.getElementById("sortSelect");
+    const gridViewBtn = document.getElementById("gridViewBtn");
+    const timelineViewBtn = document.getElementById("timelineViewBtn");
+    const favoritesBtn = document.getElementById("favoritesBtn");
+    const totalCount = document.getElementById("totalCount");
+    const visibleCount = document.getElementById("visibleCount");
+    const favoriteCount = document.getElementById("favoriteCount");
+    const categoryCount = document.getElementById("categoryCount");
 
-    function openLightbox(card) {
-      lightboxImg.src = card.dataset.image;
-      lightboxImg.alt = card.dataset.title;
-      lightboxTitle.textContent = card.dataset.title;
-      lightboxDescription.textContent = card.dataset.description;
-      lightboxDownload.href = card.dataset.image;
-      lightbox.classList.add("show");
-      document.body.style.overflow = "hidden";
+    let photos = [];
+    let filteredPhotos = [];
+    let currentIndex = -1;
+    let activeCategory = "All";
+    let favoritesOnly = false;
+
+    const FAVORITES_KEY = "david-gallery-favorites-v1";
+    const COMMENTS_KEY = "david-gallery-comments-v1";
+
+    function getFavorites() {
+      try { return new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]")); }
+      catch { return new Set(); }
+    }
+    function saveFavorites(set) { localStorage.setItem(FAVORITES_KEY, JSON.stringify([...set])); }
+    function photoKey(photo) { return photo.image || photo.title; }
+    function isFavorite(photo) { return getFavorites().has(photoKey(photo)); }
+
+    function toggleFavorite(photo) {
+      const favorites = getFavorites();
+      const key = photoKey(photo);
+      if (favorites.has(key)) favorites.delete(key); else favorites.add(key);
+      saveFavorites(favorites);
+      renderGallery();
+      if (currentIndex >= 0) {
+        const newIndex = filteredPhotos.findIndex(p => photoKey(p) === key);
+        if (newIndex >= 0) currentIndex = newIndex;
+        updateLightboxFavorite(photo);
+      }
     }
 
+    function getComments() {
+      try { return JSON.parse(localStorage.getItem(COMMENTS_KEY) || "{}"); }
+      catch { return {}; }
+    }
+    function saveComments(comments) { localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments)); }
+
+    function formatDate(value) {
+      if (!value) return "Date not added";
+      const d = new Date(value + (String(value).length === 10 ? "T00:00:00" : ""));
+      if (Number.isNaN(d.getTime())) return value;
+      return new Intl.DateTimeFormat("en", { year:"numeric", month:"long", day:"numeric" }).format(d);
+    }
+    function dateValue(photo) {
+      const d = photo.date ? new Date(photo.date) : null;
+      return d && !Number.isNaN(d.getTime()) ? d.getTime() : 0;
+    }
     function resolveImagePath(image) {
       if (!image) return "";
-      if (image.startsWith("http://") || image.startsWith("https://") || image.startsWith("/")) {
-        return image;
-      }
-      if (image.startsWith("images/")) {
-        return "/" + image;
-      }
+      if (/^https?:\/\//i.test(image) || image.startsWith("/")) return image;
+      if (image.startsWith("images/")) return "/" + image;
       return "/images/" + image;
     }
 
-    function createMemoryCard(photo) {
+    function createMemoryCard(photo, index) {
       const imagePath = resolveImagePath(photo.image);
-
       const card = document.createElement("article");
       card.className = "memory";
-      card.dataset.image = imagePath;
-      card.dataset.title = photo.title;
-      card.dataset.description = photo.description;
+      card.dataset.index = index;
 
       const img = document.createElement("img");
       img.src = imagePath;
-      img.alt = photo.title + " — David Agootson";
+      img.alt = (photo.title || "Photo") + " — David Agootson";
       img.loading = "lazy";
       img.decoding = "async";
 
+      const favorite = document.createElement("button");
+      favorite.type = "button";
+      favorite.className = "memory-favorite" + (isFavorite(photo) ? " is-favorite" : "");
+      favorite.dataset.action = "favorite";
+      favorite.title = isFavorite(photo) ? "Remove from favorites" : "Add to favorites";
+      favorite.setAttribute("aria-label", favorite.title);
+      favorite.innerHTML = isFavorite(photo) ? '<i class="fa-solid fa-heart"></i>' : '<i class="fa-regular fa-heart"></i>';
+
       const info = document.createElement("div");
       info.className = "memory-info";
-
       const title = document.createElement("strong");
-      title.textContent = photo.title;
-
-      const category = document.createElement("small");
-      category.textContent = photo.category || "Daily life";
+      title.textContent = photo.title || "Untitled memory";
+      const meta = document.createElement("small");
+      meta.textContent = [photo.category || "Daily life", photo.date ? formatDate(photo.date) : ""].filter(Boolean).join(" · ");
 
       const actions = document.createElement("div");
       actions.className = "memory-actions";
-
       const download = document.createElement("a");
       download.href = imagePath;
       download.setAttribute("download", "");
       download.textContent = "Download";
-
-      actions.appendChild(download);
-      info.appendChild(title);
-      info.appendChild(category);
-      info.appendChild(actions);
-      card.appendChild(img);
-      card.appendChild(info);
-
+      const share = document.createElement("button");
+      share.type = "button";
+      share.dataset.action = "share";
+      share.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Share';
+      actions.append(download, share);
+      info.append(title, meta, actions);
+      card.append(favorite, img, info);
       return card;
     }
 
-    function showGalleryDiagnostic(message, details = "") {
-      memoryGrid.innerHTML = `
-        <div class="gallery-error" role="alert">
-          <strong>Gallery diagnostic</strong>
-          <p>${message}</p>
-          ${details ? `<pre>${details}</pre>` : ""}
-        </div>`;
+    function buildFilters() {
+      const categories = ["All", ...new Set(photos.map(p => p.category).filter(Boolean))];
+      categoryCount.textContent = Math.max(0, categories.length - 1);
+      filterBar.replaceChildren();
+      categories.forEach(category => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "filter-btn" + (activeCategory === category ? " active" : "");
+        button.dataset.category = category;
+        button.textContent = category;
+        filterBar.appendChild(button);
+      });
     }
 
-    async function loadGallery() {
-      const jsonUrl = "/images/photos.json?v=" + Date.now();
+    function getFilteredPhotos() {
+      const query = searchInput.value.trim().toLowerCase();
+      let result = photos.filter(photo => {
+        const categoryMatch = activeCategory === "All" || (photo.category || "Daily life") === activeCategory;
+        const favoriteMatch = !favoritesOnly || isFavorite(photo);
+        const searchText = [photo.title, photo.description, photo.category, photo.date].filter(Boolean).join(" ").toLowerCase();
+        return categoryMatch && favoriteMatch && (!query || searchText.includes(query));
+      });
+      const sort = sortSelect.value;
+      if (sort === "newest") result.sort((a,b) => dateValue(b) - dateValue(a));
+      if (sort === "oldest") result.sort((a,b) => dateValue(a) - dateValue(b));
+      if (sort === "title") result.sort((a,b) => (a.title || "").localeCompare(b.title || ""));
+      if (sort === "category") result.sort((a,b) => (a.category || "").localeCompare(b.category || "") || (a.title || "").localeCompare(b.title || ""));
+      return result;
+    }
 
-      try {
-        console.log("[Gallery] Loading:", jsonUrl);
+    function updateStats() {
+      totalCount.textContent = photos.length;
+      visibleCount.textContent = filteredPhotos.length;
+      favoriteCount.textContent = getFavorites().size;
+    }
 
-        const response = await fetch(jsonUrl, {
-          method: "GET",
-          cache: "no-store",
-          headers: { "Accept": "application/json" }
-        });
+    function renderGallery() {
+      filteredPhotos = getFilteredPhotos();
+      updateStats();
+      memoryGrid.replaceChildren();
 
-        console.log("[Gallery] HTTP status:", response.status, response.statusText);
-        console.log("[Gallery] Content-Type:", response.headers.get("content-type"));
-
-        if (!response.ok) {
-          throw new Error(
-            `HTTP ${response.status} ${response.statusText} while loading ${jsonUrl}`
-          );
-        }
-
-        const raw = await response.text();
-        console.log("[Gallery] Response length:", raw.length);
-        console.log("[Gallery] Response preview:", raw.slice(0, 200));
-
-        let photos;
-        try {
-          photos = JSON.parse(raw.replace(/^\uFEFF/, "").trim());
-        } catch (jsonError) {
-          throw new Error(
-            `JSON parse failed: ${jsonError.message}. ` +
-            `The server responded, but /images/photos.json is not valid JSON.`
-          );
-        }
-
-        if (!Array.isArray(photos)) {
-          throw new Error(
-            `JSON loaded successfully, but its root value is ${typeof photos}; ` +
-            `photos.json must contain an array.`
-          );
-        }
-
-        const fragment = document.createDocumentFragment();
-        let validPhotos = 0;
-
-        photos.forEach((photo, index) => {
-          if (!photo || !photo.image || !photo.title) {
-            console.warn("[Gallery] Skipping invalid entry:", index, photo);
-            return;
-          }
-
-          fragment.appendChild(createMemoryCard(photo));
-          validPhotos++;
-        });
-
-        if (!validPhotos) {
-          throw new Error(
-            `JSON loaded successfully, but no valid photo entries were found. ` +
-            `Total JSON entries: ${photos.length}.`
-          );
-        }
-
-        memoryGrid.replaceChildren(fragment);
-        console.log(`[Gallery] SUCCESS: ${validPhotos} photos loaded.`);
-      } catch (error) {
-        console.error("[Gallery] FAILED:", error);
-
-        const message = error instanceof TypeError
-          ? "The browser could not fetch photos.json."
-          : "The gallery could not load photos.json.";
-
-        const details = [
-          `Error: ${error.name || "Error"}`,
-          `Message: ${error.message || String(error)}`,
-          `URL: ${jsonUrl}`,
-          "",
-          "Open this URL directly in your browser:",
-          window.location.origin + "/images/photos.json"
-        ].join("\n");
-
-        showGalleryDiagnostic(message, details);
+      if (!filteredPhotos.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = favoritesOnly ? "You have not saved any favorites yet." : "No memories match your search or filter.";
+        memoryGrid.appendChild(empty);
+        renderTimeline();
+        return;
       }
+
+      const fragment = document.createDocumentFragment();
+      filteredPhotos.forEach((photo, index) => fragment.appendChild(createMemoryCard(photo, index)));
+      memoryGrid.appendChild(fragment);
+      renderTimeline();
     }
 
-    // Event delegation keeps the gallery working even though cards are loaded from JSON.
-    memoryGrid.addEventListener("click", event => {
-      if (event.target.closest("a,button")) return;
+    function renderTimeline() {
+      timelineView.replaceChildren();
+      if (!filteredPhotos.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+        empty.textContent = "No memories to show in the timeline.";
+        timelineView.appendChild(empty);
+        return;
+      }
 
-      const card = event.target.closest(".memory");
-      if (card) openLightbox(card);
-    });
+      const groups = new Map();
+      filteredPhotos.forEach(photo => {
+        const year = photo.date ? String(new Date(photo.date).getFullYear()) : "Undated";
+        if (!groups.has(year)) groups.set(year, []);
+        groups.get(year).push(photo);
+      });
+
+      [...groups.entries()].sort((a,b) => b[0].localeCompare(a[0])).forEach(([year, items]) => {
+        const group = document.createElement("section");
+        group.className = "timeline-year";
+        const heading = document.createElement("h3");
+        heading.textContent = year;
+        group.appendChild(heading);
+
+        items.forEach(photo => {
+          const row = document.createElement("div");
+          row.className = "timeline-item";
+          const time = document.createElement("time");
+          time.textContent = photo.date ? formatDate(photo.date) : "Date not added";
+          const body = document.createElement("div");
+          const strong = document.createElement("strong");
+          strong.textContent = photo.title || "Untitled memory";
+          const p = document.createElement("p");
+          p.textContent = photo.description || "";
+          body.append(strong, p);
+          const open = document.createElement("button");
+          open.type = "button";
+          open.className = "timeline-open";
+          open.dataset.timelineImage = photoKey(photo);
+          open.textContent = "View";
+          row.append(time, body, open);
+          group.appendChild(row);
+        });
+        timelineView.appendChild(group);
+      });
+    }
+
+    function setView(view) {
+      const timeline = view === "timeline";
+      gridView.style.display = timeline ? "none" : "block";
+      timelineView.classList.toggle("show", timeline);
+      gridViewBtn.classList.toggle("active", !timeline);
+      timelineViewBtn.classList.toggle("active", timeline);
+    }
+
+    function updateLightboxFavorite(photo) {
+      lightboxFavorite.innerHTML = isFavorite(photo)
+        ? '<i class="fa-solid fa-heart"></i> Favorited'
+        : '<i class="fa-regular fa-heart"></i> Favorite';
+    }
+
+    function renderComments(photo) {
+      const comments = getComments()[photoKey(photo)] || [];
+      commentList.replaceChildren();
+      if (!comments.length) {
+        const note = document.createElement("p");
+        note.className = "comment-note";
+        note.textContent = "No comments in this browser yet.";
+        commentList.appendChild(note);
+        return;
+      }
+      comments.forEach((comment, index) => {
+        const item = document.createElement("div");
+        item.className = "comment";
+        const del = document.createElement("button");
+        del.type = "button";
+        del.className = "comment-delete";
+        del.dataset.commentIndex = index;
+        del.textContent = "Delete";
+        const small = document.createElement("small");
+        small.textContent = new Date(comment.createdAt).toLocaleString();
+        const p = document.createElement("p");
+        p.textContent = comment.text;
+        item.append(del, small, p);
+        commentList.appendChild(item);
+      });
+    }
+
+    function openLightbox(photoIndex) {
+      if (photoIndex < 0 || photoIndex >= filteredPhotos.length) return;
+      currentIndex = photoIndex;
+      const photo = filteredPhotos[currentIndex];
+      const imagePath = resolveImagePath(photo.image);
+      lightboxImg.src = imagePath;
+      lightboxImg.alt = photo.title || "Photo";
+      lightboxTitle.textContent = photo.title || "Untitled memory";
+      lightboxDescription.textContent = photo.description || "";
+      lightboxCategory.textContent = photo.category || "Daily life";
+      lightboxDate.textContent = photo.date ? formatDate(photo.date) : "Date not added";
+      lightboxDownload.href = imagePath;
+      lightboxCounter.textContent = `${currentIndex + 1} / ${filteredPhotos.length}`;
+      updateLightboxFavorite(photo);
+      renderComments(photo);
+      commentInput.value = "";
+      lightbox.classList.add("show");
+      document.body.style.overflow = "hidden";
+      lightboxClose.focus();
+    }
+
+    function navigateLightbox(step) {
+      if (!filteredPhotos.length) return;
+      currentIndex = (currentIndex + step + filteredPhotos.length) % filteredPhotos.length;
+      openLightbox(currentIndex);
+    }
 
     function closeLightbox() {
       lightbox.classList.remove("show");
       lightboxImg.src = "";
       document.body.style.overflow = "";
+      currentIndex = -1;
     }
 
-    document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
-    lightbox.addEventListener("click", e => {
-      if (e.target === lightbox) closeLightbox();
+    async function sharePhoto(photo) {
+      const imageUrl = new URL(resolveImagePath(photo.image), window.location.origin).href;
+      const data = {
+        title: photo.title || "David Agootson Photo Journal",
+        text: photo.description || photo.title || "A memory from David Agootson's photo journal.",
+        url: imageUrl
+      };
+      try {
+        if (navigator.share) { await navigator.share(data); return; }
+        await navigator.clipboard.writeText(imageUrl);
+        alert("Photo link copied to your clipboard.");
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          try {
+            await navigator.clipboard.writeText(imageUrl);
+            alert("Photo link copied to your clipboard.");
+          } catch { alert(imageUrl); }
+        }
+      }
+    }
+
+    function addComment() {
+      if (currentIndex < 0) return;
+      const text = commentInput.value.trim();
+      if (!text) return;
+      const photo = filteredPhotos[currentIndex];
+      const comments = getComments();
+      const key = photoKey(photo);
+      comments[key] = comments[key] || [];
+      comments[key].push({ text, createdAt: new Date().toISOString() });
+      saveComments(comments);
+      commentInput.value = "";
+      renderComments(photo);
+    }
+
+    filterBar.addEventListener("click", event => {
+      const button = event.target.closest(".filter-btn");
+      if (!button) return;
+      activeCategory = button.dataset.category;
+      buildFilters();
+      renderGallery();
     });
-    document.addEventListener("keydown", e => {
-      if (e.key === "Escape") closeLightbox();
+    searchInput.addEventListener("input", renderGallery);
+    sortSelect.addEventListener("change", renderGallery);
+
+    favoritesBtn.addEventListener("click", () => {
+      favoritesOnly = !favoritesOnly;
+      favoritesBtn.classList.toggle("active", favoritesOnly);
+      renderGallery();
     });
 
+    gridViewBtn.addEventListener("click", () => setView("grid"));
+    timelineViewBtn.addEventListener("click", () => setView("timeline"));
+
+    memoryGrid.addEventListener("click", event => {
+      const card = event.target.closest(".memory");
+      if (!card) return;
+      const index = Number(card.dataset.index);
+      const action = event.target.closest("[data-action]")?.dataset.action;
+      if (action === "favorite") {
+        event.stopPropagation();
+        toggleFavorite(filteredPhotos[index]);
+        return;
+      }
+      if (action === "share") {
+        event.stopPropagation();
+        sharePhoto(filteredPhotos[index]);
+        return;
+      }
+      if (!event.target.closest("a,button")) openLightbox(index);
+    });
+
+    timelineView.addEventListener("click", event => {
+      const button = event.target.closest("[data-timeline-image]");
+      if (!button) return;
+      const index = filteredPhotos.findIndex(photo => photoKey(photo) === button.dataset.timelineImage);
+      if (index >= 0) openLightbox(index);
+    });
+
+    lightboxPrev.addEventListener("click", () => navigateLightbox(-1));
+    lightboxNext.addEventListener("click", () => navigateLightbox(1));
+    document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", event => { if (event.target === lightbox) closeLightbox(); });
+
+    lightboxFavorite.addEventListener("click", () => {
+      if (currentIndex >= 0) toggleFavorite(filteredPhotos[currentIndex]);
+    });
+    lightboxShare.addEventListener("click", () => {
+      if (currentIndex >= 0) sharePhoto(filteredPhotos[currentIndex]);
+    });
+    commentSubmit.addEventListener("click", addComment);
+    commentInput.addEventListener("keydown", event => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "Enter") addComment();
+    });
+    commentList.addEventListener("click", event => {
+      const button = event.target.closest("[data-comment-index]");
+      if (!button || currentIndex < 0) return;
+      const photo = filteredPhotos[currentIndex];
+      const comments = getComments();
+      const key = photoKey(photo);
+      comments[key]?.splice(Number(button.dataset.commentIndex), 1);
+      saveComments(comments);
+      renderComments(photo);
+    });
+
+    document.addEventListener("keydown", event => {
+      if (!lightbox.classList.contains("show")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") navigateLightbox(-1);
+      if (event.key === "ArrowRight") navigateLightbox(1);
+    });
+
+    async function loadGallery() {
+      const jsonUrl = "/images/photos.json?v=" + Date.now();
+      try {
+        const response = await fetch(jsonUrl, {
+          method: "GET", cache: "no-store", headers: { "Accept": "application/json" }
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        const raw = await response.text();
+        let loaded;
+        try { loaded = JSON.parse(raw.replace(/^\uFEFF/, "").trim()); }
+        catch (jsonError) { throw new Error(`JSON parse failed: ${jsonError.message}`); }
+        if (!Array.isArray(loaded)) throw new Error("photos.json must contain an array.");
+        photos = loaded.filter(photo => photo && photo.image && photo.title);
+        if (!photos.length) throw new Error("No valid photo entries were found.");
+        buildFilters();
+        renderGallery();
+      } catch (error) {
+        console.error("[Gallery] FAILED:", error);
+        memoryGrid.innerHTML = `
+          <div class="gallery-error" role="alert">
+            <strong>Gallery could not load</strong>
+            <p>Please check <code>images/photos.json</code> and refresh the page.</p>
+            <pre>${String(error.message || error).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}</pre>
+          </div>`;
+      }
+    }
+
+    setView("grid");
     loadGallery();
-</script>
+  </script>
+
 </body>
 </html>
