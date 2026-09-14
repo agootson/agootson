@@ -1,537 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#e31b23">
-  <meta name="description" content="Articles and posts by David Agootson about Computer Science, web development, programming, learning and technology.">
-  <title>Blog | David Agootson</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e31b23">
+<meta name="description" id="metaDescription" content="Articles and posts by David Agootson about Computer Science, web development, programming, learning and technology.">
+<meta property="og:title" id="ogTitle" content="Blog | David Agootson">
+<meta property="og:description" id="ogDescription" content="Articles, lessons, projects and ideas from David Agootson.">
+<meta property="og:type" content="article">
+<title id="pageTitle">Blog | David Agootson</title>
 
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
 
-    :root {
-      --bg: #f7f8fa;
-      --white: #ffffff;
-      --text: #171a1f;
-      --muted: #747981;
-      --line: #e7e9ed;
-      --red: #e31b23;
-      --red-soft: #fff1f2;
-      --red-dark: #b9151c;
-      --sidebar: 250px;
-      --sidebar-small: 78px;
-    }
+:root{
+  --bg:#f7f8fa;--white:#fff;--text:#171a1f;--muted:#747981;--line:#e7e9ed;
+  --red:#e31b23;--red-soft:#fff1f2;--red-dark:#b9151c;--sidebar:250px;--sidebar-small:78px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow-x:hidden}
+body.no-scroll{overflow:hidden}
+a{color:inherit;text-decoration:none}button,input,textarea,select{font:inherit}
+button{cursor:pointer}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, Arial, sans-serif;
-      overflow-x: hidden;
-    }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; }
+.sidebar{position:fixed;inset:0 auto 0 0;z-index:1000;width:var(--sidebar);display:flex;flex-direction:column;padding:30px 16px 22px;background:#fff;border-right:1px solid var(--line);transition:.25s ease}
+.collapse{position:absolute;top:18px;right:-19px;width:38px;height:38px;display:grid;place-items:center;border:0;border-radius:50%;color:#fff;background:var(--red);box-shadow:0 8px 20px rgba(227,27,35,.18)}
+.collapse:hover{background:var(--red-dark);transform:scale(1.05)}
+.collapse span{font-size:1.5rem;line-height:1}
+.nav{display:flex;flex-direction:column;gap:4px}
+.nav a{position:relative;min-height:48px;display:flex;align-items:center;gap:17px;padding:10px 14px;border-radius:7px;color:#72767d;font-size:.79rem;font-weight:600;transition:.18s ease}
+.nav a:hover{color:var(--red);background:#fff5f5;transform:translateX(2px)}
+.nav a.active{color:var(--red);background:var(--red-soft)}
+.nav a.active:before{content:"";position:absolute;left:-16px;top:8px;bottom:8px;width:4px;border-radius:0 4px 4px 0;background:var(--red)}
+.icon{width:22px;flex:0 0 22px;display:grid;place-items:center;color:#737982;font-size:.95rem}
+.nav a:hover .icon,.nav a.active .icon{color:var(--red)}
+body.collapsed .sidebar{width:var(--sidebar-small)}
+body.collapsed .nav-label{display:none}
+body.collapsed .nav a{justify-content:center;padding-inline:0}
+body.collapsed .collapse span{transform:rotate(180deg)}
 
-    /* ================= SIDEBAR ================= */
-    .sidebar {
-      position: fixed; inset: 0 auto 0 0; z-index: 1000;
-      width: var(--sidebar); display: flex; flex-direction: column;
-      padding: 30px 16px 22px; background: var(--white);
-      border-right: 1px solid var(--line);
-      transition: width .25s ease, transform .25s ease;
-    }
-    .collapse {
-      position: absolute; top: 18px; right: -19px; width: 38px; height: 38px;
-      display: grid; place-items: center; border: 0; border-radius: 50%;
-      color: white; background: var(--red); cursor: pointer;
-      box-shadow: 0 8px 20px rgba(227,27,35,.18); transition: .2s ease;
-    }
-    .collapse:hover { background: var(--red-dark); transform: scale(1.05); }
-    .collapse span { font-size: 1.5rem; line-height: 1; transform: translateY(-1px); }
-    .nav { display: flex; flex-direction: column; gap: 4px; }
-    .nav a {
-      position: relative; min-height: 48px; display: flex; align-items: center;
-      gap: 17px; padding: 10px 14px; border-radius: 7px; color: #72767d;
-      font-size: .79rem; font-weight: 600;
-      transition: background .18s ease, color .18s ease, transform .18s ease;
-    }
-    .nav a:hover { color: var(--red); background: #fff5f5; transform: translateX(2px); }
-    .nav a.active { color: var(--red); background: var(--red-soft); }
-    .nav a.active::before {
-      content: ""; position: absolute; left: -16px; top: 8px; bottom: 8px;
-      width: 4px; border-radius: 0 4px 4px 0; background: var(--red);
-    }
-    .icon {
-      width: 22px; flex: 0 0 22px; display: grid; place-items: center;
-      color: #737982; font-size: .95rem; line-height: 1;
-      transition: color .18s ease, transform .18s ease;
-    }
-    .nav a:hover .icon { transform: scale(1.06); }
-    .nav a:hover .icon, .nav a.active .icon { color: var(--red); }
+.main{margin-left:var(--sidebar);transition:.25s ease}
+body.collapsed .main{margin-left:var(--sidebar-small)}
+.container{width:min(1120px,calc(100% - 72px));margin-inline:auto}
+.page{min-height:calc(100vh - 180px);padding:86px 0 70px}
+.eyebrow{margin-bottom:14px;color:var(--red);font-size:.66rem;font-weight:800;letter-spacing:.2em}
+.page h1{max-width:900px;font-size:clamp(2.8rem,6vw,5.2rem);line-height:.95;letter-spacing:-.075em}
+.page h1 span{color:var(--red)}
+.lead{max-width:760px;margin-top:20px;color:var(--muted);font-size:.9rem;line-height:1.85}
 
-    body.collapsed .sidebar { width: var(--sidebar-small); }
-    body.collapsed .nav-label { display: none; }
-    body.collapsed .nav a { justify-content: center; padding-inline: 0; }
-    body.collapsed .collapse span { transform: rotate(180deg); }
+.toolbar{display:grid;grid-template-columns:1fr 170px 150px;gap:10px;margin-top:34px}
+.field{width:100%;border:1px solid var(--line);border-radius:9px;padding:12px 14px;background:#fff;color:var(--text);outline:none;font-size:.74rem}
+.field:focus{border-color:#e9a4a8;box-shadow:0 0 0 3px var(--red-soft)}
+.section{padding:52px 0 10px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px}
+.section-title{font-size:clamp(1.7rem,3vw,2.7rem);line-height:1.05;letter-spacing:-.055em}
+.section-note{margin-top:10px;color:var(--muted);font-size:.75rem;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:26px}
+.card{padding:26px;background:#fff;border:1px solid var(--line);border-radius:12px;transition:.2s ease}
+.card:hover{transform:translateY(-4px);border-color:#f0c3c6;box-shadow:0 14px 35px rgba(18,28,45,.07)}
+.article-card{position:relative;overflow:hidden}
+.article-cover{height:175px;margin:-26px -26px 22px;background:linear-gradient(135deg,#171a1f,#e31b23);display:grid;place-items:center;color:#fff}
+.article-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.article-cover i{font-size:2.4rem;opacity:.9}
+.article-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:13px}
+.article-meta span{color:#8b9098;font-size:.61rem;font-weight:800}
+.article-meta .category{color:var(--red)}
+.article-card h3{font-size:1.08rem;line-height:1.35}
+.article-card p{margin-top:9px;min-height:60px;color:var(--muted);font-size:.75rem;line-height:1.8}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+.tag{padding:7px 10px;border-radius:999px;background:#f4f5f7;color:#626770;font-size:.63rem;font-weight:700}
+.tag.red{color:var(--red);background:var(--red-soft)}
+.card-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px}
+.read-link{display:inline-flex;align-items:center;gap:8px;color:var(--red);font-size:.69rem;font-weight:800}
+.engagement{display:flex;gap:6px}
+.icon-btn{min-width:34px;height:34px;padding:0 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#6e747d;font-size:.67rem;font-weight:700}
+.icon-btn:hover,.icon-btn.liked{color:var(--red);border-color:#efb9bd;background:var(--red-soft)}
+.empty{grid-column:1/-1;padding:42px 24px;text-align:center;border:1px dashed #d8dce2;border-radius:12px;color:var(--muted);background:#fff}
+.empty i{font-size:1.6rem;margin-bottom:10px;color:#c1c5cb}
 
-    /* ================= MAIN ================= */
-    .main { margin-left: var(--sidebar); transition: margin-left .25s ease; }
-    body.collapsed .main { margin-left: var(--sidebar-small); }
-    .container { width: min(1120px, calc(100% - 72px)); margin-inline: auto; }
+.newsletter{margin-top:45px;padding:32px;background:#fff;border:1px solid var(--line);border-radius:12px}
+.newsletter-content{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.newsletter h2{font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.05;letter-spacing:-.055em}
+.newsletter p{margin-top:10px;color:var(--muted);font-size:.75rem;line-height:1.8}
+.newsletter-form{display:grid;gap:9px}
+.newsletter-input{display:grid;grid-template-columns:1fr auto;gap:8px}
+.newsletter-input input{min-width:0;border:1px solid var(--line);border-radius:8px;padding:13px;font-size:.74rem;outline:none}
+.newsletter-input input:focus{border-color:#e9a4a8;box-shadow:0 0 0 3px var(--red-soft)}
+.btn{width:fit-content;border:0;border-radius:8px;padding:12px 18px;background:var(--red);color:#fff;font-size:.7rem;font-weight:800}
+.btn:hover{background:var(--red-dark)}
+.btn.secondary{background:#fff;color:var(--text);border:1px solid var(--line)}
+.btn.secondary:hover{color:var(--red);border-color:#efb9bd;background:var(--red-soft)}
+.newsletter-status,.form-status{min-height:18px;font-size:.66rem;font-weight:700}
+.success{color:#16824a}.error{color:#c0262d}.newsletter-note{color:#969ba3!important;font-size:.61rem!important}
 
-    /* ================= PAGE ================= */
-    .page {
-      min-height: calc(100vh - 180px);
-      padding: 86px 0 70px;
-    }
-    .eyebrow {
-      margin-bottom: 14px; color: var(--red); font-size: .66rem;
-      font-weight: 800; letter-spacing: .2em;
-    }
-    .page h1 {
-      max-width: 850px; font-size: clamp(2.8rem, 6vw, 5.2rem);
-      line-height: .95; letter-spacing: -.075em;
-    }
-    .page h1 span { color: var(--red); }
-    .lead {
-      max-width: 720px; margin-top: 20px; color: var(--muted);
-      font-size: .9rem; line-height: 1.85;
-    }
+.article-view{display:none}
+.article-view.show{display:block}
+.blog-list.hidden{display:none}
+.article-shell{max-width:900px;margin-top:35px}
+.back-link{display:inline-flex;align-items:center;gap:8px;color:var(--red);font-size:.68rem;font-weight:800;margin-bottom:25px}
+.article-hero{overflow:hidden;border-radius:14px;background:#171a1f;min-height:280px;display:grid;place-items:center;color:#fff}
+.article-hero img{width:100%;max-height:460px;object-fit:cover;display:block}
+.article-hero i{font-size:4rem}
+.article-view .article-meta{margin-top:26px}
+.article-view h2{font-size:clamp(2.2rem,5vw,4.4rem);line-height:1;letter-spacing:-.065em}
+.article-excerpt{max-width:760px;margin-top:16px;color:var(--muted);font-size:.86rem;line-height:1.8}
+.article-content{margin-top:34px;font-size:.9rem;line-height:1.95}
+.article-content h2,.article-content h3{margin:30px 0 10px;line-height:1.2}
+.article-content p{margin:15px 0}
+.article-content ul,.article-content ol{padding-left:24px;margin:14px 0}
+.article-content blockquote{margin:22px 0;padding:17px 20px;border-left:4px solid var(--red);background:#fff;color:#626770}
+.article-content code{padding:2px 5px;background:#eef0f3;border-radius:4px}
+.article-content pre{overflow:auto;margin:18px 0;padding:18px;border-radius:9px;background:#171a1f;color:#fff;font-size:.72rem}
+.article-engagement{display:flex;flex-wrap:wrap;gap:8px;margin:30px 0;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.article-engagement button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 14px;color:#60666e;font-size:.68rem;font-weight:800}
+.article-engagement button:hover,.article-engagement button.liked{color:var(--red);border-color:#efb9bd;background:var(--red-soft)}
+.share-menu{display:flex;gap:7px;flex-wrap:wrap}
+.comments{margin-top:38px}
+.comments h3{font-size:1.2rem}
+.comment-form{margin-top:18px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:11px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.comment-form textarea{width:100%;min-height:120px;resize:vertical;margin-top:10px}
+.comment-form input,.comment-form textarea,.editor input,.editor textarea,.editor select{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px 13px;background:#fff;outline:none;font-size:.74rem}
+.comment-form input:focus,.comment-form textarea:focus,.editor input:focus,.editor textarea:focus,.editor select:focus{border-color:#e9a4a8;box-shadow:0 0 0 3px var(--red-soft)}
+.comment-list{display:grid;gap:10px;margin-top:18px}
+.comment{padding:16px;background:#fff;border:1px solid var(--line);border-radius:10px}
+.comment-top{display:flex;justify-content:space-between;gap:10px}
+.comment strong{font-size:.72rem}.comment time{font-size:.6rem;color:#9a9ea5}
+.comment p{margin-top:8px;color:#626770;font-size:.72rem;line-height:1.7}
+.comment-actions{display:flex;gap:6px;margin-top:10px}.comment-actions button{border:0;background:transparent;color:#8a8f97;font-size:.61rem;font-weight:700}.comment-actions button:hover{color:var(--red)}
 
-    .section { padding: 56px 0 10px; }
-    .section-title {
-      font-size: clamp(1.7rem, 3vw, 2.7rem); line-height: 1.05;
-      letter-spacing: -.055em;
-    }
-    .section-note {
-      max-width: 680px; margin-top: 13px; color: var(--muted);
-      font-size: .8rem; line-height: 1.8;
-    }
+.admin-trigger{display:none}
+body.local-admin .admin-trigger{display:inline-flex}
+.local-admin-bar{display:none;margin-top:20px;padding:13px 15px;border:1px dashed #e0a2a6;background:var(--red-soft);border-radius:9px;color:#8d2025;font-size:.66rem;font-weight:700}
+body.local-admin .local-admin-bar{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.admin-panel{display:none;position:fixed;inset:0;z-index:2000;background:rgba(20,27,39,.5);padding:30px}
+.admin-panel.show{display:flex;align-items:center;justify-content:center}
+.admin-box{width:min(980px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:14px;padding:24px;box-shadow:0 25px 70px rgba(0,0,0,.2)}
+.admin-head{display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding-bottom:15px}
+.admin-head h2{font-size:1.3rem}
+.close{border:1px solid var(--line);background:#fff;width:35px;height:35px;border-radius:8px}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}
+.admin-grid .full{grid-column:1/-1}
+.editor{display:grid;gap:10px}
+.editor label{font-size:.64rem;font-weight:800;color:#6b7179}
+.editor textarea{min-height:180px;resize:vertical}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.admin-posts{display:grid;gap:8px;margin-top:20px}
+.admin-post{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:9px}
+.admin-post strong{font-size:.72rem}.admin-post small{display:block;margin-top:4px;color:#90959d;font-size:.6rem}
+.admin-post-actions{display:flex;gap:5px}.admin-post-actions button{border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 9px;font-size:.6rem;font-weight:700}
+.admin-post-actions button:hover{color:var(--red);border-color:#efb9bd}
 
-    .grid {
-      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px; margin-top: 28px;
-    }
-    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .card {
-      padding: 26px; background: var(--white); border: 1px solid var(--line);
-      border-radius: 12px; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-    }
-    .card:hover {
-      transform: translateY(-4px); border-color: #f0c3c6;
-      box-shadow: 0 14px 35px rgba(18,28,45,.07);
-    }
-    .card-icon {
-      width: 42px; height: 42px; display: grid; place-items: center;
-      border-radius: 10px; background: var(--red-soft); color: var(--red);
-      margin-bottom: 17px;
-    }
-    .card h3 { font-size: 1rem; letter-spacing: -.02em; }
-    .card p {
-      margin-top: 10px; color: var(--muted); font-size: .76rem; line-height: 1.8;
-    }
-    .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
-    .tag {
-      padding: 7px 10px; border-radius: 999px; background: #f4f5f7;
-      color: #626770; font-size: .66rem; font-weight: 700;
-    }
-    .tag.red { color: var(--red); background: var(--red-soft); }
+footer{width:min(1120px,calc(100% - 72px));margin-inline:auto;padding:42px 0 28px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px 30px;border-top:1px solid var(--line)}
+footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8b9098;font-size:.62rem}
+.socials{display:flex;justify-content:center;gap:7px;align-items:center;justify-self:center}
+.socials a{width:36px;height:36px;display:grid;place-items:center;border:1px solid #dfe2e7;border-radius:50%;background:#fff;color:#666d76;font-size:.92rem;transition:.2s}
+.socials a:hover{color:var(--red);background:var(--red-soft);border-color:#f2b9bd;transform:translateY(-3px)}
+.copyright{grid-column:1/-1;text-align:center;padding-top:10px}
 
-    .timeline { margin-top: 28px; display: grid; gap: 12px; }
-    .timeline-item {
-      display: grid; grid-template-columns: 135px 1fr; gap: 25px;
-      padding: 20px 0; border-bottom: 1px solid var(--line);
-    }
-    .timeline-item strong { color: var(--red); font-size: .72rem; }
-    .timeline-item h3 { font-size: .98rem; }
-    .timeline-item p { margin-top: 7px; color: var(--muted); font-size: .76rem; line-height: 1.75; }
-
-    .photo-grid {
-      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px; margin-top: 28px;
-    }
-    .photo {
-      aspect-ratio: 4 / 5; overflow: hidden; border-radius: 12px; background: #e9edf3;
-    }
-    .photo.wide { aspect-ratio: 16 / 10; grid-column: span 2; }
-    .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .contact-grid {
-      display: grid; grid-template-columns: .8fr 1.2fr; gap: 22px; margin-top: 30px;
-    }
-    .contact-list { display: grid; gap: 10px; }
-    .contact-link {
-      display: flex; align-items: center; gap: 14px; padding: 16px;
-      background: white; border: 1px solid var(--line); border-radius: 10px;
-    }
-    .contact-link i { color: var(--red); width: 20px; text-align: center; }
-    .contact-link small { display: block; color: #969ba3; font-size: .62rem; margin-bottom: 3px; }
-    .contact-link strong { font-size: .76rem; }
-
-    .form { display: grid; gap: 12px; }
-    .form input, .form textarea {
-      width: 100%; border: 1px solid var(--line); border-radius: 9px;
-      padding: 13px 14px; background: white; color: var(--text);
-      font: inherit; font-size: .76rem; outline: none;
-    }
-    .form textarea { min-height: 150px; resize: vertical; }
-    .form input:focus, .form textarea:focus { border-color: #e9a4a8; box-shadow: 0 0 0 3px var(--red-soft); }
-    .btn {
-      width: fit-content; border: 0; border-radius: 8px; padding: 12px 18px;
-      background: var(--red); color: white; font-size: .72rem; font-weight: 800;
-      cursor: pointer;
-    }
-    .btn:hover { background: var(--red-dark); }
-
-    .quote {
-      margin-top: 30px; padding: 25px; border-left: 4px solid var(--red);
-      background: white; border-radius: 0 10px 10px 0;
-      color: #626770; font-size: .84rem; line-height: 1.8; font-style: italic;
-    }
-
-    /* ================= FOOTER ================= */
-    footer {
-      width: min(1120px, calc(100% - 72px)); margin-inline: auto;
-      padding: 42px 0 28px; display: grid; grid-template-columns: 1fr auto 1fr;
-      align-items: center; gap: 16px 30px; border-top: 1px solid var(--line);
-    }
-    footer strong { color: var(--red); font-size: .9rem; }
-    footer p { margin-top: 4px; color: #8b9098; font-size: .62rem; }
-    .socials {
-      display: flex; justify-content: center; gap: 7px; align-items: center; justify-self: center;
-    }
-    .socials a {
-      width: 36px; height: 36px; display: grid; place-items: center;
-      border: 1px solid #dfe2e7; border-radius: 50%; background: white;
-      color: #666d76; font-size: .92rem; transition: color .2s ease, background .2s ease,
-      border-color .2s ease, transform .2s ease, box-shadow .2s ease;
-    }
-    .socials a:hover {
-      color: var(--red); background: var(--red-soft); border-color: #f2b9bd;
-      transform: translateY(-3px); box-shadow: 0 8px 18px rgba(220,38,46,.12);
-    }
-    .copyright { grid-column: 1 / -1; text-align: center; padding-top: 10px; }
-
-    /* ================= MOBILE ================= */
-    .mobile-menu { display: none; }
-    .backdrop { display: none; }
-    @media (max-width: 1050px) {
-      :root { --sidebar: 225px; }
-      .container, footer { width: min(100% - 48px, 900px); }
-    }
-    @media (max-width: 900px) {
-      .sidebar {
-        width: min(285px, 86vw); transform: translateX(-105%);
-        box-shadow: 18px 0 45px rgba(18,28,45,.13);
-      }
-      .sidebar.open { transform: translateX(0); }
-      .collapse { display: none; }
-      .main, body.collapsed .main { margin-left: 0; }
-      .mobile-menu {
-        position: fixed; top: 14px; left: 14px; z-index: 1100;
-        width: 43px; height: 43px; display: flex; flex-direction: column;
-        justify-content: center; align-items: center; gap: 5px; border: 0;
-        border-radius: 8px; background: var(--red); cursor: pointer;
-        box-shadow: 0 8px 22px rgba(227,27,35,.18);
-      }
-      .mobile-menu span { width: 18px; height: 2px; background: white; border-radius: 2px; }
-      .backdrop {
-        position: fixed; inset: 0; z-index: 900; display: block;
-        background: rgba(20,27,39,.35); opacity: 0; visibility: hidden; transition: .2s ease;
-      }
-      .backdrop.show { opacity: 1; visibility: visible; }
-      .container, footer { width: min(100% - 34px, 720px); }
-      .page { padding: 90px 0 55px; }
-      .grid, .grid.three, .contact-grid { grid-template-columns: 1fr; }
-      .photo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (max-width: 600px) {
-      .container, footer { width: calc(100% - 28px); }
-      .page h1 { font-size: clamp(2.65rem, 14vw, 4rem); }
-      .lead { font-size: .78rem; }
-      .photo-grid { grid-template-columns: 1fr; }
-      .photo.wide { grid-column: auto; }
-      .timeline-item { grid-template-columns: 1fr; gap: 7px; }
-      footer { grid-template-columns: 1fr; text-align: center; }
-      .copyright { grid-column: auto; }
-    }
-    @media (max-width: 380px) {
-      .container, footer { width: calc(100% - 22px); }
-      .mobile-menu { top: 10px; left: 10px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
-    }
-  
-    .article-card { position: relative; }
-    .article-meta { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin: 0 0 14px; }
-    .article-meta span { color:#8b9098; font-size:.64rem; font-weight:700; }
-    .article-card h3 { font-size:1.08rem; line-height:1.35; }
-    .article-card p { min-height:74px; }
-    .read-link { display:inline-flex; align-items:center; gap:8px; margin-top:18px; color:var(--red); font-size:.7rem; font-weight:800; }
-    .subscribe { margin-top:46px; padding:32px; background:var(--white); border:1px solid var(--line); border-radius:12px; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center; }
-    .subscribe h2 { font-size:clamp(1.7rem,3vw,2.6rem); line-height:1.05; letter-spacing:-.055em; }
-    .subscribe p { margin-top:10px; color:var(--muted); font-size:.76rem; line-height:1.8; }
-    .subscribe-form { display:grid; grid-template-columns:1fr auto; gap:8px; }
-    .subscribe-form input { min-width:0; border:1px solid var(--line); border-radius:8px; padding:13px; font:inherit; font-size:.74rem; }
-    .subscribe-form button { border:0; border-radius:8px; padding:0 17px; background:var(--red); color:#fff; font-size:.7rem; font-weight:800; cursor:pointer; }
-    .subscribe-note { grid-column:1/-1; margin-top:-12px; color:#969ba3; font-size:.61rem; line-height:1.6; }
-    @media(max-width:900px) { .subscribe { grid-template-columns:1fr; } }
-    @media(max-width:600px) { .subscribe-form { grid-template-columns:1fr; } .subscribe-form button { min-height:43px; } }
-  </style>
+.mobile-menu{display:none}.backdrop{display:none}
+@media(max-width:1050px){:root{--sidebar:225px}.container,footer{width:min(100% - 48px,900px)}}
+@media(max-width:900px){
+  .sidebar{width:min(285px,86vw);transform:translateX(-105%);box-shadow:18px 0 45px rgba(18,28,45,.13)}
+  .sidebar.open{transform:translateX(0)}.collapse{display:none}.main,body.collapsed .main{margin-left:0}
+  .mobile-menu{position:fixed;top:14px;left:14px;z-index:1100;width:43px;height:43px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;border:0;border-radius:8px;background:var(--red);box-shadow:0 8px 22px rgba(227,27,35,.18)}
+  .mobile-menu span{width:18px;height:2px;background:#fff;border-radius:2px}
+  .backdrop{position:fixed;inset:0;z-index:900;display:block;background:rgba(20,27,39,.35);opacity:0;visibility:hidden;transition:.2s}
+  .backdrop.show{opacity:1;visibility:visible}.container,footer{width:min(100% - 34px,720px)}
+  .page{padding:90px 0 55px}.grid,.newsletter-content{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}
+  .toolbar .search{grid-column:1/-1}
+}
+@media(max-width:600px){
+  .container,footer{width:calc(100% - 28px)}.page h1{font-size:clamp(2.65rem,14vw,4rem)}
+  .lead{font-size:.78rem}.toolbar{grid-template-columns:1fr}.grid{grid-template-columns:1fr}
+  .newsletter-input{grid-template-columns:1fr}.newsletter-input button{min-height:43px}
+  .form-grid,.admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
+  footer{grid-template-columns:1fr;text-align:center}.copyright{grid-column:auto}
+  .admin-panel{padding:12px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
 </head>
+
 <body>
-  <aside class="sidebar" id="sidebar">
-    <button class="collapse" id="collapse" aria-label="Collapse sidebar"><span>‹</span></button>
-    <nav class="nav" aria-label="Main navigation">
-      <a class="" href="index.html">
-        <span class="icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
-        <span class="nav-label">Home</span>
-      </a>
-      <a class="active" href="blog.html">
-        <span class="icon"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></span>
-        <span class="nav-label">Blog</span>
-      </a>
-      <a class="" href="skills.html">
-        <span class="icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
-        <span class="nav-label">Skills</span>
-      </a>
-      <a class="" href="gallery.html">
-        <span class="icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span>
-        <span class="nav-label">Gallery</span>
-      </a>
-      <a class="" href="project.html">
-        <span class="icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span>
-        <span class="nav-label">Projects</span>
-      </a>
-      <a class="" href="services.html">
-        <span class="icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
-        <span class="nav-label">Services</span>
-      </a>
-      <a class="" href="about.html">
-        <span class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span>
-        <span class="nav-label">About Me</span>
-      </a>
-      <a class="" href="contact.html">
-        <span class="icon"><i class="fa-regular fa-paper-plane" aria-hidden="true"></i></span>
-        <span class="nav-label">Contact Me</span>
-      </a>
-    </nav>
-  </aside>
-  <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
-  <div class="backdrop" id="backdrop"></div>
+<aside class="sidebar" id="sidebar">
+  <button class="collapse" id="collapse" aria-label="Collapse sidebar"><span>‹</span></button>
+  <nav class="nav" aria-label="Main navigation">
+    <a href="index.html"><span class="icon"><i class="fa-solid fa-house"></i></span><span class="nav-label">Home</span></a>
+    <a class="active" href="blog.html"><span class="icon"><i class="fa-regular fa-pen-to-square"></i></span><span class="nav-label">Blog</span></a>
+    <a href="skills.html"><span class="icon"><i class="fa-solid fa-code"></i></span><span class="nav-label">Skills</span></a>
+    <a href="gallery.html"><span class="icon"><i class="fa-regular fa-images"></i></span><span class="nav-label">Gallery</span></a>
+    <a href="project.html"><span class="icon"><i class="fa-solid fa-layer-group"></i></span><span class="nav-label">Projects</span></a>
+    <a href="services.html"><span class="icon"><i class="fa-solid fa-briefcase"></i></span><span class="nav-label">Services</span></a>
+    <a href="about.html"><span class="icon"><i class="fa-regular fa-user"></i></span><span class="nav-label">About Me</span></a>
+    <a href="contact.html"><span class="icon"><i class="fa-regular fa-paper-plane"></i></span><span class="nav-label">Contact Me</span></a>
+  </nav>
+</aside>
 
-  <main class="main">
-    <section class="page container">
-      <div class="eyebrow">DAVID AGOOTSON · ARTICLES</div>
-      <h1>Ideas, lessons & <span>things worth sharing.</span></h1>
-      <p class="lead">Welcome to my blog. I will publish articles about Computer Science, web development, programming, projects, technology and lessons from my journey as a student builder.</p>
+<button class="mobile-menu" id="mobileMenu" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+<div class="backdrop" id="backdrop"></div>
 
-      <section class="section">
-        <div class="grid">
-          <article class="card article-card">
-            <div class="article-meta"><span>FEATURED</span><span>·</span><span>Coming soon</span></div>
-            <h3>Learning Web Development by Building Real Things</h3>
-            <p>A practical look at how building websites turns HTML, CSS, JavaScript and responsive design concepts into real experience.</p>
-            <div class="tags"><span class="tag red">Web Development</span><span class="tag">Learning</span></div>
-            <a class="read-link" href="post.html">Read article <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
+<main class="main">
+<section class="page container">
 
-          <article class="card article-card">
-            <div class="article-meta"><span>PROGRAMMING</span><span>·</span><span>Coming soon</span></div>
-            <h3>What Python Teaches Beyond Syntax</h3>
-            <p>Lessons from Python practice, exception handling, database operations and solving problems with code.</p>
-            <div class="tags"><span class="tag red">Python</span><span class="tag">Programming</span></div>
-            <a class="read-link" href="post.html">Read article <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
+  <div class="blog-list" id="blogList">
+    <div class="eyebrow">DAVID AGOOTSON · ARTICLES</div>
+    <h1>Ideas, lessons & <span>things worth sharing.</span></h1>
+    <p class="lead">A publishing space for Computer Science, web development, programming, projects, technology and lessons from my journey as a student builder.</p>
 
-          <article class="card article-card">
-            <div class="article-meta"><span>DATA</span><span>·</span><span>Coming soon</span></div>
-            <h3>Understanding Data Through Analysis</h3>
-            <p>A beginner-friendly exploration of measurement scales and univariate, bivariate and multivariate analysis.</p>
-            <div class="tags"><span class="tag red">Data</span><span class="tag">Analysis</span></div>
-            <a class="read-link" href="post.html">Read article <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-
-          <article class="card article-card">
-            <div class="article-meta"><span>COMPUTER SCIENCE</span><span>·</span><span>Coming soon</span></div>
-            <h3>From Hardware to Software: What Microprocessors Teach Me</h3>
-            <p>Reflections from studying microprocessors and understanding the hardware foundations behind computing.</p>
-            <div class="tags"><span class="tag red">Microprocessors</span><span class="tag">CSE</span></div>
-            <a class="read-link" href="post.html">Read article <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-
-          <article class="card article-card">
-            <div class="article-meta"><span>THEORY</span><span>·</span><span>Coming soon</span></div>
-            <h3>Making Sense of Compiler Design</h3>
-            <p>How grammars, productions and language-processing concepts connect the rules we write to programs computers can process.</p>
-            <div class="tags"><span class="tag red">Compiler Design</span><span class="tag">Theory</span></div>
-            <a class="read-link" href="post.html">Read article <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-
-          <article class="card article-card">
-            <div class="article-meta"><span>PERSONAL</span><span>·</span><span>Coming soon</span></div>
-            <h3>My Journey as a Student Builder</h3>
-            <p>From early web pages to studying Computer Science at GTU, a continuing story of learning, experimentation and growth.</p>
-            <div class="tags"><span class="tag red">Journey</span><span class="tag">Personal</span></div>
-            <a class="read-link" href="post.html">Read article <i class="fa-solid fa-arrow-right"></i></a>
-          </article>
-        </div>
-      </section>
-
-      <!-- ================= NEWSLETTER ================= -->
-<section class="newsletter">
-  <div class="newsletter-content">
-    <div>
-      <div class="eyebrow">STAY UPDATED</div>
-      <h2>Join my newsletter.</h2>
-      <p>
-        Get occasional updates about my projects, learning journey,
-        new articles and things I'm building.
-      </p>
+    <div class="local-admin-bar">
+      <span><i class="fa-solid fa-flask"></i> Local prototype mode: articles, comments, likes and subscribers are stored only in this browser until Supabase is connected.</span>
+      <button class="btn secondary admin-trigger" id="openAdmin">Open Publisher</button>
     </div>
 
-    <form
-      id="newsletterForm"
-      action="https://formsubmit.co/ajax/davidagootson@gmail.com"
-      method="POST"
-      class="newsletter-form"
-    >
-      <!-- FormSubmit settings -->
-      <input
-        type="hidden"
-        name="_subject"
-        value="New Newsletter Subscriber"
-      >
+    <div class="toolbar">
+      <input class="field search" id="search" type="search" placeholder="Search articles, topics or keywords..." aria-label="Search articles">
+      <select class="field" id="categoryFilter" aria-label="Filter by category"></select>
+      <select class="field" id="sortFilter" aria-label="Sort articles">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="popular">Most liked</option>
+        <option value="viewed">Most viewed</option>
+      </select>
+    </div>
 
-      <input
-        type="hidden"
-        name="_template"
-        value="table"
-      >
-
-      <input
-        type="hidden"
-        name="_captcha"
-        value="true"
-      >
-
-      <input
-        type="hidden"
-        name="_url"
-        value="https://agootson.is-a.dev/blog.html"
-      >
-
-      <!-- Email -->
-      <div class="newsletter-input">
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter your email address"
-          aria-label="Email address"
-          required
-        >
-
-        <button type="submit" id="newsletterButton">
-          Subscribe
-        </button>
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Latest articles</h2>
+          <p class="section-note" id="articleCount">Loading articles...</p>
+        </div>
       </div>
+      <div class="grid" id="articleGrid"></div>
+    </section>
 
-      <p id="newsletterStatus" class="newsletter-status"></p>
-    </form>
+    <section class="newsletter">
+      <div class="newsletter-content">
+        <div>
+          <div class="eyebrow">STAY UPDATED</div>
+          <h2>Join my newsletter.</h2>
+          <p>Get occasional updates about new articles, projects, my learning journey and things I'm building.</p>
+        </div>
+        <form class="newsletter-form" id="newsletterForm">
+          <div class="newsletter-input">
+            <input id="subscriberEmail" type="email" maxlength="254" placeholder="Enter your email address" aria-label="Email address" required>
+            <button class="btn" type="submit" id="newsletterButton">Subscribe</button>
+          </div>
+          <p id="newsletterStatus" class="newsletter-status"></p>
+          <p class="newsletter-note">No spam. Unsubscribe anytime. Email delivery will be connected through Resend after Supabase integration.</p>
+        </form>
+      </div>
+    </section>
   </div>
+
+  <article class="article-view" id="articleView">
+    <div class="article-shell">
+      <a href="blog.html" class="back-link" id="backToBlog"><i class="fa-solid fa-arrow-left"></i> Back to all articles</a>
+      <div class="article-hero" id="articleHero"></div>
+      <div class="article-meta" id="articleMeta"></div>
+      <h2 id="articleTitle"></h2>
+      <p class="article-excerpt" id="articleExcerpt"></p>
+      <div class="article-engagement">
+        <button id="articleLike"><i class="fa-regular fa-heart"></i> <span>Like</span></button>
+        <button id="articleShare"><i class="fa-solid fa-share-nodes"></i> Share</button>
+        <button id="articleCopy"><i class="fa-regular fa-copy"></i> Copy link</button>
+        <span id="articleStats" style="display:flex;align-items:center;color:#8b9098;font-size:.64rem;font-weight:700"></span>
+      </div>
+      <div class="article-content" id="articleContent"></div>
+
+      <section class="comments">
+        <h3>Comments <span id="commentCount" style="color:#8b9098;font-size:.72rem"></span></h3>
+        <div class="comment-form">
+          <div class="form-grid">
+            <input id="commentName" maxlength="80" placeholder="Your name" aria-label="Your name">
+            <input id="commentEmail" type="email" maxlength="254" placeholder="Email (not displayed)" aria-label="Your email">
+          </div>
+          <textarea id="commentText" maxlength="1000" placeholder="Join the conversation..."></textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px">
+            <span style="font-size:.61rem;color:#969ba3">Be respectful. Spam moderation will be connected with Supabase.</span>
+            <button class="btn" id="commentSubmit">Post comment</button>
+          </div>
+          <p id="commentStatus" class="form-status"></p>
+        </div>
+        <div class="comment-list" id="commentList"></div>
+      </section>
+    </div>
+  </article>
+
 </section>
 
+<footer>
+  <div>
+    <strong>Agootson</strong>
+    <p>David Agootson · Computer Science Student</p>
+  </div>
+  <div class="socials">
+    <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="https://www.threads.net/@agootson" target="_blank" rel="noopener" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
+    <a href="https://www.facebook.com/agootson" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+    <a href="https://x.com/agootson" target="_blank" rel="noopener" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+    <a href="https://www.instagram.com/agootson" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+    <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit"><i class="fa-brands fa-reddit-alien"></i></a>
+  </div>
+  <p class="copyright">© <span id="year"></span> David Agootson. All rights reserved.</p>
+</footer>
+</main>
 
-<!-- ================= NEWSLETTER SCRIPT ================= -->
+<!-- Local publisher prototype. This is intentionally not secure and will be replaced by Supabase Auth/RLS. -->
+<div class="admin-panel" id="adminPanel" aria-hidden="true">
+  <div class="admin-box">
+    <div class="admin-head">
+      <div>
+        <div class="eyebrow">LOCAL PUBLISHER</div>
+        <h2>Blog content manager</h2>
+      </div>
+      <button class="close" id="closeAdmin" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <form class="editor" id="editorForm" style="margin-top:18px">
+      <input type="hidden" id="editId">
+      <div class="admin-grid">
+        <div class="editor full"><label>Title</label><input id="editTitle" required maxlength="180" placeholder="Article title"></div>
+        <div class="editor"><label>Category</label><input id="editCategory" required maxlength="50" placeholder="Technology"></div>
+        <div class="editor"><label>Tags (comma separated)</label><input id="editTags" maxlength="180" placeholder="JavaScript, Learning"></div>
+        <div class="editor"><label>Excerpt</label><textarea id="editExcerpt" style="min-height:90px" required maxlength="300"></textarea></div>
+        <div class="editor"><label>Cover image URL (optional)</label><input id="editCover" placeholder="images/cover.jpg"></div>
+        <div class="editor full"><label>Article content (HTML supported in this prototype)</label><textarea id="editContent" required placeholder="<p>Write your article...</p>"></textarea></div>
+        <div class="editor"><label>Status</label>
+          <select id="editStatus"><option value="published">Published</option><option value="draft">Draft</option></select>
+        </div>
+        <div class="editor"><label>Publication date</label><input id="editDate" type="datetime-local"></div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn" type="submit" id="saveArticle">Save article</button>
+        <button class="btn secondary" type="button" id="newArticle">Clear / New article</button>
+        <button class="btn secondary" type="button" id="exportData">Export local content</button>
+      </div>
+      <p id="editorStatus" class="form-status"></p>
+    </form>
+
+    <div class="admin-posts" id="adminPosts"></div>
+  </div>
+</div>
+
 <script>
-  const newsletterForm = document.getElementById("newsletterForm");
-  const newsletterButton = document.getElementById("newsletterButton");
-  const newsletterStatus = document.getElementById("newsletterStatus");
+(() => {
+  const STORAGE = {
+    posts: "agootson_blog_posts_v2",
+    likes: "agootson_blog_likes_v2",
+    views: "agootson_blog_views_v2",
+    comments: "agootson_blog_comments_v2",
+    subscribers: "agootson_newsletter_subscribers_v2"
+  };
 
-  newsletterForm.addEventListener("submit", async function (event) {
-    event.preventDefault();
+  const seedPosts = [
+    {
+      id:"web-development-real-things", slug:"web-development-real-things",
+      title:"Learning Web Development by Building Real Things",
+      category:"Web Development", tags:["Web Development","Learning"],
+      excerpt:"A practical look at how building websites turns HTML, CSS, JavaScript and responsive design concepts into real experience.",
+      cover:"", status:"published", publishedAt:"2026-09-10T09:00:00",
+      content:`<p>Building real websites has taught me that web development becomes much easier to understand when theory is connected to something people can actually use.</p>
+      <h3>Start with a small, complete project</h3><p>A small website forces you to think about structure, styling, interaction, responsiveness and deployment at the same time.</p>
+      <h3>Learn by improving</h3><p>Instead of trying to master everything first, build, test, identify a weakness and improve it. Each iteration becomes another lesson.</p>
+      <blockquote>Real projects turn individual concepts into practical experience.</blockquote>`
+    },
+    {
+      id:"python-beyond-syntax", slug:"python-beyond-syntax",
+      title:"What Python Teaches Beyond Syntax",
+      category:"Programming", tags:["Python","Programming"],
+      excerpt:"Lessons from Python practice, exception handling, database operations and solving problems with code.",
+      cover:"", status:"published", publishedAt:"2026-09-07T09:00:00",
+      content:`<p>Programming is not only about remembering syntax. Python makes it easier to focus on logic, data and the decisions a program needs to make.</p>
+      <h3>Errors are part of the process</h3><p>Exception handling teaches us to expect failure and design programs that respond to it clearly.</p>
+      <h3>Code should solve a problem</h3><p>Whether the task involves a database, data analysis or automation, the important skill is translating a problem into a sequence of reliable steps.</p>`
+    },
+    {
+      id:"understanding-data-analysis", slug:"understanding-data-analysis",
+      title:"Understanding Data Through Analysis",
+      category:"Data", tags:["Data","Analysis"],
+      excerpt:"A beginner-friendly exploration of measurement scales and univariate, bivariate and multivariate analysis.",
+      cover:"", status:"published", publishedAt:"2026-09-03T09:00:00",
+      content:`<p>Data analysis becomes clearer when we understand what kind of data we have and what question we are trying to answer.</p>
+      <h3>Choose the right perspective</h3><p>Univariate analysis focuses on one variable, bivariate analysis studies relationships between two variables, and multivariate analysis considers several variables together.</p>
+      <p>Good analysis begins before the calculation: define the question, understand the data and select an appropriate method.</p>`
+    },
+    {
+      id:"microprocessors-hardware", slug:"microprocessors-hardware",
+      title:"From Hardware to Software: What Microprocessors Teach Me",
+      category:"Computer Science", tags:["Microprocessors","CSE"],
+      excerpt:"Reflections from studying microprocessors and understanding the hardware foundations behind computing.",
+      cover:"", status:"published", publishedAt:"2026-08-29T09:00:00",
+      content:`<p>Microprocessors provide a useful reminder that software does not exist in isolation. Instructions eventually have to be represented and executed by hardware.</p>
+      <h3>Understanding the machine</h3><p>Registers, the ALU, control logic, buses and memory interactions help connect high-level programming ideas to the physical operation of a computer.</p>`
+    },
+    {
+      id:"compiler-design", slug:"compiler-design", title:"Making Sense of Compiler Design",
+      category:"Theory", tags:["Compiler Design","Theory"],
+      excerpt:"How grammars, productions and language-processing concepts connect the rules we write to programs computers can process.",
+      cover:"", status:"published", publishedAt:"2026-08-25T09:00:00",
+      content:`<p>Compiler design is where formal language theory meets practical programming. Grammars describe valid structures while compiler phases transform source code into forms a machine can execute.</p>
+      <h3>From rules to programs</h3><p>Understanding productions, parsing and syntax helps explain why programming languages behave consistently and how source code is processed.</p>`
+    },
+    {
+      id:"student-builder", slug:"student-builder", title:"My Journey as a Student Builder",
+      category:"Personal", tags:["Journey","Personal"],
+      excerpt:"From early web pages to studying Computer Science at GTU, a continuing story of learning, experimentation and growth.",
+      cover:"", status:"published", publishedAt:"2026-08-20T09:00:00",
+      content:`<p>Building things while studying Computer Science has become one of the most useful ways for me to connect academic concepts with practical work.</p>
+      <h3>Keep experimenting</h3><p>Every project reveals something new: a technical problem, a design decision, a deployment lesson or a better way to communicate an idea.</p>`
+    }
+  ];
 
-    newsletterButton.disabled = true;
-    newsletterButton.textContent = "Subscribing...";
-    newsletterStatus.textContent = "";
-    newsletterStatus.className = "newsletter-status";
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const slugify = s => String(s).toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
+  const getPosts = () => JSON.parse(localStorage.getItem(STORAGE.posts) || "null") || seedPosts.map(p => ({...p,tags:[...p.tags]}));
+  const savePosts = posts => localStorage.setItem(STORAGE.posts, JSON.stringify(posts));
+  const getMap = key => JSON.parse(localStorage.getItem(key) || "{}");
+  const saveMap = (key,map) => localStorage.setItem(key, JSON.stringify(map));
+  const getComments = () => JSON.parse(localStorage.getItem(STORAGE.comments) || "[]");
+  const saveComments = x => localStorage.setItem(STORAGE.comments, JSON.stringify(x));
+  const getSubscribers = () => JSON.parse(localStorage.getItem(STORAGE.subscribers) || "[]");
+  const saveSubscribers = x => localStorage.setItem(STORAGE.subscribers, JSON.stringify(x));
 
-    try {
-      const response = await fetch(newsletterForm.action, {
-        method: "POST",
-        body: new FormData(newsletterForm),
-        headers: {
-          "Accept": "application/json"
-        }
-      });
+  let currentPost = null;
 
-      const result = await response.json();
+  function isLocalAdmin(){
+    return location.hash === "#admin" || new URLSearchParams(location.search).get("admin") === "1";
+  }
+  if(isLocalAdmin()) document.body.classList.add("local-admin");
 
-      if (response.ok) {
-        newsletterStatus.textContent =
-          "✓ Successfully subscribed!";
+  function categories(){
+    return [...new Set(getPosts().filter(p=>p.status==="published").map(p=>p.category))].sort();
+  }
 
-        newsletterStatus.classList.add("success");
+  function setupFilters(){
+    const select = $("categoryFilter");
+    select.innerHTML = `<option value="all">All categories</option>` + categories().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  }
 
-        newsletterForm.reset();
-      } else {
-        newsletterStatus.textContent =
-          result.message || "Something went wrong. Please try again.";
+  function renderList(){
+    const posts = getPosts().filter(p=>p.status==="published");
+    const q = $("search").value.trim().toLowerCase();
+    const cat = $("categoryFilter").value;
+    const sort = $("sortFilter").value;
+    const likes = getMap(STORAGE.likes), views = getMap(STORAGE.views);
 
-        newsletterStatus.classList.add("error");
-      }
+    let filtered = posts.filter(p => {
+      const hay = [p.title,p.excerpt,p.category,...(p.tags||[])].join(" ").toLowerCase();
+      return (!q || hay.includes(q)) && (cat==="all" || p.category===cat);
+    });
 
-    } catch (error) {
-      newsletterStatus.textContent =
-        "Unable to subscribe right now. Please try again.";
+    filtered.sort((a,b) => {
+      if(sort==="popular") return (likes[b.id]||0)-(likes[a.id]||0);
+      if(sort==="viewed") return (views[b.id]||0)-(views[a.id]||0);
+      return sort==="oldest" ? new Date(a.publishedAt)-new Date(b.publishedAt) : new Date(b.publishedAt)-new Date(a.publishedAt);
+    });
 
-      newsletterStatus.classList.add("error");
+    $("articleCount").textContent = `${filtered.length} published article${filtered.length===1?"":"s"}`;
+    $("articleGrid").innerHTML = filtered.length ? filtered.map(p => {
+      const liked = !!likes[p.id];
+      const cover = p.cover ? `<img src="${esc(p.cover)}" alt="" loading="lazy">` : `<i class="fa-solid fa-pen-nib"></i>`;
+      return `<article class="card article-card">
+        <div class="article-cover">${cover}</div>
+        <div class="article-meta"><span class="category">${esc(p.category).toUpperCase()}</span><span>·</span><span>${new Date(p.publishedAt).toLocaleDateString()}</span></div>
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.excerpt)}</p>
+        <div class="tags">${(p.tags||[]).map((t,i)=>`<span class="tag ${i===0?'red':''}">${esc(t)}</span>`).join("")}</div>
+        <div class="card-actions">
+          <a class="read-link" href="?post=${encodeURIComponent(p.slug)}">Read article <i class="fa-solid fa-arrow-right"></i></a>
+          <div class="engagement">
+            <button class="icon-btn ${liked?'liked':''}" data-like="${esc(p.id)}" title="Like"><i class="${liked?'fa-solid':'fa-regular'} fa-heart"></i> ${likes[p.id]||0}</button>
+            <button class="icon-btn" data-share="${esc(p.slug)}" title="Share"><i class="fa-solid fa-share-nodes"></i></button>
+          </div>
+        </div>
+      </article>`;
+    }).join("") : `<div class="empty"><i class="fa-regular fa-face-frown"></i><p>No articles match your search.</p></div>`;
+  }
 
-    } finally {
-      newsletterButton.disabled = false;
-      newsletterButton.textContent = "Subscribe";
+  function openPost(slug){
+    const post = getPosts().find(p=>p.slug===slug && p.status==="published");
+    if(!post){ showList(); return; }
+    currentPost = post;
+    const views = getMap(STORAGE.views);
+    views[post.id] = (views[post.id]||0)+1;
+    saveMap(STORAGE.views,views);
+
+    $("blogList").classList.add("hidden");
+    $("articleView").classList.add("show");
+    $("articleHero").innerHTML = post.cover ? `<img src="${esc(post.cover)}" alt="${esc(post.title)}">` : `<i class="fa-solid fa-pen-nib"></i>`;
+    $("articleMeta").innerHTML = `<span class="tag red">${esc(post.category)}</span><span>${new Date(post.publishedAt).toLocaleDateString()}</span><span>·</span><span>${views[post.id]} view${views[post.id]===1?"":"s"}</span>`;
+    $("articleTitle").textContent = post.title;
+    $("articleExcerpt").textContent = post.excerpt;
+    $("articleContent").innerHTML = post.content;
+    $("articleStats").textContent = `${getMap(STORAGE.likes)[post.id]||0} likes · ${getComments().filter(c=>c.postId===post.id).length} comments`;
+    const liked = !!getMap(STORAGE.likes)[post.id];
+    $("articleLike").classList.toggle("liked",liked);
+    $("articleLike").innerHTML = `<i class="${liked?'fa-solid':'fa-regular'} fa-heart"></i> ${liked?'Liked':'Like'} (${getMap(STORAGE.likes)[post.id]||0})`;
+    renderComments();
+    document.title = `${post.title} | David Agootson`;
+    $("metaDescription").setAttribute("content",post.excerpt);
+    $("ogTitle").setAttribute("content",post.title);
+    $("ogDescription").setAttribute("content",post.excerpt);
+    history.pushState({post:post.slug},"",`?post=${encodeURIComponent(post.slug)}`);
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function showList(){
+    currentPost = null;
+    $("articleView").classList.remove("show");
+    $("blogList").classList.remove("hidden");
+    document.title="Blog | David Agootson";
+    $("metaDescription").setAttribute("content","Articles and posts by David Agootson about Computer Science, web development, programming, learning and technology.");
+    history.pushState({},"","blog.html");
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function renderComments(){
+    if(!currentPost) return;
+    const comments = getComments().filter(c=>c.postId===currentPost.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+    $("commentCount").textContent = comments.length ? `(${comments.length})` : "";
+    $("commentList").innerHTML = comments.length ? comments.map(c=>`<div class="comment">
+      <div class="comment-top"><strong>${esc(c.name)}</strong><time>${new Date(c.createdAt).toLocaleString()}</time></div>
+      <p>${esc(c.text)}</p>
+      <div class="comment-actions"><button type="button"><i class="fa-regular fa-heart"></i> Like</button><button type="button">Reply</button></div>
+    </div>`).join("") : `<div class="empty"><p>No comments yet. Start the conversation.</p></div>`;
+  }
+
+  async function sharePost(post){
+    const url = `${location.origin}${location.pathname}?post=${encodeURIComponent(post.slug)}`;
+    if(navigator.share){
+      try { await navigator.share({title:post.title,text:post.excerpt,url}); } catch(e){}
+    } else {
+      await navigator.clipboard?.writeText(url);
+      alert("Article link copied.");
+    }
+  }
+
+  $("articleGrid").addEventListener("click", e => {
+    const like = e.target.closest("[data-like]");
+    const share = e.target.closest("[data-share]");
+    if(like){
+      const id = like.dataset.like, map=getMap(STORAGE.likes);
+      map[id] = map[id] ? 0 : 1;
+      saveMap(STORAGE.likes,map); renderList();
+      return;
+    }
+    if(share){
+      const post=getPosts().find(p=>p.slug===share.dataset.share);
+      if(post) sharePost(post);
     }
   });
-</script>
-    </section>
-    <footer>
-      <div>
-        <strong>Agootson</strong>
-        <p>David Agootson · Computer Science Student</p>
-      </div>
-      <div class="socials">
-        <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-        <a href="https://www.threads.net/@agootson" target="_blank" rel="noopener" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
-        <a href="https://www.facebook.com/agootson" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-        <a href="https://x.com/agootson" target="_blank" rel="noopener" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
-        <a href="https://www.instagram.com/agootson" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit"><i class="fa-brands fa-reddit-alien"></i></a>
-      </div>
-      <p class="copyright">© <span id="year"></span> David Agootson. All rights reserved.</p>
-    </footer>
-  </main>
-  <script>
-    const sidebar = document.getElementById("sidebar");
-    const collapse = document.getElementById("collapse");
-    const mobileMenu = document.getElementById("mobileMenu");
-    const backdrop = document.getElementById("backdrop");
-    collapse.addEventListener("click", () => document.body.classList.toggle("collapsed"));
-    function mobileSidebar(open) {
-      sidebar.classList.toggle("open", open);
-      backdrop.classList.toggle("show", open);
-      mobileMenu.setAttribute("aria-expanded", open);
-      document.body.style.overflow = open ? "hidden" : "";
+
+  $("articleLike").addEventListener("click",()=>{
+    if(!currentPost) return;
+    const map=getMap(STORAGE.likes);
+    map[currentPost.id]=map[currentPost.id]?0:1;
+    saveMap(STORAGE.likes,map);
+    openPost(currentPost.slug);
+  });
+  $("articleShare").addEventListener("click",()=>currentPost&&sharePost(currentPost));
+  $("articleCopy").addEventListener("click",async()=>{
+    if(!currentPost) return;
+    const url=`${location.origin}${location.pathname}?post=${encodeURIComponent(currentPost.slug)}`;
+    try{await navigator.clipboard.writeText(url);$("articleCopy").innerHTML='<i class="fa-solid fa-check"></i> Copied';setTimeout(()=>$("articleCopy").innerHTML='<i class="fa-regular fa-copy"></i> Copy link',1400)}catch(e){alert(url)}
+  });
+  $("backToBlog").addEventListener("click",e=>{e.preventDefault();showList()});
+  window.addEventListener("popstate",()=>route());
+
+  $("commentSubmit").addEventListener("click",()=>{
+    if(!currentPost) return;
+    const name=$("commentName").value.trim(), email=$("commentEmail").value.trim(), text=$("commentText").value.trim();
+    if(name.length<1 || name.length>80){$("commentStatus").textContent="Please enter your name."; $("commentStatus").className="form-status error";return}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ $("commentStatus").textContent="Please enter a valid email."; $("commentStatus").className="form-status error";return}
+    if(text.length<1 || text.length>1000){$("commentStatus").textContent="Comment must be between 1 and 1000 characters."; $("commentStatus").className="form-status error";return}
+    const comments=getComments();
+    comments.push({id:crypto.randomUUID?.()||String(Date.now()),postId:currentPost.id,name,email,text,createdAt:new Date().toISOString()});
+    saveComments(comments);
+    $("commentText").value="";
+    $("commentStatus").textContent="✓ Comment posted in this local prototype.";
+    $("commentStatus").className="form-status success";
+    renderComments();
+  });
+
+  $("newsletterForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const email=$("subscriberEmail").value.trim().toLowerCase();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    const subs=getSubscribers();
+    if(subs.some(x=>x.email===email)){
+      $("newsletterStatus").textContent="You're already subscribed.";
+      $("newsletterStatus").className="newsletter-status";
+      return;
     }
-    mobileMenu.addEventListener("click", () => mobileSidebar(!sidebar.classList.contains("open")));
-    backdrop.addEventListener("click", () => mobileSidebar(false));
-    window.addEventListener("resize", () => { if (window.innerWidth > 900) mobileSidebar(false); });
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+    subs.push({email,createdAt:new Date().toISOString(),status:"active"});
+    saveSubscribers(subs);
+    $("newsletterStatus").textContent="✓ Successfully subscribed.";
+    $("newsletterStatus").className="newsletter-status success";
+    $("newsletterForm").reset();
+  });
+
+  // Local publisher prototype
+  function resetEditor(){
+    $("editorForm").reset();
+    $("editId").value="";
+    $("editDate").value=new Date().toISOString().slice(0,16);
+    $("editorStatus").textContent="";
+  }
+  function renderAdminPosts(){
+    const posts=getPosts().sort((a,b)=>new Date(b.publishedAt)-new Date(a.publishedAt));
+    $("adminPosts").innerHTML=posts.map(p=>`<div class="admin-post">
+      <div><strong>${esc(p.title)}</strong><small>${esc(p.category)} · ${esc(p.status)} · ${new Date(p.publishedAt).toLocaleDateString()}</small></div>
+      <div class="admin-post-actions">
+        <button data-edit="${esc(p.id)}">Edit</button>
+        <button data-preview="${esc(p.slug)}">Preview</button>
+        <button data-delete="${esc(p.id)}">Delete</button>
+      </div>
+    </div>`).join("");
+  }
+  function loadEditor(post){
+    $("editId").value=post.id;$("editTitle").value=post.title;$("editCategory").value=post.category;
+    $("editTags").value=(post.tags||[]).join(", ");$("editExcerpt").value=post.excerpt;$("editCover").value=post.cover||"";
+    $("editContent").value=post.content;$("editStatus").value=post.status;
+    $("editDate").value=new Date(post.publishedAt).toISOString().slice(0,16);
+  }
+  $("openAdmin").addEventListener("click",()=>{$("adminPanel").classList.add("show");$("adminPanel").setAttribute("aria-hidden","false");renderAdminPosts();resetEditor()});
+  $("closeAdmin").addEventListener("click",()=>{$("adminPanel").classList.remove("show");$("adminPanel").setAttribute("aria-hidden","true")});
+  $("newArticle").addEventListener("click",resetEditor);
+
+  $("editorForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const posts=getPosts(), id=$("editId").value || slugify($("editTitle").value)+"-"+Date.now();
+    const post={
+      id,slug:slugify($("editTitle").value),
+      title:$("editTitle").value.trim(),category:$("editCategory").value.trim(),
+      tags:$("editTags").value.split(",").map(x=>x.trim()).filter(Boolean),
+      excerpt:$("editExcerpt").value.trim(),cover:$("editCover").value.trim(),
+      content:$("editContent").value,status:$("editStatus").value,
+      publishedAt:new Date($("editDate").value || Date.now()).toISOString()
+    };
+    const idx=posts.findIndex(p=>p.id===id);
+    if(idx>=0) posts[idx]=post; else posts.unshift(post);
+    savePosts(posts);setupFilters();renderList();renderAdminPosts();loadEditor(post);
+    $("editorStatus").textContent=post.status==="published"?"✓ Article published locally.":"✓ Draft saved locally.";
+    $("editorStatus").className="form-status success";
+  });
+
+  $("adminPosts").addEventListener("click",e=>{
+    const edit=e.target.closest("[data-edit]"), del=e.target.closest("[data-delete]"), preview=e.target.closest("[data-preview]");
+    if(edit){const p=getPosts().find(x=>x.id===edit.dataset.edit);if(p)loadEditor(p)}
+    if(del){if(confirm("Delete this local article?")){savePosts(getPosts().filter(x=>x.id!==del.dataset.delete));setupFilters();renderList();renderAdminPosts();resetEditor()}}
+    if(preview){$("adminPanel").classList.remove("show");openPost(preview.dataset.preview)}
+  });
+
+  $("exportData").addEventListener("click",()=>{
+    const data={posts:getPosts(),comments:getComments(),subscribers:getSubscribers(),likes:getMap(STORAGE.likes),views:getMap(STORAGE.views)};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="agootson-blog-local-export.json";a.click();URL.revokeObjectURL(a.href);
+  });
+
+  $("search").addEventListener("input",renderList);
+  $("categoryFilter").addEventListener("change",renderList);
+  $("sortFilter").addEventListener("change",renderList);
+
+  // Sidebar
+  $("collapse").addEventListener("click",()=>document.body.classList.toggle("collapsed"));
+  function mobileSidebar(open){$("sidebar").classList.toggle("open",open);$("backdrop").classList.toggle("show",open);$("mobileMenu").setAttribute("aria-expanded",open);document.body.classList.toggle("no-scroll",open)}
+  $("mobileMenu").addEventListener("click",()=>mobileSidebar(!$("sidebar").classList.contains("open")));
+  $("backdrop").addEventListener("click",()=>mobileSidebar(false));
+  window.addEventListener("resize",()=>{if(innerWidth>900)mobileSidebar(false)});
+  $("year").textContent=new Date().getFullYear();
+
+  function route(){
+    const slug=new URLSearchParams(location.search).get("post");
+    if(slug) openPost(slug); else { $("articleView").classList.remove("show");$("blogList").classList.remove("hidden"); }
+  }
+
+  setupFilters();
+  renderList();
+  route();
+})();
+</script>
 </body>
 </html>
