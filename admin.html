@@ -356,6 +356,98 @@
       background:var(--red); border-color:var(--red); color:#fff;
     }
     .section-btn:hover { border-color:#e6a2a5; }
+
+    /* ================= BLOG ADMIN ================= */
+    .blog-admin-panel {
+      margin-top: 0;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .blog-admin-panel[hidden] { display:none !important; }
+    .blog-admin-toolbar {
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .blog-admin-toolbar h2 { margin:0; font-size:1rem; }
+    .blog-admin-toolbar p { margin:4px 0 0; color:var(--muted); font-size:.68rem; }
+    .blog-admin-controls { display:flex; gap:8px; flex-wrap:wrap; }
+    .blog-tab {
+      border:1px solid var(--line); background:#f7f8fa; color:#5f6670;
+      border-radius:8px; padding:9px 12px; font-size:.7rem; font-weight:800; cursor:pointer;
+    }
+    .blog-tab.active { background:#20242a; border-color:#20242a; color:#fff; }
+    .blog-admin-search {
+      width:260px; max-width:100%; border:1px solid var(--line); border-radius:8px;
+      padding:10px 12px; outline:none; font-size:.74rem;
+    }
+    .blog-admin-search:focus { border-color:#e6a2a5; box-shadow:0 0 0 3px var(--red-soft); }
+    .blog-editor {
+      padding:18px;
+      border-bottom:1px solid var(--line);
+      background:#fcfcfd;
+    }
+    .blog-editor-head {
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;
+    }
+    .blog-editor-head h3 { margin:0; font-size:.95rem; }
+    .blog-editor-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    }
+    .blog-editor-grid .full { grid-column:1/-1; }
+    .blog-field { display:grid; gap:6px; }
+    .blog-field label { font-size:.66rem; font-weight:800; color:#6b7179; }
+    .blog-field input, .blog-field textarea, .blog-field select {
+      width:100%; border:1px solid var(--line); border-radius:8px; padding:11px 12px;
+      background:#fff; outline:none; font-size:.74rem;
+    }
+    .blog-field textarea { min-height:115px; resize:vertical; }
+    .blog-field textarea.content { min-height:300px; }
+    .blog-field input:focus, .blog-field textarea:focus, .blog-field select:focus {
+      border-color:#e6a2a5; box-shadow:0 0 0 3px var(--red-soft);
+    }
+    .blog-editor-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+    .blog-help { margin-top:8px; color:#8b919a; font-size:.62rem; line-height:1.55; }
+    .blog-admin-list { padding:16px; display:grid; gap:10px; }
+    .blog-post-row {
+      border:1px solid var(--line); border-radius:11px; padding:14px;
+      display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center;
+      background:#fff;
+    }
+    .blog-post-row:hover { border-color:#d8dbe0; }
+    .blog-post-title { font-size:.84rem; font-weight:800; overflow-wrap:anywhere; }
+    .blog-post-meta {
+      display:flex; flex-wrap:wrap; gap:7px; align-items:center; margin-top:7px;
+      color:#8b919a; font-size:.62rem;
+    }
+    .blog-status {
+      display:inline-flex; align-items:center; border-radius:999px; padding:5px 9px;
+      font-size:.61rem; font-weight:800;
+    }
+    .blog-status.published { background:#eaf7ee; color:var(--green); }
+    .blog-status.draft { background:#eef2f7; color:#59636f; }
+    .blog-status.scheduled { background:#fff6df; color:var(--yellow); }
+    .blog-status.archived { background:var(--red-soft); color:var(--red-dark); }
+    .blog-row-actions { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+    .blog-row-actions button {
+      border:1px solid var(--line); background:#fff; border-radius:7px;
+      padding:8px 10px; font-size:.61rem; font-weight:800; cursor:pointer;
+    }
+    .blog-row-actions button:hover { color:var(--red); border-color:#efb9bd; }
+    .blog-row-actions .danger { color:var(--red-dark); }
+    .blog-empty { padding:42px 20px; text-align:center; color:var(--muted); font-size:.78rem; }
+    .blog-counter {
+      display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:8px;
+      background:#f4f5f7; color:#626770; font-size:.62rem; font-weight:800;
+    }
+
     .contact-card {
       border:1px solid var(--line); border-radius:12px; padding:16px;
       display:grid; grid-template-columns:1fr auto; gap:16px;
@@ -461,6 +553,11 @@
     .login-error { color:var(--red-dark); font-size:.72rem; margin-top:10px; min-height:1em; }
     #adminApp { display:none; }
     @media(max-width:800px) {
+      .blog-editor-grid { grid-template-columns:1fr; }
+      .blog-editor-grid .full { grid-column:auto; }
+      .blog-post-row { grid-template-columns:1fr; }
+      .blog-row-actions { justify-content:flex-start; }
+      .blog-admin-search { width:100%; }
       .stats { grid-template-columns:repeat(2,1fr); }
       .comment-card,
       .contact-card { grid-template-columns:1fr; }
@@ -487,7 +584,7 @@
       <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
       <div class="eyebrow">PRIVATE ADMIN</div>
       <h1>Website administration</h1>
-      <p>Sign in to manage visitor comments and contact messages.</p>
+      <p>Sign in to manage gallery comments, contact messages and blog posts.</p>
       <form id="loginForm">
         <label for="email">Email</label>
         <input id="email" type="email" autocomplete="username" required placeholder="Admin email">
@@ -583,6 +680,9 @@
         <button class="section-btn" data-section="contacts" type="button">
           <i class="fa-regular fa-envelope"></i> Contact Messages
         </button>
+        <button class="section-btn" data-section="blog" type="button">
+          <i class="fa-regular fa-pen-to-square"></i> Blog Posts
+        </button>
       </div>
 
       <section class="stats">
@@ -615,6 +715,100 @@
         </div>
         <div class="list" id="contactList" hidden>
           <div class="loading">Loading contact messages…</div>
+        </div>
+
+      </section>
+
+      <section class="blog-admin-panel" id="blogAdminPanel" hidden>
+        <div class="blog-admin-toolbar">
+          <div>
+            <h2>Blog Posts</h2>
+            <p>Create, edit, publish, schedule, preview and delete articles stored in Supabase.</p>
+          </div>
+          <div class="blog-admin-controls">
+            <span class="blog-counter" id="blogCountLabel">0 articles</span>
+            <button class="btn" id="newBlogPost" type="button"><i class="fa-solid fa-plus"></i> New Article</button>
+          </div>
+        </div>
+
+        <div class="blog-admin-toolbar" style="border-bottom:1px solid var(--line)">
+          <div class="tabs" id="blogTabs">
+            <button class="blog-tab active" data-blog-status="all" type="button">All</button>
+            <button class="blog-tab" data-blog-status="published" type="button">Published</button>
+            <button class="blog-tab" data-blog-status="draft" type="button">Drafts</button>
+            <button class="blog-tab" data-blog-status="scheduled" type="button">Scheduled</button>
+            <button class="blog-tab" data-blog-status="archived" type="button">Archived</button>
+          </div>
+          <input class="blog-admin-search" id="blogSearch" type="search"
+                 placeholder="Search title, category, tags or content…" aria-label="Search blog posts">
+        </div>
+
+        <form class="blog-editor" id="blogEditor" hidden>
+          <div class="blog-editor-head">
+            <h3 id="blogEditorTitle">New Article</h3>
+            <span class="blog-counter" id="blogSlugPreview">New slug will be generated</span>
+          </div>
+
+          <input type="hidden" id="blogEditId">
+
+          <div class="blog-editor-grid">
+            <div class="blog-field full">
+              <label for="blogTitle">Title *</label>
+              <input id="blogTitle" required maxlength="180" placeholder="Article title">
+            </div>
+
+            <div class="blog-field">
+              <label for="blogCategory">Category *</label>
+              <input id="blogCategory" required maxlength="50" placeholder="Technology">
+            </div>
+
+            <div class="blog-field">
+              <label for="blogTags">Tags (comma separated)</label>
+              <input id="blogTags" maxlength="180" placeholder="JavaScript, Learning">
+            </div>
+
+            <div class="blog-field">
+              <label for="blogExcerpt">Excerpt *</label>
+              <textarea id="blogExcerpt" required maxlength="300" placeholder="A short description shown on the blog listing and shared previews."></textarea>
+            </div>
+
+            <div class="blog-field">
+              <label for="blogCover">Cover image URL (optional)</label>
+              <input id="blogCover" maxlength="500" placeholder="images/cover.jpg">
+            </div>
+
+            <div class="blog-field full">
+              <label for="blogContent">Article content — HTML supported *</label>
+              <textarea class="content" id="blogContent" required placeholder="<p>Write your article...</p>"></textarea>
+              <div class="blog-help">Use normal HTML such as &lt;p&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;blockquote&gt; and &lt;pre&gt;.</div>
+            </div>
+
+            <div class="blog-field">
+              <label for="blogStatus">Status *</label>
+              <select id="blogStatus">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+
+            <div class="blog-field">
+              <label for="blogDate">Publication / schedule date</label>
+              <input id="blogDate" type="datetime-local">
+            </div>
+          </div>
+
+          <div class="blog-editor-actions">
+            <button class="btn" type="submit" id="saveBlogPost"><i class="fa-solid fa-cloud-arrow-up"></i> Save Article</button>
+            <button class="btn secondary" type="button" id="cancelBlogEdit">Cancel</button>
+            <button class="btn secondary" type="button" id="importBlogStarters">Import Starter Articles</button>
+          </div>
+          <p class="form-status" id="blogEditorStatus"></p>
+        </form>
+
+        <div class="blog-admin-list" id="blogPostList">
+          <div class="loading">Loading blog posts…</div>
         </div>
       </section>
     </main>
@@ -660,13 +854,453 @@
     const contactTabs = document.getElementById("contactTabs");
     const sectionSwitcher = document.getElementById("sectionSwitcher");
     const notice = document.getElementById("notice");
+    const moderationPanel = document.querySelector("#adminApp .panel");
+    const blogAdminPanel = document.getElementById("blogAdminPanel");
+    const blogEditor = document.getElementById("blogEditor");
+    const blogPostList = document.getElementById("blogPostList");
+    const blogTabs = document.getElementById("blogTabs");
+    const blogSearch = document.getElementById("blogSearch");
 
     let comments = [];
     let contacts = [];
     let activeStatus = "pending";
     let activeContactStatus = "new";
     let activeSection = "comments";
+    let activeBlogStatus = "all";
+    let blogPosts = [];
     let photoMap = new Map();
+    let currentBlogUser = null;
+
+
+    const blogStarterPosts = [
+      {
+        title:"Learning Web Development by Building Real Things",
+        slug:"web-development-real-things",
+        category:"Web Development",
+        tags:["Web Development","Learning"],
+        excerpt:"A practical look at how building websites turns HTML, CSS, JavaScript and responsive design concepts into real experience.",
+        content:`<p>Building real websites has taught me that web development becomes much easier to understand when theory is connected to something people can actually use.</p>
+<h3>Start with a small, complete project</h3><p>A small website forces you to think about structure, styling, interaction, responsiveness and deployment at the same time.</p>
+<h3>Learn by improving</h3><p>Instead of trying to master everything first, build, test, identify a weakness and improve it. Each iteration becomes another lesson.</p>
+<blockquote>Real projects turn individual concepts into practical experience.</blockquote>`,
+        published_at:"2026-09-10T09:00:00"
+      },
+      {
+        title:"What Python Teaches Beyond Syntax",
+        slug:"python-beyond-syntax",
+        category:"Programming",
+        tags:["Python","Programming"],
+        excerpt:"Lessons from Python practice, exception handling, database operations and solving problems with code.",
+        content:`<p>Programming is not only about remembering syntax. Python makes it easier to focus on logic, data and the decisions a program needs to make.</p>
+<h3>Errors are part of the process</h3><p>Exception handling teaches us to expect failure and design programs that respond to it clearly.</p>
+<h3>Code should solve a problem</h3><p>Whether the task involves a database, data analysis or automation, the important skill is translating a problem into a sequence of reliable steps.</p>`,
+        published_at:"2026-09-07T09:00:00"
+      },
+      {
+        title:"Understanding Data Through Analysis",
+        slug:"understanding-data-analysis",
+        category:"Data",
+        tags:["Data","Analysis"],
+        excerpt:"A beginner-friendly exploration of measurement scales and univariate, bivariate and multivariate analysis.",
+        content:`<p>Data analysis becomes clearer when we understand what kind of data we have and what question we are trying to answer.</p>
+<h3>Choose the right perspective</h3><p>Univariate analysis focuses on one variable, bivariate analysis studies relationships between two variables, and multivariate analysis considers several variables together.</p>
+<p>Good analysis begins before the calculation: define the question, understand the data and select an appropriate method.</p>`,
+        published_at:"2026-09-03T09:00:00"
+      },
+      {
+        title:"From Hardware to Software: What Microprocessors Teach Me",
+        slug:"microprocessors-hardware",
+        category:"Computer Science",
+        tags:["Microprocessors","CSE"],
+        excerpt:"Reflections from studying microprocessors and understanding the hardware foundations behind computing.",
+        content:`<p>Studying microprocessors makes the connection between hardware instructions and software behavior much easier to appreciate.</p>
+<h3>Instructions become actions</h3><p>Registers, the ALU, control logic and memory interactions provide the foundation on which software ultimately runs.</p>
+<p>Understanding this layer helps explain why programs behave the way they do.</p>`,
+        published_at:"2026-08-29T09:00:00"
+      },
+      {
+        title:"Making Sense of Compiler Design",
+        slug:"compiler-design",
+        category:"Theory",
+        tags:["Compiler Design","Theory"],
+        excerpt:"A practical introduction to grammar, parsing and the stages that turn source code into executable programs.",
+        content:`<p>Compiler design brings together formal languages, parsing, syntax trees and translation.</p>
+<h3>From source to structure</h3><p>A compiler first analyzes the source program and checks whether it follows the rules of its language.</p>
+<p>Learning grammars and parsing makes the hidden structure of programming languages much more visible.</p>`,
+        published_at:"2026-08-25T09:00:00"
+      },
+      {
+        title:"My Journey as a Student Builder",
+        slug:"student-builder-journey",
+        category:"Personal",
+        tags:["Student","Projects","Learning"],
+        excerpt:"Lessons from building websites and software while learning Computer Science as a student.",
+        content:`<p>Building while learning has changed how I approach Computer Science. Projects turn abstract concepts into decisions that have to work in the real world.</p>
+<h3>Build, test, improve</h3><p>Every project exposes something new to learn, from debugging and design to deployment and user experience.</p>
+<p>The goal is not to know everything before starting. The goal is to keep building and improving.</p>`,
+        published_at:"2026-08-20T09:00:00"
+      }
+    ];
+
+    const blogEsc = value => String(value ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[c]));
+
+    const blogSlugify = value => String(value || "").toLowerCase().trim()
+      .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);
+
+    function blogDateValue(value) {
+      if (!value) return "";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return "";
+      const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+      return local.toISOString().slice(0,16);
+    }
+
+    function blogStatusLabel(status) {
+      return status === "published" ? "Published"
+        : status === "scheduled" ? "Scheduled"
+        : status === "archived" ? "Archived"
+        : "Draft";
+    }
+
+    function filteredBlogPosts() {
+      const query = blogSearch.value.trim().toLowerCase();
+      return blogPosts.filter(post => {
+        const statusMatch = activeBlogStatus === "all" || post.status === activeBlogStatus;
+        const haystack = [
+          post.title, post.category, post.excerpt, post.content,
+          ...(Array.isArray(post.tags) ? post.tags : [])
+        ].join(" ").toLowerCase();
+        return statusMatch && (!query || haystack.includes(query));
+      });
+    }
+
+    function updateBlogStats() {
+      const total = blogPosts.length;
+      const published = blogPosts.filter(p => p.status === "published").length;
+      const drafts = blogPosts.filter(p => p.status === "draft").length;
+      const scheduled = blogPosts.filter(p => p.status === "scheduled").length;
+
+      document.getElementById("stat1Label").textContent = "Total";
+      document.getElementById("stat2Label").textContent = "Published";
+      document.getElementById("stat3Label").textContent = "Drafts";
+      document.getElementById("stat4Label").textContent = "Scheduled";
+      document.getElementById("totalCount").textContent = total;
+      document.getElementById("pendingCount").textContent = published;
+      document.getElementById("approvedCount").textContent = drafts;
+      document.getElementById("rejectedCount").textContent = scheduled;
+      document.getElementById("blogCountLabel").textContent =
+        `${total} article${total === 1 ? "" : "s"}`;
+    }
+
+    async function loadBlogPosts() {
+      blogPostList.innerHTML = '<div class="loading">Loading blog posts…</div>';
+
+      const { data, error } = await supabaseClient
+        .from("blog_posts")
+        .select("id,title,slug,excerpt,content,cover_image,category,tags,status,published_at,scheduled_at,author_id,created_at")
+        .order("created_at", { ascending:false });
+
+      if (error) {
+        console.error(error);
+        blogPosts = [];
+        blogPostList.innerHTML =
+          '<div class="blog-empty">Could not load blog posts. Check the blog_posts table and its admin RLS policies.</div>';
+        updateBlogStats();
+        return;
+      }
+
+      blogPosts = data || [];
+      updateBlogStats();
+      renderBlogPosts();
+    }
+
+    function renderBlogPosts() {
+      const items = filteredBlogPosts();
+      blogPostList.replaceChildren();
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "blog-empty";
+        empty.textContent = blogPosts.length
+          ? "No articles match this view."
+          : "No articles yet. Click “New Article” to publish your first article.";
+        blogPostList.appendChild(empty);
+        return;
+      }
+
+      items.forEach(post => {
+        const row = document.createElement("article");
+        row.className = "blog-post-row";
+
+        const body = document.createElement("div");
+        const title = document.createElement("div");
+        title.className = "blog-post-title";
+        title.textContent = post.title || "(Untitled)";
+
+        const meta = document.createElement("div");
+        meta.className = "blog-post-meta";
+
+        const status = document.createElement("span");
+        status.className = `blog-status ${post.status || "draft"}`;
+        status.textContent = blogStatusLabel(post.status);
+
+        const category = document.createElement("span");
+        category.textContent = post.category || "Uncategorized";
+
+        const date = document.createElement("span");
+        const dateSource = post.status === "scheduled"
+          ? post.scheduled_at
+          : post.published_at || post.created_at;
+        date.textContent = formatDate(dateSource);
+
+        meta.append(status, category, date);
+        body.append(title, meta);
+
+        const actions = document.createElement("div");
+        actions.className = "blog-row-actions";
+
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.dataset.blogEdit = post.id;
+        edit.innerHTML = '<i class="fa-solid fa-pen"></i> Edit';
+
+        const preview = document.createElement("button");
+        preview.type = "button";
+        preview.dataset.blogPreview = post.slug;
+        preview.innerHTML = '<i class="fa-solid fa-eye"></i> Preview';
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "danger";
+        remove.dataset.blogDelete = post.id;
+        remove.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
+
+        actions.append(edit, preview, remove);
+        row.append(body, actions);
+        blogPostList.appendChild(row);
+      });
+    }
+
+    function resetBlogEditor() {
+      blogEditor.reset();
+      document.getElementById("blogEditId").value = "";
+      document.getElementById("blogEditorTitle").textContent = "New Article";
+      document.getElementById("blogStatus").value = "published";
+      document.getElementById("blogDate").value =
+        blogDateValue(new Date(Date.now() + 5 * 60 * 1000));
+      document.getElementById("blogSlugPreview").textContent = "New slug will be generated";
+      document.getElementById("blogEditorStatus").textContent = "";
+      blogEditor.hidden = false;
+      document.getElementById("blogTitle").focus();
+    }
+
+    function loadBlogEditor(post) {
+      document.getElementById("blogEditId").value = post.id || "";
+      document.getElementById("blogTitle").value = post.title || "";
+      document.getElementById("blogCategory").value = post.category || "";
+      document.getElementById("blogTags").value =
+        Array.isArray(post.tags) ? post.tags.join(", ") : "";
+      document.getElementById("blogExcerpt").value = post.excerpt || "";
+      document.getElementById("blogCover").value = post.cover_image || "";
+      document.getElementById("blogContent").value = post.content || "";
+      document.getElementById("blogStatus").value = post.status || "draft";
+      document.getElementById("blogDate").value =
+        blogDateValue(post.scheduled_at || post.published_at || post.created_at);
+      document.getElementById("blogEditorTitle").textContent = "Edit Article";
+      document.getElementById("blogSlugPreview").textContent =
+        `Slug: ${post.slug || blogSlugify(post.title)}`;
+      document.getElementById("blogEditorStatus").textContent = "";
+      blogEditor.hidden = false;
+      blogEditor.scrollIntoView({ behavior:"smooth", block:"start" });
+    }
+
+    async function saveBlogPost(event) {
+      event.preventDefault();
+
+      const title = document.getElementById("blogTitle").value.trim();
+      const category = document.getElementById("blogCategory").value.trim();
+      const tags = document.getElementById("blogTags").value
+        .split(",").map(tag => tag.trim()).filter(Boolean);
+      const excerpt = document.getElementById("blogExcerpt").value.trim();
+      const cover_image = document.getElementById("blogCover").value.trim() || null;
+      const content = document.getElementById("blogContent").value.trim();
+      const status = document.getElementById("blogStatus").value;
+      const dateValue = document.getElementById("blogDate").value;
+      const editId = document.getElementById("blogEditId").value;
+
+      if (!title || !category || !excerpt || !content) {
+        showNotice("Complete the required Blog fields before saving.", "error");
+        return;
+      }
+
+      const slugBase = blogSlugify(title);
+      if (!slugBase) {
+        showNotice("The article title must contain letters or numbers.", "error");
+        return;
+      }
+
+      let slug = slugBase;
+      if (!editId) {
+        slug = `${slugBase}-${Date.now().toString(36)}`;
+      }
+
+      if (status === "scheduled" && !dateValue) {
+        showNotice("Choose a schedule date for a scheduled article.", "error");
+        return;
+      }
+
+      let dateIso = null;
+      if (dateValue) {
+        const parsed = new Date(dateValue);
+        if (Number.isNaN(parsed.getTime())) {
+          showNotice("The publication/schedule date is invalid.", "error");
+          return;
+        }
+        dateIso = parsed.toISOString();
+      }
+
+      const { data:{ user } } = await supabaseClient.auth.getUser();
+      currentBlogUser = user || currentBlogUser;
+
+      const payload = {
+        title,
+        slug,
+        excerpt,
+        content,
+        cover_image,
+        category,
+        tags,
+        status,
+        published_at: status === "published" ? (dateIso || new Date().toISOString()) : null,
+        scheduled_at: status === "scheduled" ? dateIso : null,
+        author_id: currentBlogUser?.id || null
+      };
+
+      if (editId) {
+        const existing = blogPosts.find(post => post.id === editId);
+        if (existing) {
+          payload.slug = existing.slug;
+          payload.author_id = existing.author_id || currentBlogUser?.id || null;
+        }
+      }
+
+      const saveButton = document.getElementById("saveBlogPost");
+      saveButton.disabled = true;
+      setStatus(document.getElementById("blogEditorStatus"), "Saving article to Supabase…");
+
+      let result;
+      if (editId) {
+        result = await supabaseClient
+          .from("blog_posts")
+          .update(payload)
+          .eq("id", editId)
+          .select()
+          .single();
+      } else {
+        result = await supabaseClient
+          .from("blog_posts")
+          .insert(payload)
+          .select()
+          .single();
+      }
+
+      saveButton.disabled = false;
+
+      if (result.error) {
+        console.error(result.error);
+        setStatus(
+          document.getElementById("blogEditorStatus"),
+          result.error.message || "Unable to save the article.",
+          "error"
+        );
+        return;
+      }
+
+      const message = status === "published"
+        ? "✓ Article published to Supabase."
+        : status === "scheduled"
+          ? "✓ Article saved as scheduled."
+          : status === "archived"
+            ? "✓ Article archived."
+            : "✓ Draft saved to Supabase.";
+
+      setStatus(document.getElementById("blogEditorStatus"), message, "success");
+      await loadBlogPosts();
+      blogEditor.hidden = false;
+      loadBlogEditor(result.data);
+      showNotice(message);
+    }
+
+    async function deleteBlogPost(id) {
+      if (!confirm("Permanently delete this article? This cannot be undone.")) return;
+
+      const { error } = await supabaseClient
+        .from("blog_posts")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        showNotice(error.message || "Could not delete the article.", "error");
+        return;
+      }
+
+      blogPosts = blogPosts.filter(post => post.id !== id);
+      updateBlogStats();
+      renderBlogPosts();
+      resetBlogEditor();
+      showNotice("Article deleted.");
+    }
+
+    async function importBlogStarters() {
+      const { count, error:countError } = await supabaseClient
+        .from("blog_posts")
+        .select("id", { count:"exact", head:true });
+
+      if (countError) {
+        showNotice(countError.message || "Could not check existing articles.", "error");
+        return;
+      }
+
+      if (Number(count || 0) > 0) {
+        showNotice("Starter import skipped because blog_posts already contains articles.", "error");
+        return;
+      }
+
+      const user = (await supabaseClient.auth.getUser()).data.user;
+      const payload = blogStarterPosts.map(post => ({
+        title:post.title,
+        slug:post.slug,
+        excerpt:post.excerpt,
+        content:post.content,
+        cover_image:null,
+        category:post.category,
+        tags:post.tags,
+        status:"published",
+        published_at:new Date(post.published_at).toISOString(),
+        scheduled_at:null,
+        author_id:user?.id || null
+      }));
+
+      const button = document.getElementById("importBlogStarters");
+      button.disabled = true;
+      showNotice("Importing six starter articles…");
+
+      const { error } = await supabaseClient.from("blog_posts").insert(payload);
+
+      button.disabled = false;
+
+      if (error) {
+        console.error(error);
+        showNotice(error.message || "Starter import failed.", "error");
+        return;
+      }
+
+      await loadBlogPosts();
+      showNotice("✓ Six starter articles imported.");
+    }
 
     function showNotice(message, type = "success") {
       notice.textContent = message;
@@ -734,8 +1368,9 @@
       loginScreen.style.display = "none";
       adminApp.style.display = "block";
       userEmail.textContent = user.email || "";
+      currentBlogUser = user;
       await loadPhotos();
-      await Promise.all([loadComments(), loadContacts()]);
+      await Promise.all([loadComments(), loadContacts(), loadBlogPosts()]);
     }
 
     async function loadComments() {
@@ -821,10 +1456,21 @@
     }
 
     function renderActiveSection() {
+      const isBlog = activeSection === "blog";
+      moderationPanel.hidden = isBlog;
+      blogAdminPanel.hidden = !isBlog;
+
       commentList.hidden = activeSection !== "comments";
       contactList.hidden = activeSection !== "contacts";
       tabs.hidden = activeSection !== "comments";
       contactTabs.hidden = activeSection !== "contacts";
+
+      if (isBlog) {
+        updateBlogStats();
+        renderBlogPosts();
+        return;
+      }
+
       updateStats();
 
       if (activeSection === "comments") {
@@ -1158,6 +1804,9 @@
     logoutBtn.addEventListener("click", async () => {
       await supabaseClient.auth.signOut();
       comments = [];
+      contacts = [];
+      blogPosts = [];
+      currentBlogUser = null;
       showLogin();
     });
 
@@ -1178,6 +1827,9 @@
         btn.classList.toggle("active", btn === button);
       });
 
+      if (activeSection === "blog" && !blogPosts.length) {
+        loadBlogPosts();
+      }
       renderActiveSection();
     });
 
@@ -1196,6 +1848,57 @@
     search.addEventListener("input", () => {
       if (activeSection === "comments") renderComments();
       else renderContacts();
+    });
+
+
+    document.getElementById("newBlogPost").addEventListener("click", resetBlogEditor);
+    document.getElementById("cancelBlogEdit").addEventListener("click", () => {
+      blogEditor.hidden = true;
+      document.getElementById("blogEditorStatus").textContent = "";
+    });
+    document.getElementById("importBlogStarters").addEventListener("click", importBlogStarters);
+    blogEditor.addEventListener("submit", saveBlogPost);
+
+    document.getElementById("blogTitle").addEventListener("input", () => {
+      const id = document.getElementById("blogEditId").value;
+      if (id) return;
+      const slug = blogSlugify(document.getElementById("blogTitle").value);
+      document.getElementById("blogSlugPreview").textContent =
+        slug ? `Slug: ${slug}-…` : "New slug will be generated";
+    });
+
+    blogTabs.addEventListener("click", event => {
+      const button = event.target.closest("[data-blog-status]");
+      if (!button) return;
+      activeBlogStatus = button.dataset.blogStatus;
+      blogTabs.querySelectorAll(".blog-tab").forEach(tab => {
+        tab.classList.toggle("active", tab === button);
+      });
+      renderBlogPosts();
+    });
+
+    blogSearch.addEventListener("input", renderBlogPosts);
+
+    blogPostList.addEventListener("click", async event => {
+      const edit = event.target.closest("[data-blog-edit]");
+      const preview = event.target.closest("[data-blog-preview]");
+      const remove = event.target.closest("[data-blog-delete]");
+
+      if (edit) {
+        const post = blogPosts.find(item => item.id === edit.dataset.blogEdit);
+        if (post) loadBlogEditor(post);
+        return;
+      }
+
+      if (preview) {
+        const url = `https://agootson.is-a.dev/blog.html?post=${encodeURIComponent(preview.dataset.blogPreview)}`;
+        window.open(url, "_blank", "noopener");
+        return;
+      }
+
+      if (remove) {
+        await deleteBlogPost(remove.dataset.blogDelete);
+      }
     });
 
     /* Public-site navigation behavior */
