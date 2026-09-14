@@ -359,7 +359,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
               <option value="archived">Archived</option>
             </select>
           </div>
-          <div class="editor"><label>Publication / schedule date</label><input id="editDate" type="datetime-local"></div>
+          <div class="editor"><label>Publication / schedule date</label><input id="editDate" type="datetime-local"><small style="color:#747981;font-size:.62rem">Published articles use the current time if this is empty or set in the future.</small></div>
         </div>
         <div class="admin-actions">
           <button class="btn" type="submit" id="saveArticle">Save article</button>
@@ -757,7 +757,8 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     $("editorForm").reset();
     $("editId").value = "";
     $("editStatus").value = "published";
-    $("editDate").value = new Date(Date.now() + 5 * 60 * 1000).toISOString().slice(0,16);
+    // Publishing means publish immediately by default.
+    $("editDate").value = new Date().toISOString().slice(0,16);
     $("editorStatus").textContent = "";
   }
 
@@ -770,8 +771,16 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     $("editCover").value = post.cover_image || "";
     $("editContent").value = post.content || "";
     $("editStatus").value = post.status || "draft";
-    $("editDate").value = new Date(
-      post.scheduled_at || post.published_at || post.created_at
+
+    const editorDate = post.scheduled_at || post.published_at || post.created_at;
+    const parsedEditorDate = new Date(editorDate);
+    const now = new Date();
+
+    // If an article is marked Published but has a future date, prepare it to publish now.
+    $("editDate").value = (
+      post.status === "published" && parsedEditorDate > now
+        ? now
+        : parsedEditorDate
     ).toISOString().slice(0,16);
   }
 
@@ -876,6 +885,26 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
       slug = `${slugBase}-${Date.now().toString(36)}`;
     }
 
+    // A "Published" article must never be saved with a future published_at.
+    // If the selected time is empty or in the future, publish immediately.
+    let publishDate = null;
+    let scheduleDate = null;
+
+    if (status === "published") {
+      const selected = dateValue ? new Date(dateValue) : new Date();
+      const now = new Date();
+      publishDate = (Number.isNaN(selected.getTime()) || selected > now) ? now : selected;
+    }
+
+    if (status === "scheduled") {
+      const selected = dateValue ? new Date(dateValue) : null;
+      if (!selected || Number.isNaN(selected.getTime()) || selected <= new Date()) {
+        setStatus($("editorStatus"), "Choose a future date/time for a scheduled article.", "error");
+        return;
+      }
+      scheduleDate = selected;
+    }
+
     const payload = {
       title,
       slug,
@@ -886,8 +915,8 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
       tags,
       status,
       author_id: (await sb.auth.getUser()).data.user?.id || null,
-      published_at: status === "published" ? new Date(dateValue || Date.now()).toISOString() : null,
-      scheduled_at: status === "scheduled" ? new Date(dateValue || Date.now()).toISOString() : null
+      published_at: publishDate ? publishDate.toISOString() : null,
+      scheduled_at: scheduleDate ? scheduleDate.toISOString() : null
     };
 
     if (editId) {
