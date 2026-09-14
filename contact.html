@@ -200,6 +200,11 @@
       cursor: pointer;
     }
     .btn:hover { background: var(--red-dark); }
+    .btn:disabled {
+      opacity: .7;
+      cursor: wait;
+    }
+
 
     .quote {
       margin-top: 30px; padding: 25px; border-left: 4px solid var(--red);
@@ -281,6 +286,7 @@
       *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -412,21 +418,77 @@
     window.addEventListener("resize", () => { if (window.innerWidth > 900) mobileSidebar(false); });
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    /* ================= SUPABASE CONTACT FORM ================= */
+    const SUPABASE_URL = "https://jxfrevwvpyxbljfkrhyo.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dEtGqJaPQmhdgiGgkMwQRw_LI6Itzwo";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
     const contactForm = document.getElementById("contactForm");
     const formStatus = document.getElementById("formStatus");
-    contactForm.addEventListener("submit", (event) => {
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.addEventListener("submit", async (event) => {
       event.preventDefault();
+
       formStatus.className = "form-status";
+      formStatus.textContent = "";
+
       const data = new FormData(contactForm);
+
+      // Honeypot spam protection.
       if (data.get("website")) return;
+
       if (!contactForm.checkValidity()) {
         contactForm.reportValidity();
         formStatus.textContent = "Please complete all required fields correctly.";
         formStatus.classList.add("show", "error");
         return;
       }
-      formStatus.textContent = "Your message is ready to be connected to the contact backend. Supabase will be connected next.";
-      formStatus.classList.add("show", "success");
+
+      const name = data.get("name").trim();
+      const email = data.get("email").trim();
+      const subject = data.get("subject").trim();
+      const category = data.get("category").trim();
+      const message = data.get("message").trim();
+
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+      try {
+        const { error } = await supabaseClient
+          .from("contact_messages")
+          .insert([{
+            name,
+            email,
+            subject,
+            category,
+            message,
+            status: "new"
+          }]);
+
+        if (error) throw error;
+
+        formStatus.textContent =
+          "✓ Your message has been sent successfully. I'll get back to you soon.";
+        formStatus.classList.add("show", "success");
+
+        contactForm.reset();
+
+      } catch (error) {
+        console.error("Contact form submission error:", error);
+        formStatus.textContent =
+          "Sorry, your message could not be sent. Please try again.";
+        formStatus.classList.add("show", "error");
+
+      } finally {
+        submitButton.disabled = false;
+        submitButton.innerHTML =
+          '<i class="fa-regular fa-paper-plane"></i> Send Message';
+      }
     });
 
     document.getElementById("copyLink").addEventListener("click", async () => {
