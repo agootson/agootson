@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment Admin — David Agootson</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    :root {
+      --red:#ed1c24; --red-dark:#c9141b; --red-soft:#fff1f2;
+      --text:#20242a; --muted:#747b86; --line:#e7e9ed;
+      --bg:#f5f6f8; --white:#fff; --green:#238636; --yellow:#a66a00;
+      --shadow:0 14px 40px rgba(25,31,40,.08);
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,Arial,sans-serif; color:var(--text); background:var(--bg); }
+    button,input { font:inherit; }
+    .topbar {
+      height:70px; background:#171a1f; color:white; display:flex; align-items:center;
+      justify-content:space-between; padding:0 28px; position:sticky; top:0; z-index:10;
+    }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:800; }
+    .brand-mark {
+      width:38px; height:38px; border-radius:10px; background:var(--red);
+      display:grid; place-items:center;
+    }
+    .top-actions { display:flex; align-items:center; gap:14px; }
+    .user-email { color:#b9bec7; font-size:.78rem; }
+    .logout { border:1px solid #454a52; background:transparent; color:white; padding:9px 13px; border-radius:8px; cursor:pointer; }
+    .logout:hover { border-color:#777e89; }
+    .wrap { max-width:1200px; margin:0 auto; padding:32px 20px 60px; }
+    .hero { margin-bottom:24px; }
+    .eyebrow { color:var(--red); letter-spacing:.18em; font-size:.7rem; font-weight:800; }
+    h1 { margin:8px 0 7px; font-size:2rem; letter-spacing:-.04em; }
+    .hero p { margin:0; color:var(--muted); font-size:.9rem; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:24px 0; }
+    .stat {
+      background:var(--white); border:1px solid var(--line); border-radius:12px;
+      padding:18px; box-shadow:0 5px 20px rgba(25,31,40,.03);
+    }
+    .stat small { display:block; color:var(--muted); font-size:.7rem; font-weight:700; }
+    .stat strong { display:block; margin-top:6px; font-size:1.55rem; }
+    .stat.pending strong { color:var(--yellow); }
+    .stat.approved strong { color:var(--green); }
+    .stat.rejected strong { color:var(--red); }
+    .panel {
+      background:var(--white); border:1px solid var(--line); border-radius:14px;
+      box-shadow:var(--shadow); overflow:hidden;
+    }
+    .toolbar {
+      padding:18px; border-bottom:1px solid var(--line); display:flex; gap:12px;
+      align-items:center; justify-content:space-between; flex-wrap:wrap;
+    }
+    .tabs { display:flex; gap:7px; flex-wrap:wrap; }
+    .tab {
+      border:1px solid var(--line); background:#f7f8fa; color:#5f6670;
+      border-radius:8px; padding:9px 12px; font-size:.74rem; font-weight:800; cursor:pointer;
+    }
+    .tab.active { background:#20242a; border-color:#20242a; color:white; }
+    .search {
+      width:280px; max-width:100%; border:1px solid var(--line); border-radius:8px;
+      padding:10px 12px; outline:none;
+    }
+    .search:focus { border-color:#e6a2a5; box-shadow:0 0 0 3px var(--red-soft); }
+    .list { padding:16px; display:grid; gap:12px; }
+    .comment-card {
+      border:1px solid var(--line); border-radius:12px; padding:16px;
+      display:grid; grid-template-columns:1fr auto; gap:16px;
+    }
+    .comment-card:hover { border-color:#d8dbe0; }
+    .meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px; }
+    .badge {
+      display:inline-flex; align-items:center; border-radius:999px; padding:5px 9px;
+      font-size:.64rem; font-weight:800; background:#f2f3f5; color:#646b75;
+    }
+    .badge.pending { background:#fff6df; color:var(--yellow); }
+    .badge.approved { background:#eaf7ee; color:var(--green); }
+    .badge.rejected { background:var(--red-soft); color:var(--red-dark); }
+    .name { font-size:.82rem; font-weight:800; }
+    .date { color:#9298a1; font-size:.65rem; }
+    .comment-text { margin:0; color:#4d545e; font-size:.82rem; line-height:1.65; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .photo-ref { margin-top:10px; color:#8b919a; font-size:.64rem; }
+    .photo-ref strong { color:#606771; }
+    .actions { display:flex; flex-direction:column; gap:7px; min-width:105px; }
+    .action {
+      border:0; border-radius:8px; padding:9px 11px; cursor:pointer; font-size:.68rem; font-weight:800;
+    }
+    .approve { background:#eaf7ee; color:var(--green); }
+    .reject { background:#fff6df; color:var(--yellow); }
+    .delete { background:var(--red-soft); color:var(--red-dark); }
+    .action:hover { filter:brightness(.97); }
+    .empty { padding:45px 20px; text-align:center; color:var(--muted); font-size:.82rem; }
+    .loading { padding:30px; text-align:center; color:var(--muted); }
+    .notice {
+      margin-bottom:18px; padding:12px 14px; border-radius:9px; font-size:.74rem;
+      display:none;
+    }
+    .notice.show { display:block; }
+    .notice.error { background:var(--red-soft); color:var(--red-dark); border:1px solid #f0c5c8; }
+    .notice.success { background:#eaf7ee; color:var(--green); border:1px solid #cbe8d3; }
+    .login-screen { min-height:100vh; display:grid; place-items:center; padding:20px; }
+    .login-card {
+      width:min(420px,100%); background:white; border:1px solid var(--line);
+      border-radius:16px; padding:30px; box-shadow:var(--shadow);
+    }
+    .login-icon {
+      width:48px; height:48px; border-radius:12px; background:var(--red);
+      color:white; display:grid; place-items:center; margin-bottom:18px;
+    }
+    .login-card h1 { font-size:1.45rem; }
+    .login-card p { color:var(--muted); font-size:.78rem; line-height:1.6; }
+    .login-card label { display:block; margin:15px 0 6px; font-size:.7rem; font-weight:800; }
+    .login-card input {
+      width:100%; border:1px solid var(--line); border-radius:8px; padding:11px 12px; outline:none;
+    }
+    .login-card input:focus { border-color:#e6a2a5; box-shadow:0 0 0 3px var(--red-soft); }
+    .login-btn {
+      width:100%; margin-top:17px; border:0; border-radius:8px; padding:12px;
+      background:var(--red); color:white; font-size:.75rem; font-weight:800; cursor:pointer;
+    }
+    .login-btn:hover { background:var(--red-dark); }
+    .login-btn:disabled { opacity:.6; cursor:not-allowed; }
+    .login-error { color:var(--red-dark); font-size:.72rem; margin-top:10px; min-height:1em; }
+    #adminApp { display:none; }
+    @media(max-width:800px) {
+      .stats { grid-template-columns:repeat(2,1fr); }
+      .comment-card { grid-template-columns:1fr; }
+      .actions { flex-direction:row; flex-wrap:wrap; }
+    }
+    @media(max-width:520px) {
+      .topbar { padding:0 16px; }
+      .user-email { display:none; }
+      .wrap { padding:24px 12px 45px; }
+      h1 { font-size:1.6rem; }
+      .stats { gap:8px; }
+      .stat { padding:13px; }
+      .stat strong { font-size:1.25rem; }
+      .toolbar { align-items:stretch; }
+      .search { width:100%; }
+      .comment-card { padding:13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="eyebrow">PRIVATE ADMIN</div>
+      <h1>Comment moderation</h1>
+      <p>Sign in with your Supabase admin account to review, approve, reject, or delete visitor comments.</p>
+      <form id="loginForm">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="username" required placeholder="Admin email">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required placeholder="Password">
+        <button class="login-btn" id="loginBtn" type="submit">Sign in</button>
+        <div class="login-error" id="loginError" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+
+  <div id="adminApp">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"><i class="fa-solid fa-comments"></i></div>
+        <span>Comment Admin</span>
+      </div>
+      <div class="top-actions">
+        <span class="user-email" id="userEmail"></span>
+        <button class="logout" id="logoutBtn" type="button"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero">
+        <div class="eyebrow">WEBSITE MODERATION</div>
+        <h1>Visitor comments</h1>
+        <p>Review comments before they become visible on your public photo gallery.</p>
+      </section>
+
+      <div class="notice" id="notice" aria-live="polite"></div>
+
+      <section class="stats">
+        <div class="stat"><small>Total</small><strong id="totalCount">0</strong></div>
+        <div class="stat pending"><small>Pending</small><strong id="pendingCount">0</strong></div>
+        <div class="stat approved"><small>Approved</small><strong id="approvedCount">0</strong></div>
+        <div class="stat rejected"><small>Rejected</small><strong id="rejectedCount">0</strong></div>
+      </section>
+
+      <section class="panel">
+        <div class="toolbar">
+          <div class="tabs" id="tabs">
+            <button class="tab active" data-status="pending" type="button">Pending</button>
+            <button class="tab" data-status="approved" type="button">Approved</button>
+            <button class="tab" data-status="rejected" type="button">Rejected</button>
+            <button class="tab" data-status="all" type="button">All</button>
+          </div>
+          <input class="search" id="search" type="search" placeholder="Search name, comment or photo…">
+        </div>
+        <div class="list" id="commentList">
+          <div class="loading">Loading comments…</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = "https://jxfrevwvpyxbljfkrhyo.supabase.co";
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dEtGqJaPQmhdgiGgkMwQRw_LI6Itzwo";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+    const loginScreen = document.getElementById("loginScreen");
+    const adminApp = document.getElementById("adminApp");
+    const loginForm = document.getElementById("loginForm");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginError = document.getElementById("loginError");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userEmail = document.getElementById("userEmail");
+    const commentList = document.getElementById("commentList");
+    const search = document.getElementById("search");
+    const tabs = document.getElementById("tabs");
+    const notice = document.getElementById("notice");
+
+    let comments = [];
+    let activeStatus = "pending";
+    let photoMap = new Map();
+
+    function showNotice(message, type = "success") {
+      notice.textContent = message;
+      notice.className = "notice show " + type;
+      clearTimeout(showNotice.timer);
+      showNotice.timer = setTimeout(() => {
+        notice.className = "notice";
+      }, 3500);
+    }
+
+    function escapeForText(value) {
+      return String(value ?? "");
+    }
+
+    function formatDate(value) {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? "" : date.toLocaleString();
+    }
+
+    async function loadPhotos() {
+      try {
+        const response = await fetch("images/photos.json", { cache: "no-store" });
+        if (!response.ok) return;
+        const photos = await response.json();
+        photos.forEach(photo => {
+          const key = photo.image || photo.title;
+          photoMap.set(key, photo);
+        });
+      } catch (error) {
+        console.warn("Could not load photo metadata:", error);
+      }
+    }
+
+    async function isAdmin(userId) {
+      const { data, error } = await supabaseClient
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
+      return !error && !!data;
+    }
+
+    async function checkSession() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        showLogin();
+        return;
+      }
+      const allowed = await isAdmin(session.user.id);
+      if (!allowed) {
+        await supabaseClient.auth.signOut();
+        loginError.textContent = "This account is not authorized to access the admin area.";
+        showLogin();
+        return;
+      }
+      showAdmin(session.user);
+    }
+
+    function showLogin() {
+      loginScreen.style.display = "grid";
+      adminApp.style.display = "none";
+    }
+
+    async function showAdmin(user) {
+      loginScreen.style.display = "none";
+      adminApp.style.display = "block";
+      userEmail.textContent = user.email || "";
+      await loadPhotos();
+      await loadComments();
+    }
+
+    async function loadComments() {
+      commentList.innerHTML = '<div class="loading">Loading comments…</div>';
+      const { data, error } = await supabaseClient
+        .from("comments")
+        .select("id, photo_id, name, comment, status, created_at")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        commentList.innerHTML = '<div class="empty">Could not load comments. Check your RLS policies and admin setup.</div>';
+        return;
+      }
+
+      comments = data || [];
+      updateStats();
+      renderComments();
+    }
+
+    function updateStats() {
+      document.getElementById("totalCount").textContent = comments.length;
+      document.getElementById("pendingCount").textContent = comments.filter(c => c.status === "pending").length;
+      document.getElementById("approvedCount").textContent = comments.filter(c => c.status === "approved").length;
+      document.getElementById("rejectedCount").textContent = comments.filter(c => c.status === "rejected").length;
+    }
+
+    function filteredComments() {
+      const query = search.value.trim().toLowerCase();
+      return comments.filter(comment => {
+        const statusMatch = activeStatus === "all" || comment.status === activeStatus;
+        const photo = photoMap.get(comment.photo_id);
+        const photoText = photo ? `${photo.title || ""} ${photo.description || ""}` : "";
+        const searchMatch = !query || [
+          comment.name, comment.comment, comment.photo_id, photoText
+        ].join(" ").toLowerCase().includes(query);
+        return statusMatch && searchMatch;
+      });
+    }
+
+    function renderComments() {
+      const items = filteredComments();
+      commentList.replaceChildren();
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = activeStatus === "pending"
+          ? "No pending comments. You're all caught up."
+          : "No comments match this view.";
+        commentList.appendChild(empty);
+        return;
+      }
+
+      items.forEach(comment => {
+        const card = document.createElement("article");
+        card.className = "comment-card";
+
+        const body = document.createElement("div");
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+
+        const name = document.createElement("span");
+        name.className = "name";
+        name.textContent = escapeForText(comment.name || "Visitor");
+
+        const badge = document.createElement("span");
+        badge.className = "badge " + comment.status;
+        badge.textContent = comment.status;
+
+        const date = document.createElement("span");
+        date.className = "date";
+        date.textContent = formatDate(comment.created_at);
+
+        meta.append(name, badge, date);
+
+        const text = document.createElement("p");
+        text.className = "comment-text";
+        text.textContent = escapeForText(comment.comment);
+
+        const photo = photoMap.get(comment.photo_id);
+        const photoRef = document.createElement("div");
+        photoRef.className = "photo-ref";
+        photoRef.innerHTML = "<strong>Photo:</strong> ";
+        const photoTitle = document.createElement("span");
+        photoTitle.textContent = photo ? (photo.title || comment.photo_id) : comment.photo_id;
+        photoRef.appendChild(photoTitle);
+
+        body.append(meta, text, photoRef);
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        if (comment.status !== "approved") {
+          const approve = document.createElement("button");
+          approve.className = "action approve";
+          approve.type = "button";
+          approve.innerHTML = '<i class="fa-solid fa-check"></i> Approve';
+          approve.addEventListener("click", () => updateStatus(comment.id, "approved"));
+          actions.appendChild(approve);
+        }
+
+        if (comment.status !== "rejected") {
+          const reject = document.createElement("button");
+          reject.className = "action reject";
+          reject.type = "button";
+          reject.innerHTML = '<i class="fa-solid fa-xmark"></i> Reject';
+          reject.addEventListener("click", () => updateStatus(comment.id, "rejected"));
+          actions.appendChild(reject);
+        }
+
+        const remove = document.createElement("button");
+        remove.className = "action delete";
+        remove.type = "button";
+        remove.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
+        remove.addEventListener("click", () => deleteComment(comment.id));
+        actions.appendChild(remove);
+
+        card.append(body, actions);
+        commentList.appendChild(card);
+      });
+    }
+
+    async function updateStatus(id, status) {
+      const label = status === "approved" ? "approve" : "reject";
+      if (!confirm(`Are you sure you want to ${label} this comment?`)) return;
+
+      const { error } = await supabaseClient
+        .from("comments")
+        .update({ status })
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        showNotice("Could not update the comment. Check your RLS policy.", "error");
+        return;
+      }
+
+      const item = comments.find(c => c.id === id);
+      if (item) item.status = status;
+      updateStats();
+      renderComments();
+      showNotice(`Comment ${status}.`);
+    }
+
+    async function deleteComment(id) {
+      if (!confirm("Permanently delete this comment? This cannot be undone.")) return;
+
+      const { error } = await supabaseClient
+        .from("comments")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        showNotice("Could not delete the comment. Check your RLS policy.", "error");
+        return;
+      }
+
+      comments = comments.filter(c => c.id !== id);
+      updateStats();
+      renderComments();
+      showNotice("Comment deleted.");
+    }
+
+    loginForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      loginError.textContent = "";
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Signing in…";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Sign in";
+
+      if (error) {
+        loginError.textContent = error.message || "Sign in failed.";
+        return;
+      }
+
+      if (!data.user || !(await isAdmin(data.user.id))) {
+        await supabaseClient.auth.signOut();
+        loginError.textContent = "This account is not authorized to access the admin area.";
+        return;
+      }
+
+      showAdmin(data.user);
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabaseClient.auth.signOut();
+      comments = [];
+      showLogin();
+    });
+
+    tabs.addEventListener("click", event => {
+      const button = event.target.closest("[data-status]");
+      if (!button) return;
+      activeStatus = button.dataset.status;
+      tabs.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab === button));
+      renderComments();
+    });
+
+    search.addEventListener("input", renderComments);
+
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+      if (event === "SIGNED_OUT") showLogin();
+    });
+
+    checkSession();
+  </script>
+</body>
+</html>
