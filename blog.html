@@ -295,10 +295,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 </section>
 
 <footer>
-  <div>
-    <strong>Agootson</strong>
-    <p>David Agootson · Computer Science Student</p>
-  </div>
+  
   <div class="socials">
     <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
     <a href="https://www.threads.net/@agootson" target="_blank" rel="noopener" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
@@ -798,7 +795,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
           <button data-delete="${esc(p.id)}">Delete</button>
         </div>
       </div>`).join("")
-      : `<div class="empty"><p>No articles in Supabase yet. Use “Import starter articles” to add the six existing starter articles.</p></div>`;
+      : `<div class="empty"><p>No articles yet. Use “Import starter articles” to add the six existing starter articles.</p></div>`;
   }
 
   async function openAdmin() {
