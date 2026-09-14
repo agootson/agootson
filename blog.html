@@ -1095,11 +1095,11 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 
     if (error) {
       console.error(error);
-      setStatus($("newsletterStatus"),error.message || "Unable to subscribe.","error");
+      setStatus($("newsletterStatus"), error.message || "Unable to subscribe right now. Please try again.", "error");
       return;
     }
 
-    setStatus($("newsletterStatus"),"✓ Successfully subscribed.","success");
+    setStatus($("newsletterStatus"),"✓ Successfully subscribed. You’re on the list!","success");
     $("newsletterForm").reset();
   });
 
