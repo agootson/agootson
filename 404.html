@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e31b23">
+<meta name="robots" content="noindex, follow">
+<title>404 — Page Not Found | David Agootson</title>
+<style>
+:root{--bg:#f7f8fa;--white:#fff;--text:#171a1f;--muted:#747981;--line:#e7e9ed;--red:#e31b23;--red-soft:#fff1f2;--red-dark:#b9151c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;display:grid;place-items:center;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+.page{width:min(760px,calc(100% - 36px));min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:50px 0}
+.logo{color:var(--red);font-size:.9rem;font-weight:800;letter-spacing:.08em;margin-bottom:55px}
+.error-code{font-size:clamp(7rem,24vw,13rem);line-height:.78;font-weight:800;letter-spacing:-.1em;color:var(--text)}
+.error-code span{color:var(--red)}
+.eyebrow{margin-top:35px;color:var(--red);font-size:.66rem;font-weight:800;letter-spacing:.2em}
+h1{margin-top:12px;font-size:clamp(1.8rem,5vw,3rem);line-height:1.05;letter-spacing:-.055em}
+.message{max-width:570px;margin-top:16px;color:var(--muted);font-size:.82rem;line-height:1.85}
+.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:0 18px;border-radius:8px;font-size:.7rem;font-weight:800;transition:.18s ease}
+.btn.primary{background:var(--red);color:#fff}
+.btn.primary:hover{background:var(--red-dark);transform:translateY(-2px)}
+.btn.secondary{background:var(--white);border:1px solid var(--line);color:var(--text)}
+.btn.secondary:hover{color:var(--red);border-color:#efb9bd;background:var(--red-soft);transform:translateY(-2px)}
+.links{display:flex;justify-content:center;flex-wrap:wrap;gap:18px;margin-top:38px;color:#8b9098;font-size:.62rem;font-weight:700}
+.links a:hover{color:var(--red)}
+footer{position:absolute;bottom:22px;color:#9a9ea5;font-size:.59rem}
+@media(max-width:600px){.page{padding:35px 0 70px}.logo{margin-bottom:40px}.error-code{font-size:clamp(6rem,30vw,9rem)}.message{font-size:.76rem}.actions{width:100%}.btn{width:100%;max-width:260px}.links{gap:12px 18px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="page">
+<div class="logo">AGOOTSON</div>
+<div class="error-code">4<span>0</span>4</div>
+<div class="eyebrow">PAGE NOT FOUND</div>
+<h1>Looks like you took a wrong turn.</h1>
+<p class="message">The page you're looking for doesn't exist, may have been moved, or the link might be outdated. Let's get you back somewhere useful.</p>
+<div class="actions">
+<a class="btn primary" href="index.html">Back to Home</a>
+<a class="btn secondary" href="javascript:history.back()">Go Back</a>
+</div>
+<nav class="links" aria-label="Quick links">
+<a href="blog.html">Blog</a><a href="skills.html">Skills</a><a href="gallery.html">Gallery</a><a href="project.html">Projects</a><a href="services.html">Services</a><a href="about.html">About Me</a><a href="contact.html">Contact Me</a>
+</nav>
+</main>
+<footer>© <span id="year"></span> David Agootson. All rights reserved.</footer>
+<script>document.getElementById("year").textContent=new Date().getFullYear();</script>
+</body>
+</html>
