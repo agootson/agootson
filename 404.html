@@ -9,47 +9,108 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css');
+
 :root{--bg:#f7f8fa;--white:#fff;--text:#171a1f;--muted:#747981;--line:#e7e9ed;--red:#e31b23;--red-soft:#fff1f2;--red-dark:#b9151c}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100%}
 body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-.page{width:min(760px,calc(100% - 36px));flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:50px 0}
-.logo{color:var(--red);font-size:.9rem;font-weight:800;letter-spacing:.08em;margin-bottom:55px}
-.error-code{font-size:clamp(7rem,24vw,13rem);line-height:.78;font-weight:800;letter-spacing:-.1em;color:var(--text)}
+
+.page{
+  width:min(760px,calc(100% - 36px));
+  flex:1;
+  margin-inline:auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:50px 0;
+}
+
+.logo{color:var(--red);font-size:.9rem;font-weight:800;letter-spacing:.08em;margin-bottom:55px;text-align:center}
+.error-code{text-align:center;font-size:clamp(7rem,24vw,13rem);line-height:.78;font-weight:800;letter-spacing:-.1em;color:var(--text)}
 .error-code span{color:var(--red)}
-.eyebrow{margin-top:35px;color:var(--red);font-size:.66rem;font-weight:800;letter-spacing:.2em}
-h1{margin-top:12px;font-size:clamp(1.8rem,5vw,3rem);line-height:1.05;letter-spacing:-.055em}
-.message{max-width:570px;margin-top:16px;color:var(--muted);font-size:.82rem;line-height:1.85}
-.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:28px}
+.eyebrow{margin-top:35px;color:var(--red);font-size:.66rem;font-weight:800;letter-spacing:.2em;text-align:center}
+h1{margin-top:12px;font-size:clamp(1.8rem,5vw,3rem);line-height:1.05;letter-spacing:-.055em;text-align:center}
+.message{max-width:570px;margin:16px auto 0;color:var(--muted);font-size:.82rem;line-height:1.85;text-align:center}
+.actions{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:9px;margin-top:28px;width:100%}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:43px;padding:0 18px;border-radius:8px;font-size:.7rem;font-weight:800;transition:.18s ease}
 .btn.primary{background:var(--red);color:#fff}
 .btn.primary:hover{background:var(--red-dark);transform:translateY(-2px)}
 .btn.secondary{background:var(--white);border:1px solid var(--line);color:var(--text)}
 .btn.secondary:hover{color:var(--red);border-color:#efb9bd;background:var(--red-soft);transform:translateY(-2px)}
-footer{width:100%;margin-top:auto;padding:28px 28px 22px;border-top:1px solid var(--line);text-align:center}
-.socials{display:flex;justify-content:center;gap:7px;align-items:center}
-.socials a{width:45px;height:45px;display:grid;place-items:center;border:1px solid #dfe2e7;border-radius:50%;background:white;color:#666d76;font-size:.92rem;font-weight:500;transition:color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+
+footer{
+  width:100%;
+  margin-top:auto;
+  padding:28px 28px 22px;
+  border-top:1px solid var(--line);
+  text-align:center;
+}
+.socials{
+  width:100%;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
+  align-items:center;
+  gap:7px;
+  margin-inline:auto;
+}
+.socials a{
+  width:45px;height:45px;
+  display:grid;
+  place-items:center;
+  flex:0 0 45px;
+  border:1px solid #dfe2e7;
+  border-radius:50%;
+  background:white;
+  color:#666d76;
+  font-size:.92rem;
+  font-weight:500;
+  transition:color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease,box-shadow .2s ease
+}
 .socials a i{line-height:1}
 .socials a:hover{color:var(--red);background:var(--red-soft);border-color:#f2b9bd;transform:translateY(-3px);box-shadow:0 8px 18px rgba(220,38,46,.12)}
-.copyright{margin-top:34px;color:#7d8795;font-size:.7rem}
-@media(max-width:600px){footer{padding:24px 14px 20px}.socials{gap:6px}.socials a{width:40px;height:40px}.copyright{margin-top:28px;font-size:.64rem}}
+.copyright{margin:34px auto 0;text-align:center;color:#7d8795;font-size:.7rem}
+
+@media(max-width:600px){
+  .page{width:calc(100% - 28px);padding:40px 0}
+  footer{padding:24px 14px 20px}
+  .socials{gap:6px}
+  .socials a{width:40px;height:40px;flex-basis:40px}
+  .copyright{margin-top:28px;font-size:.64rem}
+}
+@media(max-width:380px){
+  .page{width:calc(100% - 22px)}
+  .socials{gap:4px}
+  .socials a{width:38px;height:38px;flex-basis:38px}
+}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<main class="page">
-<div class="logo">AGOOTSON</div>
-<div class="error-code">4<span>0</span>4</div>
-<div class="eyebrow">PAGE NOT FOUND</div>
-<h1>Looks like you took a wrong turn.</h1>
-<p class="message">The page you're looking for doesn't exist, may have been moved, or the link might be outdated. Let's get you back somewhere useful.</p>
-<div class="actions">
-<a class="btn primary" href="index.html">Back to Home</a>
-<a class="btn secondary" href="javascript:history.back()">Go Back</a>
-</div>
 
+<main class="page">
+  <div class="logo">AGOOTSON</div>
+
+  <div class="error-code">4<span>0</span>4</div>
+
+  <div class="eyebrow">PAGE NOT FOUND</div>
+
+  <h1>Looks like you took a wrong turn.</h1>
+
+  <p class="message">
+    The page you're looking for doesn't exist, may have been moved, or the link might be outdated.
+    Let's get you back somewhere useful.
+  </p>
+
+  <div class="actions">
+    <a class="btn primary" href="index.html">Back to Home</a>
+    <a class="btn secondary" href="javascript:history.back()">Go Back</a>
+  </div>
 </main>
+
 <footer>
   <div class="socials" aria-label="Social links">
     <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
@@ -60,8 +121,10 @@ footer{width:100%;margin-top:auto;padding:28px 28px 22px;border-top:1px solid va
     <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
     <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit" title="Reddit"><i class="fa-brands fa-reddit-alien" aria-hidden="true"></i></a>
   </div>
+
   <p class="copyright">© <span id="year"></span> David Agootson. All rights reserved.</p>
 </footer>
+
 <script>document.getElementById("year").textContent=new Date().getFullYear();</script>
 </body>
 </html>
