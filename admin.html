@@ -575,6 +575,103 @@
       background:#f4f5f7; color:#626770; font-size:.62rem; font-weight:800;
     }
 
+    /* ================= NEWSLETTER ADMIN ================= */
+    .newsletter-admin-panel {
+      margin-top: 0;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .newsletter-admin-panel[hidden] { display:none !important; }
+    .newsletter-admin-toolbar {
+      padding:18px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .newsletter-admin-toolbar h2 { margin:0; font-size:1rem; }
+    .newsletter-admin-toolbar p { margin:4px 0 0; color:var(--muted); font-size:.68rem; }
+    .newsletter-admin-controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .newsletter-tabs { display:flex; gap:7px; flex-wrap:wrap; }
+    .newsletter-tab {
+      border:1px solid var(--line);
+      background:#f7f8fa;
+      color:#5f6670;
+      border-radius:8px;
+      padding:9px 12px;
+      font-size:.7rem;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .newsletter-tab.active { background:#20242a; border-color:#20242a; color:#fff; }
+    .newsletter-search {
+      width:280px;
+      max-width:100%;
+      border:1px solid var(--line);
+      border-radius:9px;
+      padding:10px 12px;
+      outline:none;
+      font-size:.74rem;
+    }
+    .newsletter-search:focus {
+      border-color:#e6a2a5;
+      box-shadow:0 0 0 3px var(--red-soft);
+    }
+    .newsletter-list { padding:16px; display:grid; gap:10px; }
+    .newsletter-row {
+      border:1px solid var(--line);
+      border-radius:11px;
+      padding:14px 16px;
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:14px;
+      align-items:center;
+      background:#fff;
+    }
+    .newsletter-row:hover { border-color:#d8dbe0; }
+    .newsletter-email {
+      font-size:.82rem;
+      font-weight:800;
+      overflow-wrap:anywhere;
+    }
+    .newsletter-meta {
+      display:flex;
+      flex-wrap:wrap;
+      gap:7px;
+      align-items:center;
+      margin-top:7px;
+      color:#8b919a;
+      font-size:.62rem;
+    }
+    .newsletter-status {
+      display:inline-flex;
+      align-items:center;
+      border-radius:999px;
+      padding:5px 9px;
+      font-size:.61rem;
+      font-weight:800;
+    }
+    .newsletter-status.active { background:#eaf7ee; color:var(--green); }
+    .newsletter-status.unsubscribed { background:#f2f3f5; color:#737a84; }
+    .newsletter-row-actions {
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .newsletter-row-actions .action { min-width:92px; }
+    .newsletter-note {
+      padding:0 16px 16px;
+      color:#8b919a;
+      font-size:.62rem;
+      line-height:1.55;
+    }
+
     .contact-card {
       border:1px solid var(--line); border-radius:12px; padding:16px;
       display:grid; grid-template-columns:1fr auto; gap:16px;
@@ -687,8 +784,11 @@
       .blog-admin-search { width:100%; }
       .stats { grid-template-columns:repeat(2,1fr); }
       .comment-card,
-      .contact-card { grid-template-columns:1fr; }
-      .actions { flex-direction:row; flex-wrap:wrap; }
+      .contact-card,
+      .newsletter-row { grid-template-columns:1fr; }
+      .actions,
+      .newsletter-row-actions { flex-direction:row; flex-wrap:wrap; justify-content:flex-start; }
+      .newsletter-search { width:100%; }
     }
     @media(max-width:520px) {
       .topbar { padding:0 16px; }
@@ -809,6 +909,9 @@
         </button>
         <button class="section-btn" data-section="blog" type="button">
           <i class="fa-regular fa-pen-to-square"></i> Blog Posts
+        </button>
+        <button class="section-btn" data-section="newsletter" type="button">
+          <i class="fa-regular fa-newspaper"></i> Newsletter
         </button>
       </div>
 
@@ -938,6 +1041,43 @@
           <div class="loading">Loading blog posts…</div>
         </div>
       </section>
+
+      <section class="newsletter-admin-panel" id="newsletterAdminPanel" hidden>
+        <div class="newsletter-admin-toolbar">
+          <div>
+            <h2>Newsletter Subscribers</h2>
+            <p>View and manage people who subscribed to your newsletter through the public blog.</p>
+          </div>
+          <div class="newsletter-admin-controls">
+            <span class="blog-counter" id="newsletterCountLabel">0 subscribers</span>
+            <button class="btn secondary" id="refreshNewsletter" type="button">
+              <i class="fa-solid fa-rotate"></i> Refresh
+            </button>
+            <button class="btn" id="exportNewsletter" type="button">
+              <i class="fa-solid fa-file-csv"></i> Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="newsletter-admin-toolbar" style="border-bottom:1px solid var(--line)">
+          <div class="newsletter-tabs" id="newsletterTabs">
+            <button class="newsletter-tab active" data-newsletter-status="all" type="button">All</button>
+            <button class="newsletter-tab" data-newsletter-status="active" type="button">Active</button>
+            <button class="newsletter-tab" data-newsletter-status="unsubscribed" type="button">Unsubscribed</button>
+          </div>
+          <input class="newsletter-search" id="newsletterSearch" type="search"
+                 placeholder="Search email, name or source…" aria-label="Search newsletter subscribers">
+        </div>
+
+        <div class="newsletter-list" id="newsletterList">
+          <div class="loading">Loading newsletter subscribers…</div>
+        </div>
+
+        <div class="newsletter-note">
+          Subscriber email addresses are only loaded for your authenticated admin account.
+          Newsletter delivery will be connected to Resend in the next step.
+        </div>
+      </section>
     </main>
 
     <!-- Public website footer — matching agootson.is-a.dev -->
@@ -987,13 +1127,19 @@
     const blogPostList = document.getElementById("blogPostList");
     const blogTabs = document.getElementById("blogTabs");
     const blogSearch = document.getElementById("blogSearch");
+    const newsletterAdminPanel = document.getElementById("newsletterAdminPanel");
+    const newsletterList = document.getElementById("newsletterList");
+    const newsletterTabs = document.getElementById("newsletterTabs");
+    const newsletterSearch = document.getElementById("newsletterSearch");
 
     let comments = [];
     let contacts = [];
+    let newsletterSubscribers = [];
     let activeStatus = "pending";
     let activeContactStatus = "new";
     let activeSection = "comments";
     let activeBlogStatus = "all";
+    let activeNewsletterStatus = "all";
     let blogPosts = [];
     let photoMap = new Map();
     let currentBlogUser = null;
@@ -1429,6 +1575,222 @@
       showNotice("✓ Six starter articles imported.");
     }
 
+    async function loadNewsletterSubscribers() {
+      newsletterList.innerHTML = '<div class="loading">Loading newsletter subscribers…</div>';
+
+      const { data, error } = await supabaseClient
+        .from("newsletter_subscribers")
+        .select("*")
+        .order("created_at", { ascending:false });
+
+      if (error) {
+        console.error(error);
+        newsletterSubscribers = [];
+        newsletterList.innerHTML =
+          '<div class="empty">Could not load newsletter subscribers. Check that newsletter_subscribers exists and its admin RLS policy allows authenticated admins to read it.</div>';
+        updateStats();
+        return;
+      }
+
+      newsletterSubscribers = data || [];
+      updateStats();
+      renderActiveSection();
+    }
+
+    function filteredNewsletterSubscribers() {
+      const query = newsletterSearch.value.trim().toLowerCase();
+
+      return newsletterSubscribers.filter(subscriber => {
+        const status = String(subscriber.status || "active").toLowerCase();
+        const statusMatch =
+          activeNewsletterStatus === "all" || status === activeNewsletterStatus;
+
+        const searchMatch = !query || [
+          subscriber.email,
+          subscriber.name,
+          subscriber.source,
+          subscriber.status
+        ].join(" ").toLowerCase().includes(query);
+
+        return statusMatch && searchMatch;
+      });
+    }
+
+    function newsletterSubscriberStatus(subscriber) {
+      return String(subscriber.status || "active").toLowerCase() === "unsubscribed"
+        ? "unsubscribed"
+        : "active";
+    }
+
+    function renderNewsletterSubscribers() {
+      const items = filteredNewsletterSubscribers();
+      newsletterList.replaceChildren();
+
+      if (!items.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = activeNewsletterStatus === "active"
+          ? "No active newsletter subscribers yet."
+          : activeNewsletterStatus === "unsubscribed"
+            ? "No unsubscribed contacts."
+            : "No newsletter subscribers match this view.";
+        newsletterList.appendChild(empty);
+        return;
+      }
+
+      items.forEach(subscriber => {
+        const card = document.createElement("article");
+        card.className = "newsletter-row";
+
+        const body = document.createElement("div");
+
+        const email = document.createElement("div");
+        email.className = "newsletter-email";
+        email.textContent = String(subscriber.email || "No email");
+
+        const meta = document.createElement("div");
+        meta.className = "newsletter-meta";
+
+        const status = newsletterSubscriberStatus(subscriber);
+        const badge = document.createElement("span");
+        badge.className = `newsletter-status ${status}`;
+        badge.textContent = status === "active" ? "Active" : "Unsubscribed";
+
+        const name = subscriber.name ? document.createElement("span") : null;
+        if (name) name.textContent = subscriber.name;
+
+        const source = subscriber.source ? document.createElement("span") : null;
+        if (source) source.textContent = `Source: ${subscriber.source}`;
+
+        const date = document.createElement("span");
+        date.textContent = `Subscribed: ${formatDate(subscriber.created_at)}`;
+
+        meta.append(badge);
+        if (name) meta.append(name);
+        if (source) meta.append(source);
+        meta.append(date);
+
+        body.append(email, meta);
+
+        const actions = document.createElement("div");
+        actions.className = "newsletter-row-actions";
+
+        const mail = document.createElement("a");
+        mail.className = "action approve";
+        mail.href = `mailto:${encodeURIComponent(subscriber.email || "")}`;
+        mail.innerHTML = '<i class="fa-solid fa-envelope"></i> Email';
+        mail.style.textDecoration = "none";
+        mail.style.textAlign = "center";
+        mail.style.display = "inline-flex";
+        mail.style.alignItems = "center";
+        mail.style.justifyContent = "center";
+        actions.appendChild(mail);
+
+        if (status === "active") {
+          const unsubscribe = document.createElement("button");
+          unsubscribe.className = "action reject";
+          unsubscribe.type = "button";
+          unsubscribe.innerHTML = '<i class="fa-solid fa-user-minus"></i> Unsubscribe';
+          unsubscribe.addEventListener("click", () =>
+            updateNewsletterStatus(subscriber.id, "unsubscribed")
+          );
+          actions.appendChild(unsubscribe);
+        } else {
+          const reactivate = document.createElement("button");
+          reactivate.className = "action approve";
+          reactivate.type = "button";
+          reactivate.innerHTML = '<i class="fa-solid fa-user-plus"></i> Reactivate';
+          reactivate.addEventListener("click", () =>
+            updateNewsletterStatus(subscriber.id, "active")
+          );
+          actions.appendChild(reactivate);
+        }
+
+        const remove = document.createElement("button");
+        remove.className = "action delete";
+        remove.type = "button";
+        remove.innerHTML = '<i class="fa-solid fa-trash"></i> Delete';
+        remove.addEventListener("click", () => deleteNewsletterSubscriber(subscriber.id));
+        actions.appendChild(remove);
+
+        card.append(body, actions);
+        newsletterList.appendChild(card);
+      });
+    }
+
+    async function updateNewsletterStatus(id, status) {
+      const label = status === "active" ? "reactivate" : "unsubscribe";
+      if (!confirm(`Are you sure you want to ${label} this subscriber?`)) return;
+
+      const updates = {
+        status,
+        unsubscribed_at: status === "unsubscribed" ? new Date().toISOString() : null
+      };
+
+      const { error } = await supabaseClient
+        .from("newsletter_subscribers")
+        .update(updates)
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        showNotice("Could not update the subscriber. Check your newsletter RLS policy.", "error");
+        return;
+      }
+
+      const item = newsletterSubscribers.find(s => s.id === id);
+      if (item) Object.assign(item, updates);
+
+      updateStats();
+      renderNewsletterSubscribers();
+      showNotice(`Subscriber ${status === "active" ? "reactivated" : "unsubscribed"}.`);
+    }
+
+    async function deleteNewsletterSubscriber(id) {
+      if (!confirm("Permanently delete this newsletter subscriber? This cannot be undone.")) return;
+
+      const { error } = await supabaseClient
+        .from("newsletter_subscribers")
+        .delete()
+        .eq("id", id);
+
+      if (error) {
+        console.error(error);
+        showNotice("Could not delete the subscriber. Check your newsletter RLS policy.", "error");
+        return;
+      }
+
+      newsletterSubscribers = newsletterSubscribers.filter(s => s.id !== id);
+      updateStats();
+      renderNewsletterSubscribers();
+      showNotice("Newsletter subscriber deleted.");
+    }
+
+    function exportNewsletterCSV() {
+      const items = filteredNewsletterSubscribers();
+      if (!items.length) {
+        showNotice("There are no subscribers in the current view to export.", "error");
+        return;
+      }
+
+      const headers = ["email", "name", "status", "source", "created_at", "unsubscribed_at"];
+      const csvCell = value => `"${String(value ?? "").replace(/"/g, '""')}"`;
+      const rows = items.map(item => headers.map(key => csvCell(item[key])).join(","));
+      const csv = [headers.join(","), ...rows].join("\r\n");
+
+      const blob = new Blob([csv], { type:"text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `newsletter-subscribers-${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+
+      showNotice(`✓ Exported ${items.length} subscriber${items.length === 1 ? "" : "s"}.`);
+    }
+
     function showNotice(message, type = "success") {
       notice.textContent = message;
       notice.className = "notice show " + type;
@@ -1497,7 +1859,7 @@
       userEmail.textContent = user.email || "";
       currentBlogUser = user;
       await loadPhotos();
-      await Promise.all([loadComments(), loadContacts(), loadBlogPosts()]);
+      await Promise.all([loadComments(), loadContacts(), loadBlogPosts(), loadNewsletterSubscribers()]);
     }
 
     async function loadComments() {
@@ -1546,7 +1908,7 @@
         document.getElementById("pendingCount").textContent = comments.filter(c => c.status === "pending").length;
         document.getElementById("approvedCount").textContent = comments.filter(c => c.status === "approved").length;
         document.getElementById("rejectedCount").textContent = comments.filter(c => c.status === "rejected").length;
-      } else {
+      } else if (activeSection === "contacts") {
         document.getElementById("stat1Label").textContent = "Total";
         document.getElementById("stat2Label").textContent = "New";
         document.getElementById("stat3Label").textContent = "Replied";
@@ -1555,6 +1917,17 @@
         document.getElementById("pendingCount").textContent = contacts.filter(c => c.status === "new").length;
         document.getElementById("approvedCount").textContent = contacts.filter(c => c.status === "replied").length;
         document.getElementById("rejectedCount").textContent = contacts.filter(c => c.status === "spam").length;
+      } else {
+        const active = newsletterSubscribers.filter(s => newsletterSubscriberStatus(s) === "active").length;
+        const unsubscribed = newsletterSubscribers.filter(s => newsletterSubscriberStatus(s) === "unsubscribed").length;
+        document.getElementById("stat1Label").textContent = "Total";
+        document.getElementById("stat2Label").textContent = "Active";
+        document.getElementById("stat3Label").textContent = "Unsubscribed";
+        document.getElementById("stat4Label").textContent = "Ready to send";
+        document.getElementById("totalCount").textContent = newsletterSubscribers.length;
+        document.getElementById("pendingCount").textContent = active;
+        document.getElementById("approvedCount").textContent = unsubscribed;
+        document.getElementById("rejectedCount").textContent = active;
       }
     }
 
@@ -1584,8 +1957,11 @@
 
     function renderActiveSection() {
       const isBlog = activeSection === "blog";
-      moderationPanel.hidden = isBlog;
+      const isNewsletter = activeSection === "newsletter";
+
+      moderationPanel.hidden = isBlog || isNewsletter;
       blogAdminPanel.hidden = !isBlog;
+      newsletterAdminPanel.hidden = !isNewsletter;
 
       commentList.hidden = activeSection !== "comments";
       contactList.hidden = activeSection !== "contacts";
@@ -1595,6 +1971,12 @@
       if (isBlog) {
         updateBlogStats();
         renderBlogPosts();
+        return;
+      }
+
+      if (isNewsletter) {
+        updateStats();
+        renderNewsletterSubscribers();
         return;
       }
 
@@ -1932,6 +2314,7 @@
       await supabaseClient.auth.signOut();
       comments = [];
       contacts = [];
+      newsletterSubscribers = [];
       blogPosts = [];
       currentBlogUser = null;
       showLogin();
@@ -1957,6 +2340,9 @@
       if (activeSection === "blog" && !blogPosts.length) {
         loadBlogPosts();
       }
+      if (activeSection === "newsletter" && !newsletterSubscribers.length) {
+        loadNewsletterSubscribers();
+      }
       renderActiveSection();
     });
 
@@ -1974,8 +2360,24 @@
 
     search.addEventListener("input", () => {
       if (activeSection === "comments") renderComments();
-      else renderContacts();
+      else if (activeSection === "contacts") renderContacts();
     });
+
+    newsletterTabs.addEventListener("click", event => {
+      const button = event.target.closest("[data-newsletter-status]");
+      if (!button) return;
+
+      activeNewsletterStatus = button.dataset.newsletterStatus;
+      newsletterTabs.querySelectorAll(".newsletter-tab").forEach(tab => {
+        tab.classList.toggle("active", tab === button);
+      });
+
+      renderNewsletterSubscribers();
+    });
+
+    newsletterSearch.addEventListener("input", renderNewsletterSubscribers);
+    document.getElementById("refreshNewsletter").addEventListener("click", loadNewsletterSubscribers);
+    document.getElementById("exportNewsletter").addEventListener("click", exportNewsletterCSV);
 
 
     document.getElementById("newBlogPost").addEventListener("click", resetBlogEditor);
