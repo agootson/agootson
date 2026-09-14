@@ -357,6 +357,37 @@
       .lightbox-side { padding:18px; }
     }
 
+    .gallery-error {
+      grid-column: 1 / -1;
+      padding: 22px;
+      border: 1px solid #f0c3c6;
+      border-radius: 10px;
+      background: var(--red-soft);
+      color: var(--text);
+    }
+    .gallery-error strong {
+      display: block;
+      color: var(--red);
+      font-size: .82rem;
+      margin-bottom: 8px;
+    }
+    .gallery-error p {
+      font-size: .76rem;
+      line-height: 1.6;
+    }
+    .gallery-error pre {
+      margin-top: 12px;
+      padding: 12px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      border-radius: 7px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: #4f555d;
+      font: .68rem/1.65 ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+
   </style>
 </head>
 <body>
@@ -379,18 +410,19 @@
 
   <main class="main">
     <section class="page container">
-      <div class="eyebrow">DAILY LIFE · PHOTO JOURNAL</div>
+      <div class="eyebrow">MY PHOTO JOURNAL</div>
       <h1>Little moments, <span>captured.</span></h1>
-      <p class="lead">This is my everyday visual diary — college moments, places, people, food, projects and ordinary days worth remembering. New pictures can be added day by day, with a short description for every memory.</p>
+      <p class="lead">This is my everyday visual diary , college moments, trips, places, people, food, projects and ordinary days worth remembering. New pictures can be added day by day, with a short description for every memory.</p>
 
       <div class="gallery-toolbar">
         <div><strong>PHOTO JOURNAL</strong><br><span>Newest memories appear first.</span></div>
-        <span><i class="fa-solid fa-download"></i> Open a photo to view & download</span>
+        <span><i class="fa-solid fa-download"></i> Open a photo to view & download it</span>
       </div>
 
       <section class="section">
         <div class="memory-grid" id="memoryGrid" aria-live="polite"></div>
       </section>
+    </section>
 
     <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
       <button class="lightbox-close" id="lightboxClose" aria-label="Close photo viewer">×</button>
@@ -505,48 +537,96 @@
       return card;
     }
 
+    function showGalleryDiagnostic(message, details = "") {
+      memoryGrid.innerHTML = `
+        <div class="gallery-error" role="alert">
+          <strong>Gallery diagnostic</strong>
+          <p>${message}</p>
+          ${details ? `<pre>${details}</pre>` : ""}
+        </div>`;
+    }
+
     async function loadGallery() {
+      const jsonUrl = "/images/photos.json?v=" + Date.now();
+
       try {
-        // Use the site-root path so this works on the custom domain.
-        // The timestamp also prevents an old cached JSON response from being used.
-        const jsonUrl = "/images/photos.json?v=" + Date.now();
+        console.log("[Gallery] Loading:", jsonUrl);
+
         const response = await fetch(jsonUrl, {
           method: "GET",
           cache: "no-store",
           headers: { "Accept": "application/json" }
         });
 
+        console.log("[Gallery] HTTP status:", response.status, response.statusText);
+        console.log("[Gallery] Content-Type:", response.headers.get("content-type"));
+
         if (!response.ok) {
-          throw new Error(`photos.json returned HTTP ${response.status}`);
+          throw new Error(
+            `HTTP ${response.status} ${response.statusText} while loading ${jsonUrl}`
+          );
         }
 
-        // Read as text first so a UTF-8 BOM or unusual JSON content type cannot
-        // make response.json() fail unnecessarily.
         const raw = await response.text();
-        const photos = JSON.parse(raw.replace(/^\uFEFF/, "").trim());
+        console.log("[Gallery] Response length:", raw.length);
+        console.log("[Gallery] Response preview:", raw.slice(0, 200));
+
+        let photos;
+        try {
+          photos = JSON.parse(raw.replace(/^\uFEFF/, "").trim());
+        } catch (jsonError) {
+          throw new Error(
+            `JSON parse failed: ${jsonError.message}. ` +
+            `The server responded, but /images/photos.json is not valid JSON.`
+          );
+        }
 
         if (!Array.isArray(photos)) {
-          throw new Error("photos.json must contain an array of photos");
+          throw new Error(
+            `JSON loaded successfully, but its root value is ${typeof photos}; ` +
+            `photos.json must contain an array.`
+          );
         }
 
         const fragment = document.createDocumentFragment();
         let validPhotos = 0;
 
-        photos.forEach(photo => {
-          if (!photo || !photo.image || !photo.title) return;
+        photos.forEach((photo, index) => {
+          if (!photo || !photo.image || !photo.title) {
+            console.warn("[Gallery] Skipping invalid entry:", index, photo);
+            return;
+          }
+
           fragment.appendChild(createMemoryCard(photo));
           validPhotos++;
         });
 
         if (!validPhotos) {
-          throw new Error("photos.json contains no valid photo entries");
+          throw new Error(
+            `JSON loaded successfully, but no valid photo entries were found. ` +
+            `Total JSON entries: ${photos.length}.`
+          );
         }
 
         memoryGrid.replaceChildren(fragment);
+        console.log(`[Gallery] SUCCESS: ${validPhotos} photos loaded.`);
       } catch (error) {
-        console.error("Gallery loading error:", error);
-        memoryGrid.innerHTML =
-          '<p style="grid-column:1/-1;color:#747981;padding:20px 0;">Unable to load the photo journal right now. Please refresh the page.</p>';
+        console.error("[Gallery] FAILED:", error);
+
+        const message = error instanceof TypeError
+          ? "The browser could not fetch photos.json."
+          : "The gallery could not load photos.json.";
+
+        const details = [
+          `Error: ${error.name || "Error"}`,
+          `Message: ${error.message || String(error)}`,
+          `URL: ${jsonUrl}`,
+          "",
+          "Open this URL directly in your browser:",
+          window.location.origin + "/images/photos.json"
+        ].join("\n");
+
+        showGalleryDiagnostic(message, details);
       }
     }
 
