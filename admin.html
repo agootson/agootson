@@ -388,6 +388,8 @@
     }
 
     .tabs { display:flex; gap:7px; flex-wrap:wrap; }
+    .tabs[hidden] { display:none !important; }
+    .list[hidden] { display:none !important; }
     .tab {
       border:1px solid var(--line); background:#f7f8fa; color:#5f6670;
       border-radius:8px; padding:9px 12px; font-size:.74rem; font-weight:800; cursor:pointer;
