@@ -802,6 +802,55 @@
       .search { width:100%; }
       .comment-card { padding:13px; }
     }
+
+    /* ================= CONTACT REPLY COMPOSER ================= */
+    .reply-modal {
+      position: fixed; inset: 0; z-index: 3000; display:grid; place-items:center;
+      padding:20px; background:rgba(20,27,39,.48); backdrop-filter:blur(7px);
+      -webkit-backdrop-filter:blur(7px);
+    }
+    .reply-modal[hidden] { display:none !important; }
+    .reply-card {
+      width:min(720px,100%); max-height:min(88vh,760px); overflow:auto;
+      background:#fff; border:1px solid var(--line); border-radius:18px;
+      box-shadow:0 28px 80px rgba(15,23,42,.22);
+    }
+    .reply-head {
+      padding:20px 22px; display:flex; align-items:center; justify-content:space-between;
+      gap:14px; border-bottom:1px solid var(--line);
+    }
+    .reply-head h2 { margin:0; font-size:1.05rem; }
+    .reply-head p { margin:5px 0 0; color:var(--muted); font-size:.68rem; }
+    .reply-close {
+      width:36px;height:36px;border:1px solid var(--line);border-radius:10px;
+      background:#fff;color:#666d76;cursor:pointer;
+    }
+    .reply-close:hover { color:var(--red); border-color:#efb9bd; }
+    .reply-body { padding:20px 22px; display:grid; gap:14px; }
+    .reply-field { display:grid; gap:6px; }
+    .reply-field label { font-size:.66rem; font-weight:800; color:#6b7179; }
+    .reply-field input, .reply-field textarea {
+      width:100%; border:1px solid var(--line); border-radius:9px; padding:11px 12px;
+      background:#fff; outline:none; font-size:.76rem;
+    }
+    .reply-field textarea { min-height:190px; resize:vertical; line-height:1.6; }
+    .reply-field input:focus, .reply-field textarea:focus {
+      border-color:#e6a2a5; box-shadow:0 0 0 3px var(--red-soft);
+    }
+    .reply-original {
+      padding:13px 14px; border:1px solid var(--line); border-radius:10px;
+      background:#f8f9fb; color:#59616c; font-size:.72rem; line-height:1.6;
+      white-space:pre-wrap; overflow-wrap:anywhere;
+    }
+    .reply-original strong { color:#30363d; }
+    .reply-actions {
+      display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap;
+      padding:0 22px 20px;
+    }
+    .reply-status { margin:0 22px 14px; font-size:.7rem; min-height:1em; }
+    .reply-status.error { color:var(--red-dark); }
+    .reply-status.success { color:var(--green); }
+
   </style>
 </head>
 <body>
@@ -811,7 +860,7 @@
       <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
       <div class="eyebrow">PRIVATE ADMIN</div>
       <h1>Website administration</h1>
-      <p>Sign in to manage gallery comments, contact messages and blog posts.</p>
+      <p>Sign in to manage gallery comments, contact messages, blog posts and newsletters.</p>
       <form id="loginForm">
         <label for="email">Email</label>
         <input id="email" type="email" autocomplete="username" required placeholder="Admin email">
@@ -1143,6 +1192,16 @@
     let blogPosts = [];
     let photoMap = new Map();
     let currentBlogUser = null;
+    let replyContact = null;
+    const replyModal = document.getElementById("replyModal");
+    const replyForm = document.getElementById("replyForm");
+    const replyTo = document.getElementById("replyTo");
+    const replySubject = document.getElementById("replySubject");
+    const replyOriginal = document.getElementById("replyOriginal");
+    const replyMessage = document.getElementById("replyMessage");
+    const replyStatus = document.getElementById("replyStatus");
+    const replySend = document.getElementById("replySend");
+
 
 
     const blogStarterPosts = [
@@ -2150,8 +2209,8 @@
           const reply = document.createElement("button");
           reply.className = "action approve";
           reply.type = "button";
-          reply.innerHTML = '<i class="fa-solid fa-reply"></i> Replied';
-          reply.addEventListener("click", () => updateContactStatus(contact.id, "replied"));
+          reply.innerHTML = '<i class="fa-solid fa-reply"></i> Reply';
+          reply.addEventListener("click", () => openReplyComposer(contact));
           actions.appendChild(reply);
         }
 
@@ -2227,6 +2286,83 @@
       showNotice("Comment deleted.");
     }
 
+
+    function openReplyComposer(contact) {
+      replyContact = contact;
+      replyTo.value = contact.email || "";
+      replyRecipient.textContent = `${contact.name || "Visitor"} · ${contact.email || ""}`;
+      replySubject.value = contact.subject
+        ? (String(contact.subject).toLowerCase().startsWith("re:") ? contact.subject : `Re: ${contact.subject}`)
+        : "Re: Your message";
+      replyOriginal.innerHTML =
+        `<strong>${escapeForText(contact.name || "Visitor")}</strong><br>${escapeForText(contact.message || "")}`;
+      replyMessage.value = "";
+      replyStatus.textContent = "";
+      replyStatus.className = "reply-status";
+      replySend.disabled = false;
+      replySend.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Reply';
+      replyModal.hidden = false;
+      replyModal.setAttribute("aria-hidden", "false");
+      setTimeout(() => replyMessage.focus(), 50);
+    }
+
+    function closeReplyComposer() {
+      replyModal.hidden = true;
+      replyModal.setAttribute("aria-hidden", "true");
+      replyContact = null;
+      replyForm.reset();
+      replyStatus.textContent = "";
+      replyStatus.className = "reply-status";
+    }
+
+    async function sendContactReply(event) {
+      event.preventDefault();
+      if (!replyContact) return;
+
+      const message = replyMessage.value.trim();
+      const subject = replySubject.value.trim();
+
+      if (!message) {
+        replyStatus.textContent = "Please write a reply first.";
+        replyStatus.className = "reply-status error";
+        replyMessage.focus();
+        return;
+      }
+
+      replySend.disabled = true;
+      replySend.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending…';
+      replyStatus.textContent = "Sending your reply…";
+      replyStatus.className = "reply-status";
+
+      const { data, error } = await supabaseClient.functions.invoke("send-contact-reply", {
+        body: {
+          contact_id: replyContact.id,
+          subject,
+          reply: message
+        }
+      });
+
+      if (error || !data?.success) {
+        console.error("Reply send error:", error, data);
+        replySend.disabled = false;
+        replySend.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Reply';
+        replyStatus.textContent = data?.error || error?.message || "Could not send the reply.";
+        replyStatus.className = "reply-status error";
+        return;
+      }
+
+      const item = contacts.find(c => c.id === replyContact.id);
+      if (item) {
+        item.status = "replied";
+        item.replied_at = data.replied_at || new Date().toISOString();
+      }
+
+      closeReplyComposer();
+      updateStats();
+      renderContacts();
+      showNotice("Reply sent successfully. Message marked as replied.", "success");
+    }
+
     async function updateContactStatus(id, status) {
       const label = status === "read" ? "mark this message as read"
         : status === "replied" ? "mark this message as replied"
@@ -2281,6 +2417,17 @@
       renderContacts();
       showNotice("Contact message deleted.");
     }
+
+
+    document.getElementById("replyClose").addEventListener("click", closeReplyComposer);
+    document.getElementById("replyCancel").addEventListener("click", closeReplyComposer);
+    replyForm.addEventListener("submit", sendContactReply);
+    replyModal.addEventListener("click", event => {
+      if (event.target === replyModal) closeReplyComposer();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !replyModal.hidden) closeReplyComposer();
+    });
 
     loginForm.addEventListener("submit", async event => {
       event.preventDefault();
@@ -2465,5 +2612,47 @@
 
     checkSession();
   </script>
+
+  <div class="reply-modal" id="replyModal" hidden aria-hidden="true">
+    <div class="reply-card" role="dialog" aria-modal="true" aria-labelledby="replyTitle">
+      <div class="reply-head">
+        <div>
+          <h2 id="replyTitle">Reply to visitor</h2>
+          <p id="replyRecipient"></p>
+        </div>
+        <button class="reply-close" id="replyClose" type="button" aria-label="Close reply composer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="replyForm">
+        <div class="reply-body">
+          <div class="reply-field">
+            <label for="replyTo">To</label>
+            <input id="replyTo" type="email" readonly>
+          </div>
+          <div class="reply-field">
+            <label for="replySubject">Subject</label>
+            <input id="replySubject" type="text" maxlength="180" required>
+          </div>
+          <div class="reply-field">
+            <label>Original message</label>
+            <div class="reply-original" id="replyOriginal"></div>
+          </div>
+          <div class="reply-field">
+            <label for="replyMessage">Your reply</label>
+            <textarea id="replyMessage" maxlength="5000" required placeholder="Write your response…"></textarea>
+          </div>
+        </div>
+        <p class="reply-status" id="replyStatus" aria-live="polite"></p>
+        <div class="reply-actions">
+          <button class="btn secondary" id="replyCancel" type="button">Cancel</button>
+          <button class="btn" id="replySend" type="submit">
+            <i class="fa-solid fa-paper-plane"></i> Send Reply
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>
