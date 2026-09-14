@@ -775,6 +775,7 @@
     .login-btn:hover { background:var(--red-dark); }
     .login-btn:disabled { opacity:.6; cursor:not-allowed; }
     .login-error { color:var(--red-dark); font-size:.72rem; margin-top:10px; min-height:1em; }
+    .login-loading { color:var(--muted); font-size:.72rem; margin-top:10px; }
     #adminApp { display:none; }
     @media(max-width:800px) {
       .blog-editor-grid { grid-template-columns:1fr; }
@@ -868,6 +869,7 @@
         <input id="password" type="password" autocomplete="current-password" required placeholder="Password">
         <button class="login-btn" id="loginBtn" type="submit">Sign in</button>
         <div class="login-error" id="loginError" aria-live="polite"></div>
+        <div class="login-loading" id="loginLoading" aria-live="polite" hidden>Checking your admin account…</div>
       </form>
     </div>
   </section>
@@ -1150,6 +1152,47 @@
     </footer>
   </div>
 
+  <div class="reply-modal" id="replyModal" hidden aria-hidden="true">
+    <div class="reply-card" role="dialog" aria-modal="true" aria-labelledby="replyTitle">
+      <div class="reply-head">
+        <div>
+          <h2 id="replyTitle">Reply to visitor</h2>
+          <p id="replyRecipient"></p>
+        </div>
+        <button class="reply-close" id="replyClose" type="button" aria-label="Close reply composer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <form id="replyForm">
+        <div class="reply-body">
+          <div class="reply-field">
+            <label for="replyTo">To</label>
+            <input id="replyTo" type="email" readonly>
+          </div>
+          <div class="reply-field">
+            <label for="replySubject">Subject</label>
+            <input id="replySubject" type="text" maxlength="180" required>
+          </div>
+          <div class="reply-field">
+            <label>Original message</label>
+            <div class="reply-original" id="replyOriginal"></div>
+          </div>
+          <div class="reply-field">
+            <label for="replyMessage">Your reply</label>
+            <textarea id="replyMessage" maxlength="5000" required placeholder="Write your response…"></textarea>
+          </div>
+        </div>
+        <p class="reply-status" id="replyStatus" aria-live="polite"></p>
+        <div class="reply-actions">
+          <button class="btn secondary" id="replyCancel" type="button">Cancel</button>
+          <button class="btn" id="replySend" type="submit">
+            <i class="fa-solid fa-paper-plane"></i> Send Reply
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://jxfrevwvpyxbljfkrhyo.supabase.co";
@@ -1161,6 +1204,7 @@
     const loginForm = document.getElementById("loginForm");
     const loginBtn = document.getElementById("loginBtn");
     const loginError = document.getElementById("loginError");
+    const loginLoading = document.getElementById("loginLoading");
     const logoutBtn = document.getElementById("logoutBtn");
     const userEmail = document.getElementById("userEmail");
     const commentList = document.getElementById("commentList");
@@ -1892,19 +1936,29 @@
     }
 
     async function checkSession() {
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      if (!session) {
+      try {
+        loginLoading.hidden = false;
+        const { data: { session }, error } = await supabaseClient.auth.getSession();
+        if (error) throw error;
+        if (!session) {
+          showLogin();
+          return;
+        }
+        const allowed = await isAdmin(session.user.id);
+        if (!allowed) {
+          await supabaseClient.auth.signOut();
+          loginError.textContent = "This account is not authorized to access the admin area.";
+          showLogin();
+          return;
+        }
+        await showAdmin(session.user);
+      } catch (error) {
+        console.error("Admin initialization failed:", error);
         showLogin();
-        return;
+        loginError.textContent = `Could not load the admin area: ${error?.message || "Unknown error"}`;
+      } finally {
+        loginLoading.hidden = true;
       }
-      const allowed = await isAdmin(session.user.id);
-      if (!allowed) {
-        await supabaseClient.auth.signOut();
-        loginError.textContent = "This account is not authorized to access the admin area.";
-        showLogin();
-        return;
-      }
-      showAdmin(session.user);
     }
 
     function showLogin() {
@@ -1913,12 +1967,16 @@
     }
 
     async function showAdmin(user) {
-      loginScreen.style.display = "none";
-      adminApp.style.display = "block";
+      loginLoading.hidden = false;
+      loginLoading.textContent = "Loading your administration dashboard…";
       userEmail.textContent = user.email || "";
       currentBlogUser = user;
       await loadPhotos();
       await Promise.all([loadComments(), loadContacts(), loadBlogPosts(), loadNewsletterSubscribers()]);
+      loginScreen.style.display = "none";
+      adminApp.style.display = "block";
+      loginLoading.hidden = true;
+      loginLoading.textContent = "Checking your admin account…";
     }
 
     async function loadComments() {
@@ -2432,29 +2490,37 @@
     loginForm.addEventListener("submit", async event => {
       event.preventDefault();
       loginError.textContent = "";
+      loginLoading.hidden = false;
+      loginLoading.textContent = "Signing in and checking admin access…";
       loginBtn.disabled = true;
       loginBtn.textContent = "Signing in…";
 
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
 
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Sign in";
+        if (!data.user) {
+          throw new Error("Supabase did not return a user after sign-in.");
+        }
 
-      if (error) {
-        loginError.textContent = error.message || "Sign in failed.";
-        return;
+        const allowed = await isAdmin(data.user.id);
+        if (!allowed) {
+          await supabaseClient.auth.signOut();
+          throw new Error("This account is not authorized to access the admin area.");
+        }
+
+        await showAdmin(data.user);
+      } catch (error) {
+        console.error("Admin sign-in failed:", error);
+        loginError.textContent = error?.message || "Sign in failed.";
+        loginLoading.hidden = true;
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Sign in";
       }
-
-      if (!data.user || !(await isAdmin(data.user.id))) {
-        await supabaseClient.auth.signOut();
-        loginError.textContent = "This account is not authorized to access the admin area.";
-        return;
-      }
-
-      showAdmin(data.user);
     });
 
     logoutBtn.addEventListener("click", async () => {
@@ -2610,49 +2676,26 @@
       if (event === "SIGNED_OUT") showLogin();
     });
 
+    window.addEventListener("error", event => {
+      console.error("Admin page error:", event.error || event.message);
+      if (adminApp.style.display !== "block") {
+        loginLoading.hidden = true;
+        loginError.textContent = `Admin page error: ${event.message || "Unknown JavaScript error"}`;
+      }
+    });
+
+    window.addEventListener("unhandledrejection", event => {
+      console.error("Admin page promise error:", event.reason);
+      if (adminApp.style.display !== "block") {
+        loginLoading.hidden = true;
+        loginError.textContent = `Admin page error: ${event.reason?.message || event.reason || "Unknown error"}`;
+      }
+    });
+
     checkSession();
   </script>
 
-  <div class="reply-modal" id="replyModal" hidden aria-hidden="true">
-    <div class="reply-card" role="dialog" aria-modal="true" aria-labelledby="replyTitle">
-      <div class="reply-head">
-        <div>
-          <h2 id="replyTitle">Reply to visitor</h2>
-          <p id="replyRecipient"></p>
-        </div>
-        <button class="reply-close" id="replyClose" type="button" aria-label="Close reply composer">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <form id="replyForm">
-        <div class="reply-body">
-          <div class="reply-field">
-            <label for="replyTo">To</label>
-            <input id="replyTo" type="email" readonly>
-          </div>
-          <div class="reply-field">
-            <label for="replySubject">Subject</label>
-            <input id="replySubject" type="text" maxlength="180" required>
-          </div>
-          <div class="reply-field">
-            <label>Original message</label>
-            <div class="reply-original" id="replyOriginal"></div>
-          </div>
-          <div class="reply-field">
-            <label for="replyMessage">Your reply</label>
-            <textarea id="replyMessage" maxlength="5000" required placeholder="Write your response…"></textarea>
-          </div>
-        </div>
-        <p class="reply-status" id="replyStatus" aria-live="polite"></p>
-        <div class="reply-actions">
-          <button class="btn secondary" id="replyCancel" type="button">Cancel</button>
-          <button class="btn" id="replySend" type="submit">
-            <i class="fa-solid fa-paper-plane"></i> Send Reply
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+
 
 </body>
 </html>
