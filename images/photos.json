@@ -1,80 +1,121 @@
 [
   {
     "image": "images/Handover of the bike.jpeg",
-    "title": "During the handover of the bike ownership in Gnadhinagar",
+    "title": "During the handover of the bike ownership in Gandhinagar",
     "description": "During the handover of the bike.",
-    "category": "Journey"
+    "category": "Journey",
+    "date": "2026-09-10"
   },
   {
     "image": "images/A trip to Kosamba.jpeg",
-    "title": "Taking a break when I had a trip to Kosamaba",
-    "description": "Taking a break when I had a trip to Kosamaba",
-    "category": "Journey"
+    "title": "Taking a break when I had a trip to Kosamba",
+    "description": "Taking a break during my trip to Kosamba.",
+    "category": "Journey",
+    "date": "2026"
   },
   {
     "image": "images/Evening break.jpeg",
     "title": "Taking a minute at Kamrej after riding for 5 and half hours from Ahmedabad",
     "description": "A quiet evening moment captured during a break.",
-    "category": "Journey"
+    "category": "Journey",
+    "date": "2026-09-10"
   },
   {
     "image": "images/The new bike.jpeg",
-    "title": "Refueling in Angleshwar during my journey from Gandhinagar to Surat",
+    "title": "Refueling in Ankleshwar during my journey from Gandhinagar to Surat",
     "description": "A memorable moment with the new bike.",
-    "category": "Journey"
+    "category": "Journey",
+    "date": "2026-09-10"
   },
   {
     "image": "images/WhatsApp Image 2026-09-03 at 7.25.30 PM.jpeg",
     "title": "A day at college",
     "description": "A moment from my college life — one of the everyday experiences behind my journey as a Computer Science student.",
-    "category": "Daily life"
+    "category": "Daily life",
+    "date": "2026-09-03"
   },
   {
     "image": "images/WhatsApp Image 2026-09-03 at 7.25.29 PM.jpeg",
     "title": "A moment from the journey",
     "description": "A personal snapshot from my daily life and the experiences I am collecting while studying and building.",
-    "category": "Daily life"
+    "category": "Daily life",
+    "date": "2026-09-03"
   },
   {
     "image": "images/CKP.jpeg",
     "title": "At CK Pithawala sport ground",
-    "description": "A personal moment captured in CKP.",
-    "category": "Daily life"
+    "description": "A personal moment captured at CK Pithawala sport ground.",
+    "category": "Daily life",
+    "date": "2024-11-10"
   },
   {
     "image": "images/Daman.jpeg",
     "title": "During a Diwali trip to Daman with friends",
     "description": "A moment from my time in Daman.",
-    "category": "Daily life"
+    "category": "Daily life",
+    "date": "2025-11-10"
   },
   {
     "image": "images/Guitar.jpeg",
     "title": "After some guitar session",
     "description": "A musical moment with the guitar.",
-    "category": "Daily life"
+    "category": "Daily life",
+    "date": "2026-04-17"
   },
   {
     "image": "images/SSD.jpeg",
     "title": "With Ahmedabad SSD Football team",
     "description": "A personal memory connected with South Sudan.",
-    "category": "Daily life"
+    "category": "Daily life",
+    "date": "2024-11-07"
   },
   {
     "image": "images/Anand.jpeg",
-    "title": "With a friend in Anand when I was about to leaving for Surat with my first bike in India",
-    "description": "A personal memory connected with South Sudan.",
-    "category": "Journey"
+    "title": "With a friend in Anand when I was about to leave for Surat with my first bike in India",
+    "description": "A memorable moment with a friend before continuing my journey to Surat with my first bike in India.",
+    "category": "Journey",
+    "date": "2025-07-08"
   },
   {
     "image": "images/Seated.jpeg",
     "title": "A random selfie in my room",
     "description": "A quiet everyday moment.",
-    "category": "Daily life"
+    "category": "Daily life",
+    "date": "2026-05-25"
   },
   {
     "image": "images/Uka.jpeg",
     "title": "At Uka Tarsadia University hostel",
     "description": "Another moment from my daily-life photo journal.",
-    "category": "Daily life"
+    "category": "Daily life",
+    "date": "2025-11-24"
+  },
+  {
+    "image": "images/DUMAS 1.jpeg",
+    "title": "A day out at Dumas with the bike",
+    "description": "A memorable moment during my visit to Dumas with the bike.",
+    "category": "Travel",
+    "date": "2026-09-16"
+  },
+  {
+    "image": "images/DUMAS 2.jpeg",
+    "title": "Another moment from my Dumas trip",
+    "description": "Taking a moment to enjoy the day during my trip to Dumas.",
+    "category": "Travel",
+    "date": "2026-09-16"
+  },
+  {
+    "image": "images/DUMAS 3.jpeg",
+    "title": "Getting ready for the ride at Dumas",
+    "description": "A moment with the bike before heading out and continuing the ride.",
+    "category": "Travel",
+    "date": "2026-09-16"
+  },
+  {
+    "image": "images/DUMAS 4.jpeg",
+    "title": "On the bike at Dumas",
+    "description": "A memorable moment from my ride during the trip to Dumas.",
+    "category": "Travel",
+    "date": "2026-09-16"
   }
 ]
