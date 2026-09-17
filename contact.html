@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#e31b23">
-  <meta name="description" content="David Agootson — Contact Me">
+  <meta name="description" content="David Agootson - Contact Me">
   <title>Contact Me | David Agootson</title>
 
   <style>
@@ -35,8 +35,6 @@
     }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
-
-    /* ================= SIDEBAR ================= */
     .sidebar {
       position: fixed; inset: 0 auto 0 0; z-index: 1000;
       width: var(--sidebar); display: flex; flex-direction: column;
@@ -77,13 +75,9 @@
     body.collapsed .nav-label { display: none; }
     body.collapsed .nav a { justify-content: center; padding-inline: 0; }
     body.collapsed .collapse span { transform: rotate(180deg); }
-
-    /* ================= MAIN ================= */
     .main { margin-left: var(--sidebar); transition: margin-left .25s ease; }
     body.collapsed .main { margin-left: var(--sidebar-small); }
     .container { width: min(1120px, calc(100% - 72px)); margin-inline: auto; }
-
-    /* ================= PAGE ================= */
     .page {
       min-height: calc(100vh - 180px);
       padding: 86px 0 70px;
@@ -211,8 +205,6 @@
       background: white; border-radius: 0 10px 10px 0;
       color: #626770; font-size: .84rem; line-height: 1.8; font-style: italic;
     }
-
-    /* ================= FOOTER ================= */
     footer {
       width: min(1120px, calc(100% - 72px)); margin-inline: auto;
       padding: 42px 0 28px; display: grid; grid-template-columns: 1fr;
@@ -234,8 +226,6 @@
       transform: translateY(-3px); box-shadow: 0 8px 18px rgba(220,38,46,.12);
     }
     .copyright { grid-column: 1 / -1; text-align: center; padding-top: 10px; }
-
-    /* ================= MOBILE ================= */
     .mobile-menu { display: none; }
     .backdrop { display: none; }
     @media (max-width: 1050px) {
@@ -293,7 +283,6 @@
   <aside class="sidebar" id="sidebar">
     <button class="collapse" id="collapse" aria-label="Collapse sidebar"><span>‹</span></button>
     <nav class="nav" aria-label="Main navigation">
-<nav class="nav" aria-label="Main navigation">
       <a class="" href="index.html">
         <span class="icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span>
         <span class="nav-label">Home</span>
@@ -337,20 +326,20 @@
   <main class="main">
     
     <section class="page container">
-      <div class="eyebrow">GET IN TOUCH</div>
-      <h1>Let's <span>connect.</span></h1>
-      <p class="lead">Whether you want to talk about a project, technology, learning, collaboration or simply say hello, send me a message using the form below.</p>
+      <div class="eyebrow">LET'S GET IN TOUCH</div>
+      <h1>Let's <span>talk.</span></h1>
+      <p class="lead">If you want to get in touch with me, send me a message or each out to me on social media platforms.</p>
 
       <section class="section">
         <div class="contact-grid">
           <div class="card">
             <h3>Send a message</h3>
-            <p>Have a project, collaboration idea, opportunity or question? Send me a message and I’ll get back to you.</p>
+            <p>If you have something to ask or discuss, send me a message.</p>
             <form class="form" id="contactForm" action="#" method="post" style="margin-top:18px;" novalidate>
               <label for="name">Name</label>
               <input id="name" type="text" name="name" placeholder="Your name" autocomplete="name" maxlength="80" required>
               <label for="email">Email</label>
-              <input id="email" type="email" name="email" placeholder="you@example.com" autocomplete="email" maxlength="160" required>
+              <input id="email" type="email" name="email" placeholder="...@gmail.com" autocomplete="email" maxlength="160" required>
               <label for="subject">Subject</label>
               <input id="subject" type="text" name="subject" placeholder="What is this about?" maxlength="160" required>
               <label for="category">Reason for contacting</label>
@@ -358,10 +347,10 @@
                 <option value="" selected disabled>Select a category</option>
                 <option>Project inquiry</option>
                 <option>Collaboration</option>
-                <option>Internship / Opportunity</option>
                 <option>Academic</option>
                 <option>Feedback</option>
                 <option>General inquiry</option>
+                <option>Internship / Opportunity</option>
               </select>
               <label for="message">Message</label>
               <textarea id="message" name="message" placeholder="Write your message..." maxlength="2000" required></textarea>
@@ -369,18 +358,18 @@
               <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
               <button class="btn" type="submit"><i class="fa-regular fa-paper-plane"></i> Send Message</button>
             </form>
-            <p class="response-note">Your message will be handled privately and used only to respond to your inquiry.</p>
+            <p class="response-note">I will only use your message to reply to you.</p>
           </div>
         </div>
 
-        <div class="availability"><span class="availability-dot"></span> Currently open to project collaborations, student opportunities and useful web projects.</div>
+        <div class="availability"><span class="availability-dot"></span> You can contact me about anything related to me only.</div>
         <div class="contact-actions">
-          <button class="secondary-btn" id="copyLink" type="button"><i class="fa-regular fa-copy"></i> Copy Portfolio Link</button>
-          <button class="secondary-btn" id="sharePage" type="button"><i class="fa-solid fa-share-nodes"></i> Share Portfolio</button>
+          <button class="secondary-btn" id="copyLink" type="button"><i class="fa-regular fa-copy"></i> Copy Link</button>
+          <button class="secondary-btn" id="sharePage" type="button"><i class="fa-solid fa-share-nodes"></i> Share Link</button>
         </div>
       </section>
 
-      <div class="quote">I enjoy meeting people who are curious about technology, learning and building useful things.</div>
+      <div class="quote">Feel free to contact me.</div>
     </section>
 
 
@@ -392,7 +381,7 @@
         <a href="https://x.com/agootson" target="_blank" rel="noopener" aria-label="X" title="X"><i class="fa-brands fa-x-twitter"></i></a>
         <a href="https://www.instagram.com/agootson" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
         <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit" title="Reddit — u/hereoutsidethebox"><i class="fa-brands fa-reddit-alien"></i></a>
+        <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit" title="Reddit - u/hereoutsidethebox"><i class="fa-brands fa-reddit-alien"></i></a>
       </div>
       <p class="copyright">© <span id="year"></span> David Agootson. All rights reserved.</p>
     </footer>
@@ -417,8 +406,6 @@
     backdrop.addEventListener("click", () => mobileSidebar(false));
     window.addEventListener("resize", () => { if (window.innerWidth > 900) mobileSidebar(false); });
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    /* ================= SUPABASE CONTACT FORM ================= */
     const SUPABASE_URL = "https://jxfrevwvpyxbljfkrhyo.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_dEtGqJaPQmhdgiGgkMwQRw_LI6Itzwo";
 
@@ -439,7 +426,7 @@
 
       const data = new FormData(contactForm);
 
-      // Honeypot spam protection.
+      // Spam check.
       if (data.get("website")) return;
 
       if (!contactForm.checkValidity()) {
@@ -473,7 +460,7 @@
         if (error) throw error;
 
         formStatus.textContent =
-          "✓ Your message has been sent successfully. I'll get back to you soon.";
+          "Your message has been sent. I'll get back to you soon.";
         formStatus.classList.add("show", "success");
 
         contactForm.reset();
@@ -481,7 +468,7 @@
       } catch (error) {
         console.error("Contact form submission error:", error);
         formStatus.textContent =
-          "Sorry, your message could not be sent. Please try again.";
+          "The message could not be sent. Please try again.";
         formStatus.classList.add("show", "error");
 
       } finally {
@@ -502,7 +489,7 @@
     });
 
     document.getElementById("sharePage").addEventListener("click", async () => {
-      const shareData = { title: "David Agootson — Portfolio", text: "David Agootson's portfolio", url: window.location.href };
+      const shareData = { title: "David Agootson Portfolio", text: "David Agootson's portfolio", url: window.location.href };
       if (navigator.share) {
         try { await navigator.share(shareData); } catch {}
       } else {
