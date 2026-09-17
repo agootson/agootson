@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website Admin | David Agootson</title>
+  <title>Website Adgoot | David Agootson</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,6 @@
     body { margin:0; font-family:Inter,Arial,sans-serif; color:var(--text); background:var(--bg); }
     button,input { font:inherit; }
 
-    /* ================= PUBLIC SITE NAVIGATION ================= */
     .sidebar {
       position: fixed;
       inset: 0 auto 0 0;
@@ -151,7 +150,6 @@
       margin-left: 78px;
     }
 
-    /* ================= PUBLIC SITE FOOTER ================= */
     .site-footer {
       width: min(1120px, calc(100% - 72px));
       margin: 40px auto 0;
@@ -357,8 +355,6 @@
     }
     .section-btn:hover { border-color:#e6a2a5; }
 
-
-    /* ================= LIQUID GLASS ADMIN BUTTONS ================= */
     .btn {
       appearance: none;
       display: inline-flex;
@@ -427,7 +423,6 @@
       font-size: .82rem;
     }
 
-    /* Primary action — subtle red liquid-glass tint */
     .btn:not(.secondary) {
       color: var(--red-dark);
       border-color: rgba(227,27,35,.20);
@@ -484,7 +479,6 @@
       }
     }
 
-    /* ================= BLOG ADMIN ================= */
     .blog-admin-panel {
       margin-top: 0;
       background: var(--white);
@@ -575,7 +569,6 @@
       background:#f4f5f7; color:#626770; font-size:.62rem; font-weight:800;
     }
 
-    /* ================= NEWSLETTER ADMIN ================= */
     .newsletter-admin-panel {
       margin-top: 0;
       background: var(--white);
@@ -804,7 +797,6 @@
       .comment-card { padding:13px; }
     }
 
-    /* ================= CONTACT REPLY COMPOSER ================= */
     .reply-modal {
       position: fixed; inset: 0; z-index: 3000; display:grid; place-items:center;
       padding:20px; background:rgba(20,27,39,.48); backdrop-filter:blur(7px);
@@ -860,8 +852,8 @@
     <div class="login-card">
       <div class="login-icon"><i class="fa-solid fa-shield-halved"></i></div>
       <div class="eyebrow">PRIVATE ADMIN</div>
-      <h1>Website administration</h1>
-      <p>Sign in to manage gallery comments, contact messages, blog posts and newsletters.</p>
+      <h1>Website Admin</h1>
+      <p>Sign in to manage the website.</p>
       <form id="loginForm">
         <label for="email">Email</label>
         <input id="email" type="email" autocomplete="username" required placeholder="Admin email">
@@ -869,15 +861,13 @@
         <input id="password" type="password" autocomplete="current-password" required placeholder="Password">
         <button class="login-btn" id="loginBtn" type="submit">Sign in</button>
         <div class="login-error" id="loginError" aria-live="polite"></div>
-        <div class="login-loading" id="loginLoading" aria-live="polite" hidden>Checking your admin account…</div>
+        <div class="login-loading" id="loginLoading" aria-live="polite" hidden>Checking account...</div>
       </form>
     </div>
   </section>
 
   <div id="adminApp">
-
-    <!-- Public website navigation — matching agootson.is-a.dev -->
-    <aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar">
       <button class="collapse" id="collapse" aria-label="Collapse sidebar">
         <span>‹</span>
       </button>
@@ -934,7 +924,7 @@
     <header class="topbar">
       <div class="brand">
         <div class="brand-mark"><i class="fa-solid fa-comments"></i></div>
-        <span>Website Admin</span>
+        <span>Website Adgoot</span>
       </div>
       <div class="top-actions">
         <span class="user-email" id="userEmail"></span>
@@ -944,9 +934,9 @@
 
     <main class="wrap">
       <section class="hero">
-        <div class="eyebrow" id="heroEyebrow">WEBSITE MODERATION</div>
-        <h1 id="heroTitle">Visitor comments</h1>
-        <p id="heroDescription">Review comments before they become visible on your public photo gallery.</p>
+        <div class="eyebrow" id="heroEyebrow">WEBSITE ADGOOT</div>
+        <h1 id="heroTitle">Website Admin</h1>
+        <p id="heroDescription">Manage comments, messages, blog posts and newsletter subscribers.</p>
       </section>
 
       <div class="notice" id="notice" aria-live="polite"></div>
@@ -989,13 +979,13 @@
             <button class="tab" data-contact-status="spam" type="button">Spam</button>
             <button class="tab" data-contact-status="all" type="button">All</button>
           </div>
-          <input class="search" id="search" type="search" placeholder="Search name, comment or photo…">
+          <input class="search" id="search" type="search" placeholder="Search...">
         </div>
         <div class="list" id="commentList">
-          <div class="loading">Loading comments…</div>
+          <div class="loading">Loading...</div>
         </div>
         <div class="list" id="contactList" hidden>
-          <div class="loading">Loading contact messages…</div>
+          <div class="loading">Loading...</div>
         </div>
 
       </section>
@@ -1004,7 +994,7 @@
         <div class="blog-admin-toolbar">
           <div>
             <h2>Blog Posts</h2>
-            <p>Create, edit, publish, schedule, preview and delete articles stored in Supabase.</p>
+            <p>Create and manage blog posts.</p>
           </div>
           <div class="blog-admin-controls">
             <span class="blog-counter" id="blogCountLabel">0 articles</span>
@@ -1021,13 +1011,13 @@
             <button class="blog-tab" data-blog-status="archived" type="button">Archived</button>
           </div>
           <input class="blog-admin-search" id="blogSearch" type="search"
-                 placeholder="Search title, category, tags or content…" aria-label="Search blog posts">
+                 placeholder="Search..." aria-label="Search blog posts">
         </div>
 
         <form class="blog-editor" id="blogEditor" hidden>
           <div class="blog-editor-head">
             <h3 id="blogEditorTitle">New Article</h3>
-            <span class="blog-counter" id="blogSlugPreview">New slug will be generated</span>
+            <span class="blog-counter" id="blogSlugPreview">Slug will be generated</span>
           </div>
 
           <input type="hidden" id="blogEditId">
@@ -1050,7 +1040,7 @@
 
             <div class="blog-field">
               <label for="blogExcerpt">Excerpt *</label>
-              <textarea id="blogExcerpt" required maxlength="300" placeholder="A short description shown on the blog listing and shared previews."></textarea>
+              <textarea id="blogExcerpt" required maxlength="300" placeholder="Short description"></textarea>
             </div>
 
             <div class="blog-field">
@@ -1059,9 +1049,9 @@
             </div>
 
             <div class="blog-field full">
-              <label for="blogContent">Article content — HTML supported *</label>
+              <label for="blogContent">Article content *</label>
               <textarea class="content" id="blogContent" required placeholder="<p>Write your article...</p>"></textarea>
-              <div class="blog-help">Use normal HTML such as &lt;p&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;ul&gt;, &lt;ol&gt;, &lt;blockquote&gt; and &lt;pre&gt;.</div>
+              <div class="blog-help">HTML is supported.</div>
             </div>
 
             <div class="blog-field">
@@ -1075,7 +1065,7 @@
             </div>
 
             <div class="blog-field">
-              <label for="blogDate">Publication / schedule date</label>
+              <label for="blogDate">Date</label>
               <input id="blogDate" type="datetime-local">
             </div>
           </div>
@@ -1083,13 +1073,13 @@
           <div class="blog-editor-actions">
             <button class="btn" type="submit" id="saveBlogPost"><i class="fa-solid fa-cloud-arrow-up"></i> Save Article</button>
             <button class="btn secondary" type="button" id="cancelBlogEdit">Cancel</button>
-            <button class="btn secondary" type="button" id="importBlogStarters">Import Starter Articles</button>
+            <button class="btn secondary" type="button" id="importBlogStarters">Import Articles</button>
           </div>
           <p class="form-status" id="blogEditorStatus"></p>
         </form>
 
         <div class="blog-admin-list" id="blogPostList">
-          <div class="loading">Loading blog posts…</div>
+          <div class="loading">Loading blog posts...</div>
         </div>
       </section>
 
@@ -1097,7 +1087,7 @@
         <div class="newsletter-admin-toolbar">
           <div>
             <h2>Newsletter Subscribers</h2>
-            <p>View and manage people who subscribed to your newsletter through the public blog.</p>
+            <p>Manage newsletter subscribers.</p>
           </div>
           <div class="newsletter-admin-controls">
             <span class="blog-counter" id="newsletterCountLabel">0 subscribers</span>
@@ -1117,35 +1107,28 @@
             <button class="newsletter-tab" data-newsletter-status="unsubscribed" type="button">Unsubscribed</button>
           </div>
           <input class="newsletter-search" id="newsletterSearch" type="search"
-                 placeholder="Search email, name or source…" aria-label="Search newsletter subscribers">
+                 placeholder="Search..." aria-label="Search newsletter subscribers">
         </div>
 
         <div class="newsletter-list" id="newsletterList">
-          <div class="loading">Loading newsletter subscribers…</div>
+          <div class="loading">Loading newsletter subscribers...</div>
         </div>
 
         <div class="newsletter-note">
-          Subscriber email addresses are only loaded for your authenticated admin account.
-          Newsletter delivery will be connected to Resend in the next step.
+          Subscriber emails are only available to the admin.
+          Newsletter sending will be added later.
         </div>
       </section>
     </main>
-
-    <!-- Public website footer — matching agootson.is-a.dev -->
-    <footer class="site-footer">
-      <div>
-        <strong>David Agootson</strong>
-        <p>Computer Science &amp; Engineering Student</p>
-      </div>
-
-      <div class="socials">
+<footer class="site-footer">
+     <div class="socials">
         <a href="https://www.linkedin.com/in/agootson" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
         <a href="https://www.threads.net/@agootson" target="_blank" rel="noopener" aria-label="Threads" title="Threads"><i class="fa-brands fa-threads" aria-hidden="true"></i></a>
         <a href="https://www.facebook.com/agootson" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
         <a href="https://x.com/agootson" target="_blank" rel="noopener" aria-label="X" title="X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
         <a href="https://www.instagram.com/agootson" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
         <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
-        <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit u/hereoutsidethebox" title="Reddit — u/hereoutsidethebox"><i class="fa-brands fa-reddit-alien" aria-hidden="true"></i></a>
+        <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener" aria-label="Reddit u/hereoutsidethebox" title="Reddit - u/hereoutsidethebox"><i class="fa-brands fa-reddit-alien" aria-hidden="true"></i></a>
       </div>
 
       <p class="copyright">© <span id="year"></span> David Agootson. All rights reserved.</p>
@@ -1156,7 +1139,7 @@
     <div class="reply-card" role="dialog" aria-modal="true" aria-labelledby="replyTitle">
       <div class="reply-head">
         <div>
-          <h2 id="replyTitle">Reply to visitor</h2>
+          <h2 id="replyTitle">Reply</h2>
           <p id="replyRecipient"></p>
         </div>
         <button class="reply-close" id="replyClose" type="button" aria-label="Close reply composer">
@@ -1179,7 +1162,7 @@
           </div>
           <div class="reply-field">
             <label for="replyMessage">Your reply</label>
-            <textarea id="replyMessage" maxlength="5000" required placeholder="Write your response…"></textarea>
+            <textarea id="replyMessage" maxlength="5000" required placeholder="Write your reply..."></textarea>
           </div>
         </div>
         <p class="reply-status" id="replyStatus" aria-live="polite"></p>
@@ -1371,7 +1354,7 @@
     }
 
     async function loadBlogPosts() {
-      blogPostList.innerHTML = '<div class="loading">Loading blog posts…</div>';
+      blogPostList.innerHTML = '<div class="loading">Loading blog posts...</div>';
 
       const { data, error } = await supabaseClient
         .from("blog_posts")
@@ -1466,7 +1449,7 @@
       document.getElementById("blogStatus").value = "published";
       document.getElementById("blogDate").value =
         blogDateValue(new Date(Date.now() + 5 * 60 * 1000));
-      document.getElementById("blogSlugPreview").textContent = "New slug will be generated";
+      document.getElementById("blogSlugPreview").textContent = "Slug will be generated";
       document.getElementById("blogEditorStatus").textContent = "";
       blogEditor.hidden = false;
       document.getElementById("blogTitle").focus();
@@ -1564,7 +1547,7 @@
 
       const saveButton = document.getElementById("saveBlogPost");
       saveButton.disabled = true;
-      setStatus(document.getElementById("blogEditorStatus"), "Saving article to Supabase…");
+      setStatus(document.getElementById("blogEditorStatus"), "Saving article to Supabase...");
 
       let result;
       if (editId) {
@@ -1662,7 +1645,7 @@
 
       const button = document.getElementById("importBlogStarters");
       button.disabled = true;
-      showNotice("Importing six starter articles…");
+      showNotice("Importing six starter articles...");
 
       const { error } = await supabaseClient.from("blog_posts").insert(payload);
 
@@ -1679,7 +1662,7 @@
     }
 
     async function loadNewsletterSubscribers() {
-      newsletterList.innerHTML = '<div class="loading">Loading newsletter subscribers…</div>';
+      newsletterList.innerHTML = '<div class="loading">Loading newsletter subscribers...</div>';
 
       const { data, error } = await supabaseClient
         .from("newsletter_subscribers")
@@ -1968,7 +1951,7 @@
 
     async function showAdmin(user) {
       loginLoading.hidden = false;
-      loginLoading.textContent = "Loading your administration dashboard…";
+      loginLoading.textContent = "Loading your administration dashboard...";
       userEmail.textContent = user.email || "";
       currentBlogUser = user;
       await loadPhotos();
@@ -1976,11 +1959,11 @@
       loginScreen.style.display = "none";
       adminApp.style.display = "block";
       loginLoading.hidden = true;
-      loginLoading.textContent = "Checking your admin account…";
+      loginLoading.textContent = "Checking account...";
     }
 
     async function loadComments() {
-      commentList.innerHTML = '<div class="loading">Loading comments…</div>';
+      commentList.innerHTML = '<div class="loading">Loading...</div>';
       const { data, error } = await supabaseClient
         .from("comments")
         .select("id, photo_id, name, comment, status, created_at")
@@ -1998,7 +1981,7 @@
     }
 
     async function loadContacts() {
-      contactList.innerHTML = '<div class="loading">Loading contact messages…</div>';
+      contactList.innerHTML = '<div class="loading">Loading...</div>';
       const { data, error } = await supabaseClient
         .from("contact_messages")
         .select("id, name, email, subject, category, message, status, created_at, replied_at")
@@ -2100,10 +2083,10 @@
       updateStats();
 
       if (activeSection === "comments") {
-        search.placeholder = "Search name, comment or photo…";
+        search.placeholder = "Search...";
         renderComments();
       } else {
-        search.placeholder = "Search name, email, subject or message…";
+        search.placeholder = "Search name, email, subject or message...";
         renderContacts();
       }
     }
@@ -2388,8 +2371,8 @@
       }
 
       replySend.disabled = true;
-      replySend.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending…';
-      replyStatus.textContent = "Sending your reply…";
+      replySend.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+      replyStatus.textContent = "Sending your reply...";
       replyStatus.className = "reply-status";
 
       const { data, error } = await supabaseClient.functions.invoke("send-contact-reply", {
@@ -2491,9 +2474,9 @@
       event.preventDefault();
       loginError.textContent = "";
       loginLoading.hidden = false;
-      loginLoading.textContent = "Signing in and checking admin access…";
+      loginLoading.textContent = "Signing in and checking admin access...";
       loginBtn.disabled = true;
-      loginBtn.textContent = "Signing in…";
+      loginBtn.textContent = "Signing in...";
 
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
@@ -2606,7 +2589,7 @@
       if (id) return;
       const slug = blogSlugify(document.getElementById("blogTitle").value);
       document.getElementById("blogSlugPreview").textContent =
-        slug ? `Slug: ${slug}-…` : "New slug will be generated";
+        slug ? `Slug: ${slug}-...` : "Slug will be generated";
     });
 
     blogTabs.addEventListener("click", event => {
@@ -2643,7 +2626,6 @@
       }
     });
 
-    /* Public-site navigation behavior */
     const sidebar = document.getElementById("sidebar");
     const collapse = document.getElementById("collapse");
     const mobileMenu = document.getElementById("mobileMenu");
