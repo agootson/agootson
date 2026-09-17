@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#e31b23">
-  <meta name="description" content="David Agootson's daily-life photo gallery. Browse, view, download and discuss photos.">
+  <meta name="description" content="David Agootson's photo gallery.">
   <title>Gallery | David Agootson</title>
   <style>
 
@@ -35,9 +35,7 @@
     }
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
-
-    /* SIDEBAR */
-    .sidebar {
+.sidebar {
       position: fixed; inset: 0 auto 0 0; z-index: 1000;
       width: var(--sidebar); display: flex; flex-direction: column;
       padding: 30px 16px 22px; background: var(--white);
@@ -77,14 +75,10 @@
     body.collapsed .nav-label { display: none; }
     body.collapsed .nav a { justify-content: center; padding-inline: 0; }
     body.collapsed .collapse span { transform: rotate(180deg); }
-
-    /* MAIN */
-    .main { margin-left: var(--sidebar); transition: margin-left .25s ease; }
+.main { margin-left: var(--sidebar); transition: margin-left .25s ease; }
     body.collapsed .main { margin-left: var(--sidebar-small); }
     .container { width: min(1120px, calc(100% - 72px)); margin-inline: auto; }
-
-    /* PAGE */
-    .page {
+.page {
       min-height: calc(100vh - 180px);
       padding: 86px 0 70px;
     }
@@ -192,9 +186,7 @@
       background: white; border-radius: 0 10px 10px 0;
       color: #626770; font-size: .84rem; line-height: 1.8; font-style: italic;
     }
-
-    /* FOOTER */
-    footer {
+footer {
       width: min(1120px, calc(100% - 72px)); margin-inline: auto;
       padding: 42px 0 28px; display: grid; grid-template-columns: 1fr;
       justify-items: center; align-items: center; gap: 16px;
@@ -217,9 +209,7 @@
       transform: translateY(-3px); box-shadow: 0 8px 18px rgba(220,38,46,.12);
     }
     .copyright { text-align: center; padding-top: 10px; }
-
-    /* mobile */
-    .mobile-menu { display: none; }
+.mobile-menu { display: none; }
     .backdrop { display: none; }
     @media (max-width: 1050px) {
       :root { --sidebar: 225px; }
@@ -268,9 +258,7 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
     }
-
-    /* gallery */
-    .gallery-toolbar {
+.gallery-toolbar {
       display:grid; grid-template-columns:1fr auto; gap:16px; margin-top:30px;
       padding:14px; background:var(--white); border:1px solid var(--line); border-radius:10px;
     }
@@ -433,7 +421,7 @@
       <a href="index.html"><span class="icon"><i class="fa-solid fa-house" aria-hidden="true"></i></span><span class="nav-label">Home</span></a>
       <a href="blog.html"><span class="icon"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></span><span class="nav-label">Blog</span></a>
       <a href="skills.html"><span class="icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span><span class="nav-label">Skills</span></a>
-      <a class="active" href="gallery.html"><span class="icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span><span class="nav-label">Gallery</span></a>
+      <a href="gallery.html"><span class="icon"><i class="fa-regular fa-images" aria-hidden="true"></i></span><span class="nav-label">Gallery</span></a>
       <a href="project.html"><span class="icon"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></span><span class="nav-label">Projects</span></a>
       <a href="services.html"><span class="icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span><span class="nav-label">Services</span></a>
       <a href="about.html"><span class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></span><span class="nav-label">About Me</span></a>
@@ -447,12 +435,12 @@
   <main class="main">
     <section class="page container">
       <div class="eyebrow">MY PHOTO JOURNAL</div>
-      <h1>Little moments, <span>captured.</span></h1>
-      <p class="lead">Some moments from my everyday life, college, trips and other places.</p>
+      <h1>My <span>photos.</span></h1>
+      <p class="lead">Some photos from my everyday life, college, trips and other places.</p>
       <div class="gallery-toolbar">
         <div class="gallery-heading">
-          <strong>PHOTO JOURNAL</strong>
-          <span>Browse my pictures.</span>
+          <strong>MY PHOTOS</strong>
+          <span>My pictures.</span>
           <div class="gallery-stats" aria-live="polite">
             <span class="stat"><strong id="totalCount">0</strong> photos</span>
             <span class="stat"><strong id="visibleCount">0</strong> shown</span>
@@ -504,9 +492,9 @@
           </div>
           <div class="comment-box">
             <h3>Visitor notes</h3>
-            <p>Share your thoughts about this memory. Comments are reviewed before they appear.</p>
+            <p>You can leave a comment on a photo.</p>
             <input id="commentName" maxlength="80" placeholder="Your name" aria-label="Your name">
-            <textarea id="commentInput" maxlength="500" placeholder="Write a comment about this memory..." aria-label="Your comment"></textarea>
+            <textarea id="commentInput" maxlength="500" placeholder="Write a comment..." aria-label="Your comment"></textarea>
             <button id="commentSubmit" type="button">Submit Comment</button>
             <p class="comment-status" id="commentStatus" aria-live="polite"></p>
             <div class="comment-list" id="commentList"></div>
@@ -514,7 +502,6 @@
         </div>
       </div>
     </div>
-
 
     <footer>
       
@@ -527,7 +514,7 @@
         <a href="https://www.youtube.com/@agootson" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i></a>
         <a href="https://www.reddit.com/user/hereoutsidethebox/" target="_blank" rel="noopener"><i class="fa-brands fa-reddit-alien"></i></a>
       </div>
-      <p class="copyright">© <span id="year"></span> David Agootson. All rights reserved.</p>
+      <p class="copyright">© <span id="year"></span>. All rights reserved.</p>
     </footer>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -638,7 +625,7 @@
 
       const img = document.createElement("img");
       img.src = imagePath;
-      img.alt = (photo.title || "Photo") + " - David Agootson";
+      img.alt = photo.title || "Photo";
       img.loading = "lazy";
       img.decoding = "async";
 
@@ -679,12 +666,10 @@
         "College",
         "Travel",
         "Friends",
-        "Events",
+        "Family",
         "Places",
         "Nature",
-        "Projects",
-        "Sports",
-        "Other"
+        "Sports"
       ];
 
       const usedCategories = photos.map(p => p.category).filter(Boolean);
@@ -932,7 +917,7 @@
       }
 
       commentSubmit.disabled = true;
-      commentSubmit.textContent = "Submitting…";
+      commentSubmit.textContent = "Submitting...";
 
       const { error } = await supabaseClient.from("comments").insert({
         name,
