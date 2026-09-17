@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#e31b23">
-<meta name="description" id="metaDescription" content="Articles and posts by David Agootson about Computer Science, web development, programming, learning and technology.">
+<meta name="description" id="metaDescription" content="Some things I write about my studies, projects, technology and other things I find interesting.">
 <meta property="og:title" id="ogTitle" content="Blog | David Agootson">
-<meta property="og:description" id="ogDescription" content="Articles, lessons, projects and ideas from David Agootson.">
+<meta property="og:description" id="ogDescription" content="Things I write about my studies, projects and technology.">
 <meta property="og:type" content="article">
 <title id="pageTitle">Blog | David Agootson</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -209,19 +209,20 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 <section class="page container">
 
   <div class="blog-list" id="blogList">
-    <div class="eyebrow">DAVID AGOOTSON · ARTICLES</div>
-    <h1>Ideas, lessons & <span>things worth sharing.</span></h1>
-    <p class="lead">A publishing space for Computer Science, web development, programming, projects, technology and lessons from my journey as a student builder.</p>
+    <div class="eyebrow">DAVID AGOOTSON</div>
+    <h1>Welcome to my blogging section</h1>
+    <p class="lead">Here you'll find some articles that I have published about my studies, projects, programming, websites and other things I am learning. But by the time I am writing this,  I haven't published anything yet. There are some articles of which I tested some features here.
+    You can subscribe to my newsletter for future articles. </p>
 
     <div class="supabase-admin-bar" id="adminBar">
-      <span><i class="fa-solid fa-database"></i> Supabase-powered blog. Publishing and moderation require your authenticated admin account.</span>
-      <button class="btn secondary" id="openAdmin">Open Publisher</button>
+      <span><i class="fa-solid fa-database"></i> Blog admin</span>
+      <button class="btn secondary" id="openAdmin">Open Admin</button>
     </div>
 
     <div class="toolbar">
-      <input class="field search" id="search" type="search" placeholder="Search articles, topics or keywords..." aria-label="Search articles">
-      <select class="field" id="categoryFilter" aria-label="Filter by category"></select>
-      <select class="field" id="sortFilter" aria-label="Sort articles">
+      <input class="field search" id="search" type="search" placeholder="Search..." aria-label="Search">
+      <select class="field" id="categoryFilter" aria-label="Category"></select>
+      <select class="field" id="sortFilter" aria-label="Sort">
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="popular">Most liked</option>
@@ -232,8 +233,8 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     <section class="section">
       <div class="section-head">
         <div>
-          <h2 class="section-title">Latest articles</h2>
-          <p class="section-note" id="articleCount">Loading articles...</p>
+          <h2 class="section-title">Articles</h2>
+          <p class="section-note" id="articleCount">Loading...</p>
         </div>
       </div>
       <div class="grid" id="articleGrid"></div>
@@ -242,17 +243,17 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     <section class="newsletter">
       <div class="newsletter-content">
         <div>
-          <div class="eyebrow">STAY UPDATED</div>
-          <h2>Join my newsletter.</h2>
-          <p>Get occasional updates about new articles, projects, my learning journey and things I'm building.</p>
+          <div class="eyebrow">UPDATES</div>
+          <h2>Get updates from me.</h2>
+          <p>I will send an email when I have something new to share.</p>
         </div>
         <form class="newsletter-form" id="newsletterForm">
           <div class="newsletter-input">
-            <input id="subscriberEmail" type="email" maxlength="254" placeholder="Enter your email address" aria-label="Email address" required>
+            <input id="subscriberEmail" type="email" maxlength="254" placeholder="Your email" aria-label="Email address" required>
             <button class="btn" type="submit" id="newsletterButton">Subscribe</button>
           </div>
           <p id="newsletterStatus" class="newsletter-status"></p>
-          <p class="newsletter-note">No spam. Unsubscribe anytime. Newsletter subscribers are securely stored in Supabase.</p>
+          <p class="newsletter-note">You are free unsubscribe from my newsletter anytime.</p>
         </form>
       </div>
     </section>
@@ -260,7 +261,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 
   <article class="article-view" id="articleView">
     <div class="article-shell">
-      <a href="blog.html" class="back-link" id="backToBlog"><i class="fa-solid fa-arrow-left"></i> Back to all articles</a>
+      <a href="blog.html" class="back-link" id="backToBlog"><i class="fa-solid fa-arrow-left"></i> Back to articles</a>
       <div class="article-hero" id="articleHero"></div>
       <div class="article-meta" id="articleMeta"></div>
       <h2 id="articleTitle"></h2>
@@ -277,12 +278,12 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
         <h3>Comments <span id="commentCount" style="color:#8b9098;font-size:.72rem"></span></h3>
         <div class="comment-form">
           <div class="form-grid">
-            <input id="commentName" maxlength="80" placeholder="Your name" aria-label="Your name">
-            <input id="commentEmail" type="email" maxlength="254" placeholder="Email (not displayed)" aria-label="Your email">
+            <input id="commentName" maxlength="80" placeholder="Name" aria-label="Name">
+            <input id="commentEmail" type="email" maxlength="254" placeholder="Email" aria-label="Your email">
           </div>
-          <textarea id="commentText" maxlength="1000" placeholder="Join the conversation..."></textarea>
+          <textarea id="commentText" maxlength="1000" placeholder="Write a comment..."></textarea>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px">
-            <span style="font-size:.61rem;color:#969ba3">Be respectful. Comments are held for moderation before they appear publicly.</span>
+            <span style="font-size:.61rem;color:#969ba3">I'll review your comment before they are posted.</span>
             <button class="btn" id="commentSubmit">Post comment</button>
           </div>
           <p id="commentStatus" class="form-status"></p>
@@ -309,19 +310,18 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 </footer>
 </main>
 
-<!-- Secure Supabase publisher. Access is protected by Supabase Auth + admin RLS. -->
 <div class="admin-panel" id="adminPanel" aria-hidden="true">
   <div class="admin-box">
     <div class="admin-head">
       <div>
-        <div class="eyebrow">SUPABASE PUBLISHER</div>
-        <h2>Blog content manager</h2>
+        <div class="eyebrow">BLOG </div>
+        <h2>Blog</h2>
       </div>
       <button class="close" id="closeAdmin" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
     </div>
 
     <div class="admin-auth" id="adminAuth">
-      <small>Sign in with an existing Supabase Auth account. Only users listed in <code>admin_users</code> can manage articles.</small>
+      <small>Sign in with your  account.</small>
       <div class="admin-auth-grid">
         <input id="adminEmail" type="email" autocomplete="username" placeholder="Admin email">
         <input id="adminPassword" type="password" autocomplete="current-password" placeholder="Password">
@@ -346,8 +346,8 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
           <div class="editor"><label>Category</label><input id="editCategory" required maxlength="50" placeholder="Technology"></div>
           <div class="editor"><label>Tags (comma separated)</label><input id="editTags" maxlength="180" placeholder="JavaScript, Learning"></div>
           <div class="editor"><label>Excerpt</label><textarea id="editExcerpt" style="min-height:90px" required maxlength="300"></textarea></div>
-          <div class="editor"><label>Cover image URL (optional)</label><input id="editCover" placeholder="images/cover.jpg"></div>
-          <div class="editor full"><label>Article content (HTML supported)</label><textarea id="editContent" required placeholder="<p>Write your article...</p>"></textarea></div>
+          <div class="editor"><label>Cover image (optional)</label><input id="editCover" placeholder="images/cover.jpg"></div>
+          <div class="editor full"><label>Article content</label><textarea id="editContent" required placeholder="<p>Write your article...</p>"></textarea></div>
           <div class="editor"><label>Status</label>
             <select id="editStatus">
               <option value="published">Published</option>
@@ -356,12 +356,12 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
               <option value="archived">Archived</option>
             </select>
           </div>
-          <div class="editor"><label>Publication / schedule date</label><input id="editDate" type="datetime-local"><small style="color:#747981;font-size:.62rem">Published articles use the current time if this is empty or set in the future.</small></div>
+          <div class="editor"><label>Date</label><input id="editDate" type="datetime-local"><small style="color:#747981;font-size:.62rem">Leave empty to use the current time.</small></div>
         </div>
         <div class="admin-actions">
-          <button class="btn" type="submit" id="saveArticle">Save article</button>
-          <button class="btn secondary" type="button" id="newArticle">Clear / New article</button>
-          <button class="btn secondary" type="button" id="seedArticles">Import starter articles</button>
+          <button class="btn" type="submit" id="saveArticle">Post article</button>
+          <button class="btn secondary" type="button" id="newArticle">Clear</button>
+          <button class="btn secondary" type="button" id="seedArticles">Import articles</button>
         </div>
         <p id="editorStatus" class="form-status"></p>
       </form>
@@ -388,80 +388,82 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 
   const seedPosts = [
     {
-      title:"Learning Web Development by Building Real Things",
-      slug:"web-development-real-things",
+      title:"Why I Started Building Websites",
+      slug:"why-i-started-building-websites",
       category:"Web Development",
-      tags:["Web Development","Learning"],
-      excerpt:"A practical look at how building websites turns HTML, CSS, JavaScript and responsive design concepts into real experience.",
+      tags:["Web Development","Personal"],
+      excerpt:"I started working with websites years ago, and I still enjoy making them and trying new things.",
       cover_image:"",
       status:"published",
       published_at:"2026-09-10T09:00:00",
-      content:`<p>Building real websites has taught me that web development becomes much easier to understand when theory is connected to something people can actually use.</p>
-      <h3>Start with a small, complete project</h3><p>A small website forces you to think about structure, styling, interaction, responsiveness and deployment at the same time.</p>
-      <h3>Learn by improving</h3><p>Instead of trying to master everything first, build, test, identify a weakness and improve it. Each iteration becomes another lesson.</p>
-      <blockquote>Real projects turn individual concepts into practical experience.</blockquote>`
+      content:`<p>I started getting interested in websites when I was younger. I used simple tools and spent a lot of time trying things just to see what would happen.</p>
+      <p>Since then I have moved from simple pages to HTML, CSS, JavaScript and full websites. I am still learning and I still make mistakes while building things.</p>
+      <p>This website is also part of that process. I use it to put some of my work and things I want to share in one place.</p>`
     },
     {
-      title:"What Python Teaches Beyond Syntax",
-      slug:"python-beyond-syntax",
+      title:"What I Have Learned From Using Python",
+      slug:"what-i-have-learned-from-python",
       category:"Programming",
       tags:["Python","Programming"],
-      excerpt:"Lessons from Python practice, exception handling, database operations and solving problems with code.",
+      excerpt:"Some things I have learned while using Python for college work and my own practice.",
       cover_image:"",
       status:"published",
       published_at:"2026-09-07T09:00:00",
-      content:`<p>Programming is not only about remembering syntax. Python makes it easier to focus on logic, data and the decisions a program needs to make.</p>
-      <h3>Errors are part of the process</h3><p>Exception handling teaches us to expect failure and design programs that respond to it clearly.</p>
-      <h3>Code should solve a problem</h3><p>Whether the task involves a database, data analysis or automation, the important skill is translating a problem into a sequence of reliable steps.</p>`
+      content:`<p>Python is one of the languages I use for my college work and practice. What I like about it is that I can write something quickly and test it.</p>
+      <p>I have used it for basic programs, data analysis and other small tasks. Sometimes the code works immediately and sometimes I spend more time finding what I did wrong.</p>
+      <p>For me, the main thing is to keep writing code instead of only reading about it.</p>`
     },
     {
-      title:"Understanding Data Through Analysis",
-      slug:"understanding-data-analysis",
+      title:"What I Am Learning About Data",
+      slug:"what-i-am-learning-about-data",
       category:"Data",
       tags:["Data","Analysis"],
-      excerpt:"A beginner-friendly exploration of measurement scales and univariate, bivariate and multivariate analysis.",
+      excerpt:"A few things I have been learning about data analysis in my Computer Science studies.",
       cover_image:"",
       status:"published",
       published_at:"2026-09-03T09:00:00",
-      content:`<p>Data analysis becomes clearer when we understand what kind of data we have and what question we are trying to answer.</p>
-      <h3>Choose the right perspective</h3><p>Univariate analysis focuses on one variable, bivariate analysis studies relationships between two variables, and multivariate analysis considers several variables together.</p>
-      <p>Good analysis begins before the calculation: define the question, understand the data and select an appropriate method.</p>`
+      content:`<p>Data analysis is one of the areas I am studying. At first some of the terms looked complicated, but they become easier when I work through examples.</p>
+      <p>I have been learning about different types of data, measurement scales and ways of analysing one or more variables.</p>
+      <p>I am still learning this, so I will probably add more here as I get better at it.</p>`
     },
     {
-      title:"From Hardware to Software: What Microprocessors Teach Me",
-      slug:"microprocessors-hardware",
+      title:"What I Am Learning About Microprocessors",
+      slug:"what-i-am-learning-about-microprocessors",
       category:"Computer Science",
       tags:["Microprocessors","CSE"],
-      excerpt:"Reflections from studying microprocessors and understanding the hardware foundations behind computing.",
+      excerpt:"Some notes and thoughts from studying microprocessors in my Computer Science course.",
       cover_image:"",
       status:"published",
       published_at:"2026-08-29T09:00:00",
-      content:`<p>Microprocessors provide a useful reminder that software does not exist in isolation. Instructions eventually have to be represented and executed by hardware.</p>
-      <h3>Understanding the machine</h3><p>Registers, the ALU, control logic, buses and memory interactions help connect high-level programming ideas to the physical operation of a computer.</p>`
+      content:`<p>Microprocessors are part of my Computer Science studies, and they have helped me understand more about what happens inside a computer.</p>
+      <p>I have been studying things such as registers, the ALU, memory and instructions. These topics make more sense when I connect them to what I already know about programming.</p>
+      <p>I am still working through the subject and will add more when I have something useful to write.</p>`
     },
     {
-      title:"Making Sense of Compiler Design",
-      slug:"compiler-design",
+      title:"What I Think About Compiler Design",
+      slug:"what-i-think-about-compiler-design",
       category:"Theory",
-      tags:["Compiler Design","Theory"],
-      excerpt:"How grammars, productions and language-processing concepts connect the rules we write to programs computers can process.",
+      tags:["Compiler Design","CSE"],
+      excerpt:"Some of the things I have understood so far while studying compiler design.",
       cover_image:"",
       status:"published",
       published_at:"2026-08-25T09:00:00",
-      content:`<p>Compiler design is where formal language theory meets practical programming. Grammars describe valid structures while compiler phases transform source code into forms a machine can execute.</p>
-      <h3>From rules to programs</h3><p>Understanding productions, parsing and syntax helps explain why programming languages behave consistently and how source code is processed.</p>`
+      content:`<p>Compiler Design is another subject I am studying. It deals with how source code is checked and processed.</p>
+      <p>I have been learning about grammars, productions, parsing and the different stages involved in processing a program.</p>
+      <p>It takes some time to understand, but seeing how the different parts connect makes the subject more interesting.</p>`
     },
     {
-      title:"My Journey as a Student Builder",
-      slug:"student-builder",
+      title:"A Little About My Website",
+      slug:"a-little-about-my-website",
       category:"Personal",
-      tags:["Journey","Personal"],
-      excerpt:"From early web pages to studying Computer Science at GTU, a continuing story of learning, experimentation and growth.",
+      tags:["Website","Personal"],
+      excerpt:"Why I built this website and what I plan to use it for.",
       cover_image:"",
       status:"published",
       published_at:"2026-08-20T09:00:00",
-      content:`<p>Building things while studying Computer Science has become one of the most useful ways for me to connect academic concepts with practical work.</p>
-      <h3>Keep experimenting</h3><p>Every project reveals something new: a technical problem, a design decision, a deployment lesson or a better way to communicate an idea.</p>`
+      content:`<p>I built this website because I wanted to have one place where people can find some information about me and what I am doing.</p>
+      <p>I am not someone who likes sharing everything online. I would rather keep most of my personal life private, so I will not be posting every day.</p>
+      <p>The Gallery will probably be updated more often. I will also add projects, skills and articles when I have something to put there.</p>`
     }
   ];
 
@@ -508,7 +510,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     const { data, error } = await query;
     if (error) {
       console.error(error);
-      $("articleGrid").innerHTML = `<div class="empty"><i class="fa-solid fa-triangle-exclamation"></i><p>Unable to load articles right now.</p></div>`;
+      $("articleGrid").innerHTML = `<div class="empty"><i class="fa-solid fa-triangle-exclamation"></i><p>Could not load articles right now.</p></div>`;
       $("articleCount").textContent = "Unable to load articles";
       return [];
     }
@@ -572,7 +574,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
         <div class="article-cover">${cover}</div>
         <div class="article-meta">
           <span class="category">${esc(p.category).toUpperCase()}</span>
-          <span>·</span>
+          <span> | </span>
           <span>${new Date(p.published_at).toLocaleDateString()}</span>
         </div>
         <h3>${esc(p.title)}</h3>
@@ -580,7 +582,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
         <div class="tags">${(p.tags || []).map((t,i)=>
           `<span class="tag ${i===0 ? "red" : ""}">${esc(t)}</span>`).join("")}</div>
         <div class="card-actions">
-          <a class="read-link" href="?post=${encodeURIComponent(p.slug)}">Read article <i class="fa-solid fa-arrow-right"></i></a>
+          <a class="read-link" href="?post=${encodeURIComponent(p.slug)}">Read <i class="fa-solid fa-arrow-right"></i></a>
           <div class="engagement">
             <button class="icon-btn ${s.liked ? "liked" : ""}" data-like="${esc(p.id)}" title="Like">
               <i class="${s.liked ? "fa-solid" : "fa-regular"} fa-heart"></i> ${s.like_count || 0}
@@ -591,7 +593,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
           </div>
         </div>
       </article>`;
-    }).join("") : `<div class="empty"><i class="fa-regular fa-face-frown"></i><p>No published articles match your search.</p></div>`;
+    }).join("") : `<div class="empty"><i class="fa-regular fa-face-frown"></i><p>No articles found.</p></div>`;
   }
 
   async function openPost(slug, updateHistory=true) {
@@ -625,7 +627,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     $("articleMeta").innerHTML =
       `<span class="tag red">${esc(post.category)}</span>` +
       `<span>${new Date(post.published_at).toLocaleDateString()}</span>` +
-      `<span>·</span><span>${Number(s.view_count || 0)} view${Number(s.view_count || 0) === 1 ? "" : "s"}</span>`;
+      `<span> | </span><span>${Number(s.view_count || 0)} view${Number(s.view_count || 0) === 1 ? "" : "s"}</span>`;
     $("articleTitle").textContent = post.title;
     $("articleExcerpt").textContent = post.excerpt;
     $("articleContent").innerHTML = post.content;
@@ -653,9 +655,9 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     $("blogList").classList.remove("hidden");
     document.title = "Blog | David Agootson";
     $("metaDescription").setAttribute("content",
-      "Articles and posts by David Agootson about Computer Science, web development, programming, learning and technology.");
+      "Some things I write about my studies, projects, technology and other things I find interesting.");
     $("ogTitle").setAttribute("content","Blog | David Agootson");
-    $("ogDescription").setAttribute("content","Articles, lessons, projects and ideas from David Agootson.");
+    $("ogDescription").setAttribute("content","Things I write about my studies, projects and technology.");
     if (updateHistory) history.pushState({},"","blog.html");
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -669,14 +671,14 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
       .order("created_at",{ascending:false});
 
     if (error) {
-      $("commentList").innerHTML = `<div class="empty"><p>Comments are temporarily unavailable.</p></div>`;
+      $("commentList").innerHTML = `<div class="empty"><p>Comments are not available right now.</p></div>`;
       return;
     }
 
     const comments = data || [];
     $("commentCount").textContent = comments.length ? `(${comments.length})` : "";
     $("articleStats").textContent =
-      `${Number(stats[currentPost.id]?.like_count || 0)} likes · ${comments.length} comments`;
+      `${Number(stats[currentPost.id]?.like_count || 0)} likes  |  ${comments.length} comments`;
 
     $("commentList").innerHTML = comments.length ? comments.map(c => `
       <div class="comment">
@@ -694,7 +696,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
           </button>
         </div>
       </div>`).join("")
-      : `<div class="empty"><p>No approved comments yet. Start the conversation.</p></div>`;
+      : `<div class="empty"><p>No comments yet.</p></div>`;
   }
 
   async function sharePost(post) {
@@ -706,7 +708,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     } else {
       try {
         await navigator.clipboard.writeText(url);
-        alert("Article link copied.");
+        alert("Link copied.");
       } catch (e) {
         alert(url);
       }
@@ -739,7 +741,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
         `<i class="${row.liked ? "fa-solid" : "fa-regular"} fa-heart"></i> ${row.liked ? "Liked" : "Like"} (${Number(row.like_count || 0)})`;
       const commentsText = $("commentCount").textContent.replace(/[()]/g,"") || "0";
       $("articleStats").textContent =
-        `${Number(row.like_count || 0)} likes · ${commentsText} comments`;
+        `${Number(row.like_count || 0)} likes  |  ${commentsText} comments`;
     }
   }
 
@@ -754,7 +756,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     $("editorForm").reset();
     $("editId").value = "";
     $("editStatus").value = "published";
-    // Publishing means publish immediately by default.
+
     $("editDate").value = new Date().toISOString().slice(0,16);
     $("editorStatus").textContent = "";
   }
@@ -773,7 +775,6 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     const parsedEditorDate = new Date(editorDate);
     const now = new Date();
 
-    // If an article is marked Published but has a future date, prepare it to publish now.
     $("editDate").value = (
       post.status === "published" && parsedEditorDate > now
         ? now
@@ -787,15 +788,15 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
       <div class="admin-post">
         <div>
           <strong>${esc(p.title)}</strong>
-          <small>${esc(p.category)} · ${esc(p.status)} · ${new Date(p.published_at || p.scheduled_at || p.created_at).toLocaleString()}</small>
+          <small>${esc(p.category)}  |  ${esc(p.status)}  |  ${new Date(p.published_at || p.scheduled_at || p.created_at).toLocaleString()}</small>
         </div>
         <div class="admin-post-actions">
           <button data-edit="${esc(p.id)}">Edit</button>
-          <button data-preview="${esc(p.slug)}">Preview</button>
+          <button data-preview="${esc(p.slug)}">View</button>
           <button data-delete="${esc(p.id)}">Delete</button>
         </div>
       </div>`).join("")
-      : `<div class="empty"><p>No articles yet. Use “Import starter articles” to add the six existing starter articles.</p></div>`;
+      : `<div class="empty"><p>No articles yet.</p></div>`;
   }
 
   async function openAdmin() {
@@ -820,14 +821,14 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
       $("adminAuth").hidden = false;
       $("adminWorkspace").hidden = true;
       setStatus($("authStatus"),
-        "This account is authenticated but is not listed in admin_users.",
+        "This account is not an admin.",
         "error");
       return;
     }
 
     $("adminAuth").hidden = true;
     $("adminWorkspace").hidden = false;
-    $("adminUserEmail").textContent = user.email || "Authenticated admin";
+    $("adminUserEmail").textContent = user.email || "Admin";
     setStatus($("authStatus"),"");
     resetEditor();
     await renderAdminPosts();
@@ -872,7 +873,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     const editId = $("editId").value;
 
     if (!title || !category || !excerpt || !content) {
-      setStatus($("editorStatus"),"Please complete the required fields.","error");
+      setStatus($("editorStatus"),"Please fill in the required fields.","error");
       return;
     }
 
@@ -882,8 +883,6 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
       slug = `${slugBase}-${Date.now().toString(36)}`;
     }
 
-    // A "Published" article must never be saved with a future published_at.
-    // If the selected time is empty or in the future, publish immediately.
     let publishDate = null;
     let scheduleDate = null;
 
@@ -896,7 +895,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     if (status === "scheduled") {
       const selected = dateValue ? new Date(dateValue) : null;
       if (!selected || Number.isNaN(selected.getTime()) || selected <= new Date()) {
-        setStatus($("editorStatus"), "Choose a future date/time for a scheduled article.", "error");
+        setStatus($("editorStatus"), "Choose a future date and time.", "error");
         return;
       }
       scheduleDate = selected;
@@ -925,7 +924,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     }
 
     $("saveArticle").disabled = true;
-    setStatus($("editorStatus"),"Saving to Supabase...");
+    setStatus($("editorStatus"),"Saving...");
 
     let result;
     if (editId) {
@@ -943,10 +942,10 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     }
 
     setStatus($("editorStatus"),
-      status === "published" ? "✓ Article published to Supabase." :
-      status === "scheduled" ? "✓ Article scheduled." :
-      status === "archived" ? "✓ Article archived." :
-      "✓ Draft saved to Supabase.",
+      status === "published" ? "Article published." :
+      status === "scheduled" ? "Article scheduled." :
+      status === "archived" ? "Article archived." :
+      "Draft saved.",
       "success"
     );
 
@@ -957,7 +956,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 
   async function seedArticles() {
     if (!(await isAdmin())) {
-      setStatus($("editorStatus"),"Admin authentication required.","error");
+      setStatus($("editorStatus"),"Admin sign-in required.","error");
       return;
     }
 
@@ -970,7 +969,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     }
 
     if (Number(count || 0) > 0) {
-      setStatus($("editorStatus"),"Starter import skipped because blog_posts already contains articles.","error");
+      setStatus($("editorStatus"),"Import skipped because there are already articles.","error");
       return;
     }
 
@@ -991,7 +990,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     }));
 
     $("seedArticles").disabled = true;
-    setStatus($("editorStatus"),"Importing six starter articles...");
+    setStatus($("editorStatus"),"Importing articles...");
 
     const { error } = await sb.from("blog_posts").insert(payload);
 
@@ -1003,7 +1002,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
       return;
     }
 
-    setStatus($("editorStatus"),"✓ Six starter articles imported into Supabase.","success");
+    setStatus($("editorStatus"),"Articles imported.","success");
     await loadPublic();
     await renderAdminPosts();
   }
@@ -1073,7 +1072,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     }
 
     $("commentSubmit").disabled = true;
-    setStatus($("commentStatus"),"Submitting comment...");
+    setStatus($("commentStatus"),"Posting...");
 
     const { error } = await sb.from("blog_comments").insert({
       post_id:currentPost.id,
@@ -1088,13 +1087,13 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 
     if (error) {
       console.error(error);
-      setStatus($("commentStatus"),error.message || "Unable to submit comment.","error");
+      setStatus($("commentStatus"),error.message || "Could not post the comment.","error");
       return;
     }
 
     $("commentText").value = "";
     setStatus($("commentStatus"),
-      "✓ Comment submitted. It will appear after moderation.",
+      "Comment submitted. It will appear after it is checked.",
       "success"
     );
   });
@@ -1105,7 +1104,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     const email = $("subscriberEmail").value.trim().toLowerCase();
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setStatus($("newsletterStatus"),"Please enter a valid email address.","error");
+      setStatus($("newsletterStatus"),"Please enter a valid email.","error");
       return;
     }
 
@@ -1121,11 +1120,11 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
 
     if (error) {
       console.error(error);
-      setStatus($("newsletterStatus"), error.message || "Unable to subscribe right now. Please try again.", "error");
+      setStatus($("newsletterStatus"), error.message || "Could not subscribe. Please try again.", "error");
       return;
     }
 
-    setStatus($("newsletterStatus"),"✓ Successfully subscribed. You’re on the list!","success");
+    setStatus($("newsletterStatus"),"Subscribed.","success");
     $("newsletterForm").reset();
   });
 
@@ -1161,15 +1160,15 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     }
 
     if (del) {
-      if (!confirm("Delete this article from Supabase? This cannot be undone.")) return;
+      if (!confirm("Delete this article? This cannot be undone.")) return;
 
       const { error } = await sb.from("blog_posts").delete().eq("id",del.dataset.delete);
       if (error) {
-        setStatus($("editorStatus"),error.message || "Unable to delete article.","error");
+        setStatus($("editorStatus"),error.message || "Could not delete the article.","error");
         return;
       }
 
-      setStatus($("editorStatus"),"✓ Article deleted.","success");
+      setStatus($("editorStatus"),"Article deleted.","success");
       await loadPublic();
       await renderAdminPosts();
       resetEditor();
@@ -1185,7 +1184,6 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
   $("categoryFilter").addEventListener("change",renderList);
   $("sortFilter").addEventListener("change",renderList);
 
-  // Sidebar
   $("collapse").addEventListener("click",() => document.body.classList.toggle("collapsed"));
 
   function mobileSidebar(open) {
@@ -1227,8 +1225,7 @@ footer strong{color:var(--red);font-size:.9rem} footer p{margin-top:4px;color:#8
     await route();
 
     if (isAdminEntry()) {
-      // The panel remains closed until the administrator explicitly opens it.
-      // Authentication is checked when the publisher is opened.
+
     }
   })();
 })();
