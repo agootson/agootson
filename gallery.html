@@ -36,7 +36,7 @@
     a { color: inherit; text-decoration: none; }
     button { font: inherit; }
 
-    /* ================= SIDEBAR ================= */
+    /* SIDEBAR */
     .sidebar {
       position: fixed; inset: 0 auto 0 0; z-index: 1000;
       width: var(--sidebar); display: flex; flex-direction: column;
@@ -78,12 +78,12 @@
     body.collapsed .nav a { justify-content: center; padding-inline: 0; }
     body.collapsed .collapse span { transform: rotate(180deg); }
 
-    /* ================= MAIN ================= */
+    /* MAIN */
     .main { margin-left: var(--sidebar); transition: margin-left .25s ease; }
     body.collapsed .main { margin-left: var(--sidebar-small); }
     .container { width: min(1120px, calc(100% - 72px)); margin-inline: auto; }
 
-    /* ================= PAGE ================= */
+    /* PAGE */
     .page {
       min-height: calc(100vh - 180px);
       padding: 86px 0 70px;
@@ -193,7 +193,7 @@
       color: #626770; font-size: .84rem; line-height: 1.8; font-style: italic;
     }
 
-    /* ================= FOOTER ================= */
+    /* FOOTER */
     footer {
       width: min(1120px, calc(100% - 72px)); margin-inline: auto;
       padding: 42px 0 28px; display: grid; grid-template-columns: 1fr;
@@ -218,7 +218,7 @@
     }
     .copyright { text-align: center; padding-top: 10px; }
 
-    /* ================= MOBILE ================= */
+    /* mobile */
     .mobile-menu { display: none; }
     .backdrop { display: none; }
     @media (max-width: 1050px) {
@@ -269,7 +269,7 @@
       *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
     }
 
-    /* ================= PHOTO JOURNAL UPGRADE ================= */
+    /* gallery */
     .gallery-toolbar {
       display:grid; grid-template-columns:1fr auto; gap:16px; margin-top:30px;
       padding:14px; background:var(--white); border:1px solid var(--line); border-radius:10px;
@@ -448,11 +448,11 @@
     <section class="page container">
       <div class="eyebrow">MY PHOTO JOURNAL</div>
       <h1>Little moments, <span>captured.</span></h1>
-      <p class="lead">This is my everyday visual diary , college moments, trips, places, people, food, projects and ordinary days worth remembering. New pictures can be added day by day, with a short description for every memory.</p>
+      <p class="lead">Some moments from my everyday life, college, trips and other places.</p>
       <div class="gallery-toolbar">
         <div class="gallery-heading">
           <strong>PHOTO JOURNAL</strong>
-          <span>Search, filter, sort, favorite, share and explore your memories.</span>
+          <span>Browse my pictures.</span>
           <div class="gallery-stats" aria-live="polite">
             <span class="stat"><strong id="totalCount">0</strong> photos</span>
             <span class="stat"><strong id="visibleCount">0</strong> shown</span>
@@ -461,11 +461,11 @@
           </div>
         </div>
         <div class="gallery-controls">
-          <input class="gallery-search" id="gallerySearch" type="search" placeholder="Search memories..." aria-label="Search photos">
+          <input class="gallery-search" id="gallerySearch" type="search" placeholder="Search..." aria-label="Search gallery">
           <select class="select-control" id="sortSelect" aria-label="Sort photos">
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
-            <option value="title">Title A–Z</option>
+            <option value="title">Title A-Z</option>
             <option value="category">Category</option>
           </select>
           <button class="tool-btn active" id="gridViewBtn" type="button"><i class="fa-solid fa-grip"></i> Grid</button>
@@ -480,13 +480,13 @@
       <div class="timeline" id="timelineView" aria-live="polite"></div>
 
     </section>
-    <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="Photo viewer">
+    <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="Photo">
       <button class="lightbox-close" id="lightboxClose" aria-label="Close photo viewer">×</button>
       <div class="lightbox-panel">
         <div class="lightbox-image">
           <img id="lightboxImg" src="" alt="">
-          <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous photo">‹</button>
-          <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next photo">›</button>
+          <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous">‹</button>
+          <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next">›</button>
           <div class="lightbox-counter" id="lightboxCounter">1 / 1</div>
         </div>
         <div class="lightbox-side">
@@ -504,7 +504,7 @@
           </div>
           <div class="comment-box">
             <h3>Visitor notes</h3>
-            <p>Share your thoughts about this memory. Comments are reviewed before they appear publicly.</p>
+            <p>Share your thoughts about this memory. Comments are reviewed before they appear.</p>
             <input id="commentName" maxlength="80" placeholder="Your name" aria-label="Your name">
             <textarea id="commentInput" maxlength="500" placeholder="Write a comment about this memory..." aria-label="Your comment"></textarea>
             <button id="commentSubmit" type="button">Submit Comment</button>
@@ -614,7 +614,7 @@
     }
 
     function formatDate(value) {
-      if (!value) return "Date not added";
+      if (!value) return "No date";
       const d = new Date(value + (String(value).length === 10 ? "T00:00:00" : ""));
       if (Number.isNaN(d.getTime())) return value;
       return new Intl.DateTimeFormat("en", { year:"numeric", month:"long", day:"numeric" }).format(d);
@@ -638,7 +638,7 @@
 
       const img = document.createElement("img");
       img.src = imagePath;
-      img.alt = (photo.title || "Photo") + " — David Agootson";
+      img.alt = (photo.title || "Photo") + " - David Agootson";
       img.loading = "lazy";
       img.decoding = "async";
 
@@ -653,9 +653,9 @@
       const info = document.createElement("div");
       info.className = "memory-info";
       const title = document.createElement("strong");
-      title.textContent = photo.title || "Untitled memory";
+      title.textContent = photo.title || "Untitled";
       const meta = document.createElement("small");
-      meta.textContent = [photo.category || "Daily life", photo.date ? formatDate(photo.date) : ""].filter(Boolean).join(" · ");
+      meta.textContent = [photo.category || "Daily Life", photo.date ? formatDate(photo.date) : ""].filter(Boolean).join(" | ");
 
       const actions = document.createElement("div");
       actions.className = "memory-actions";
@@ -674,11 +674,8 @@
     }
 
     function buildFilters() {
-      // Available category options for the photo journal.
-      // Categories already used in photos.json are kept, while these
-      // additional options are available for future memories.
       const availableCategories = [
-        "Daily life",
+        "Daily Life",
         "College",
         "Travel",
         "Friends",
@@ -707,7 +704,7 @@
     function getFilteredPhotos() {
       const query = searchInput.value.trim().toLowerCase();
       let result = photos.filter(photo => {
-        const categoryMatch = activeCategory === "All" || (photo.category || "Daily life") === activeCategory;
+        const categoryMatch = activeCategory === "All" || (photo.category || "Daily Life") === activeCategory;
         const favoriteMatch = !favoritesOnly || isFavorite(photo);
         const searchText = [photo.title, photo.description, photo.category, photo.date].filter(Boolean).join(" ").toLowerCase();
         return categoryMatch && favoriteMatch && (!query || searchText.includes(query));
@@ -734,7 +731,7 @@
       if (!filteredPhotos.length) {
         const empty = document.createElement("div");
         empty.className = "empty-state";
-        empty.textContent = favoritesOnly ? "You have not saved any favorites yet." : "No memories match your search or filter.";
+        empty.textContent = favoritesOnly ? "No favorites yet." : "Nothing found.";
         memoryGrid.appendChild(empty);
         renderTimeline();
         return;
@@ -751,7 +748,7 @@
       if (!filteredPhotos.length) {
         const empty = document.createElement("div");
         empty.className = "empty-state";
-        empty.textContent = "No memories to show in the timeline.";
+        empty.textContent = "Nothing to show.";
         timelineView.appendChild(empty);
         return;
       }
@@ -774,10 +771,10 @@
           const row = document.createElement("div");
           row.className = "timeline-item";
           const time = document.createElement("time");
-          time.textContent = photo.date ? formatDate(photo.date) : "Date not added";
+          time.textContent = photo.date ? formatDate(photo.date) : "No date";
           const body = document.createElement("div");
           const strong = document.createElement("strong");
-          strong.textContent = photo.title || "Untitled memory";
+          strong.textContent = photo.title || "Untitled";
           const p = document.createElement("p");
           p.textContent = photo.description || "";
           body.append(strong, p);
@@ -820,7 +817,7 @@
         .order("created_at", { ascending: false });
 
       if (error) {
-        console.error("[Comments] Load failed:", error);
+        console.error("Comments:", error);
         const note = document.createElement("p");
         note.className = "comment-note";
         note.textContent = "Comments are temporarily unavailable.";
@@ -831,7 +828,7 @@
       if (!data.length) {
         const note = document.createElement("p");
         note.className = "comment-note";
-        note.textContent = "No approved comments yet. Be the first to share a thought.";
+        note.textContent = "No comments yet.";
         commentList.appendChild(note);
         return;
       }
@@ -844,7 +841,7 @@
         author.className = "comment-author";
         author.textContent = comment.name || "Visitor";
         const date = document.createElement("span");
-        date.textContent = " · " + new Date(comment.created_at).toLocaleString();
+        date.textContent = " | " + new Date(comment.created_at).toLocaleString();
         small.append(author, date);
         const p = document.createElement("p");
         p.textContent = comment.comment;
@@ -860,10 +857,10 @@
       const imagePath = resolveImagePath(photo.image);
       lightboxImg.src = imagePath;
       lightboxImg.alt = photo.title || "Photo";
-      lightboxTitle.textContent = photo.title || "Untitled memory";
+      lightboxTitle.textContent = photo.title || "Untitled";
       lightboxDescription.textContent = photo.description || "";
-      lightboxCategory.textContent = photo.category || "Daily life";
-      lightboxDate.textContent = photo.date ? formatDate(photo.date) : "Date not added";
+      lightboxCategory.textContent = photo.category || "Daily Life";
+      lightboxDate.textContent = photo.date ? formatDate(photo.date) : "No date";
       lightboxDownload.href = imagePath;
       lightboxCounter.textContent = `${currentIndex + 1} / ${filteredPhotos.length}`;
       updateLightboxFavorite(photo);
@@ -893,19 +890,19 @@
     async function sharePhoto(photo) {
       const imageUrl = new URL(resolveImagePath(photo.image), window.location.origin).href;
       const data = {
-        title: photo.title || "David Agootson Photo Journal",
-        text: photo.description || photo.title || "A memory from David Agootson's photo journal.",
+        title: photo.title || "David Agootson Gallery",
+        text: photo.description || photo.title || "A photo from my gallery.",
         url: imageUrl
       };
       try {
         if (navigator.share) { await navigator.share(data); return; }
         await navigator.clipboard.writeText(imageUrl);
-        alert("Photo link copied to your clipboard.");
+        alert("Link copied.");
       } catch (error) {
         if (error.name !== "AbortError") {
           try {
             await navigator.clipboard.writeText(imageUrl);
-            alert("Photo link copied to your clipboard.");
+            alert("Link copied.");
           } catch { alert(imageUrl); }
         }
       }
@@ -948,8 +945,8 @@
       commentSubmit.textContent = "Submit Comment";
 
       if (error) {
-        console.error("[Comments] Submit failed:", error);
-        commentStatus.textContent = "Could not submit your comment. Please try again.";
+        console.error("Comments:", error);
+        commentStatus.textContent = "Comment could not be submitted.";
         commentStatus.classList.add("error");
         return;
       }
@@ -957,7 +954,7 @@
       commentName.value = "";
       commentInput.value = "";
       await renderComments(photo);
-      commentStatus.textContent = "Thanks! Your comment was submitted for review.";
+      commentStatus.textContent = "Comment submitted.";
       commentStatus.classList.add("success");
     }
 
@@ -1044,7 +1041,7 @@
         buildFilters();
         renderGallery();
       } catch (error) {
-        console.error("[Gallery] FAILED:", error);
+        console.error("Gallery:", error);
         memoryGrid.innerHTML = `
           <div class="gallery-error" role="alert">
             <strong>Gallery could not load</strong>
